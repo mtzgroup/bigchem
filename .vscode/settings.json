@@ -1,0 +1,13 @@
+{
+    "python.formatting.provider": "black",
+    "cSpell.words": [
+        "amqps",
+        "bigqc",
+        "freqs",
+        "kombu",
+        "qcel",
+        "qceljson",
+        "reqs",
+        "wavenumber"
+    ]
+}

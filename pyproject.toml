@@ -1,0 +1,60 @@
+[tool.poetry]
+name = "bigqc"
+version = "0.1.0"
+description = "A distributed system for scaling and parallelizing quantum chemistry calculations"
+authors = ["Colton Hicks <github@coltonhicks.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+celery = {extras = ["redis"], version = "^5.2.7"}
+qcengine = {git = "https://github.com/coltonbh/QCEngine.git", rev = "feature-terachem-frontend-harness"}
+geometric = {git = "https://github.com/coltonbh/geomeTRIC.git", rev = "bugfix-no-dirname-for-run-json"}
+pyberny = "^0.6.3"
+pydantic = {extras = ["dotenv"], version = "^1.9.1"}
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+mypy = "^0.961"
+isort = "^5.10.1"
+flake8 = "^4.0.1"
+pytest = "^7.1.2"
+pre-commit = "^2.19.0"
+pytest-cov = "^3.0.0"
+autoflake = "^1.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+testpaths = "tests/"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+force_grid_wrap = 0
+include_trailing_comma = true
+line_length = 88
+multi_line_output = 3
+use_parentheses = true
+
+[tool.coverage.run]
+branch = true
+omit = [
+  "*/tests/*",
+  "*/migrations/*",
+  "*site-packages*",
+  "*__init__.py",
+]
+
+[tool.mypy]
+plugins = "pydantic.mypy"
+ignore_missing_imports = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true

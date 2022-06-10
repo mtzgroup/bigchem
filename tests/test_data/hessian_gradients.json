@@ -1,0 +1,1687 @@
+[
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.005, -0.19760802, 0.0, -1.43511006, 0.92698325, 0.0, 1.43511006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6805964665458575, 0.3397560454873896, 0.34084042105846024
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.6876835926457368, 0.8444699885739604, 0.8432136040717811,
+          0.8444699885739604, 0.8493119734233945, 0.0048419848494356075,
+          0.8432136040717811, 0.0048419848494356075, 0.8480555889212151
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89134185918759],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_297",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_297/scr",
+        "server_job_id": 297,
+        "orb1afile": "server_2021-06-09-21.17.49/job_297/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 2.2301008701324463,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89134185918759,
+      "scf_dipole_moment": [
+        -0.003925701805613394, 2.3202128899092638, -3.1550914637211407e-6
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      0.0033879541653053314, 0.02487074139509099, 5.207751821137175e-7,
+      0.020183486418306723, -0.01106405658583487, -3.2088603362573534e-7,
+      -0.023571440353308354, -0.013806682940972315, -1.9988915217947354e-7
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        -0.005, -0.19760802, 0.0, -1.43511006, 0.92698325, 0.0, 1.43511006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6805964754012521, 0.3408401439962915, 0.3397563314049574
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.68768358476078, 0.8432137643405637, 0.8444698204202208,
+          0.8432137643405637, 0.848055746310556, 0.004841981969993598,
+          0.8444698204202208, 0.004841981969993598, 0.8493118023902139
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89134195345767],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_298",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_298/scr",
+        "server_job_id": 298,
+        "orb1afile": "server_2021-06-09-21.17.49/job_298/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.023475170135498,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89134195345767,
+      "scf_dipole_moment": [
+        0.003928011020659828, 2.3202125400145217, -3.153941444791293e-6
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      -0.003388235054917486, 0.024870791544020443, 5.190412377864379e-7,
+      0.02357159022469682, -0.013806821801042202, -3.0642962937887445e-7,
+      -0.020183354902692158, -0.011063968957361198, -2.1261160631201734e-7
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19260802, 0.0, -1.43511006, 0.92698325, 0.0, 1.43511006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6817552018633464, 0.3408774731697052, 0.34087772869363897
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.6864392941989372, 0.8432196772747342, 0.8432196169242059,
+          0.8432196772747342, 0.8482342473763536, 0.005014570101620132,
+          0.8432196169242059, 0.005014570101620132, 0.8482341870258254
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89122067737686],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_299",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_299/scr",
+        "server_job_id": 299,
+        "orb1afile": "server_2021-06-09-21.17.49/job_299/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.0237488746643066,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89122067737686,
+      "scf_dipole_moment": [
+        1.6802941488969308e-6, 2.3176633905273336, -3.072632959640836e-6
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      -1.2715938155952388e-7, 0.02696821487141665, 4.996233767920962e-7,
+      0.022846928449905574, -0.013484156583475682, -3.0184775163229317e-7,
+      -0.02284679980302806, -0.013484058688072176, -1.9777562936477277e-7
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.20260802, 0.0, -1.43511006, 0.92698325, 0.0, 1.43511006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6794437038812511, 0.3397217112236641, 0.3397219926575866
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.688925932931724, 0.8444630173061665, 0.8444629156255519,
+          0.8444630173061665, 0.8491338520332741, 0.004670834727108137,
+          0.8444629156255519, 0.004670834727108137, 0.8491337503526598
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89146919823472],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_300",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_300/scr",
+        "server_job_id": 300,
+        "orb1afile": "server_2021-06-09-21.17.49/job_300/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.0159862041473389,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89146919823472,
+      "scf_dipole_moment": [
+        1.5984022330010543e-6, 2.3227220160444295, -3.3139509013245496e-6
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      -1.395131754760208e-7, 0.022736248979286167, 5.538938776252154e-7,
+      0.020904405558622025, -0.011368178225774267, -3.3303725705639056e-7,
+      -0.020904266286543904, -0.011368069797399544, -2.2085660717675958e-7
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.005, -1.43511006, 0.92698325, 0.0, 1.43511006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [-0.6806022902870907, 0.340301011742531, 0.3403012785445554],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.6876807845413726, 0.8438404698135681, 0.8438403147278142,
+          0.8438404698135681, 0.848682982228409, 0.004842512414841673,
+          0.8438403147278142, 0.004842512414841673, 0.8486828271426541
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89135065231666],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_301",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_301/scr",
+        "server_job_id": 301,
+        "orb1afile": "server_2021-06-09-21.17.49/job_301/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.0162899494171143,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89135065231666,
+      "scf_dipole_moment": [
+        1.2403388365927444e-6, 2.320197912040284, -0.010318413135854706
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      -1.3189257057287666e-7, 0.02484396498496777, -9.339119944379694e-5,
+      0.021867096701836064, -0.012422035370508566, 4.664233936895043e-5,
+      -0.02186696377778774, -0.012421927694212104, 4.674884982589162e-5
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, -0.005, -1.43511006, 0.92698325, 0.0, 1.43511006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6806020696321013, 0.3403009163174959, 0.3403011533146111
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.6876809115853355, 0.8438404989755485, 0.843840412609777,
+          0.8438404989755485, 0.848683034763585, 0.004842535788036,
+          0.843840412609777, 0.004842535788036, 0.8486829483978126
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89135066702406],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_302",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_302/scr",
+        "server_job_id": 302,
+        "orb1afile": "server_2021-06-09-21.17.49/job_302/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.079634189605713,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89135066702406,
+      "scf_dipole_moment": [
+        1.3386540405145904e-6, 2.3201979540565203, 0.010312045364375366
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      -1.3894839490798762e-7, 0.02484394540682555, 9.44420978149737e-5,
+      0.02186710076779469, -0.012422029459063066, -4.7276157660905665e-5,
+      -0.02186696299075208, -0.012421916567742414, -4.716593322226547e-5
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.0, -1.43011006, 0.92698325, 0.0, 1.43511006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6807721833546054, 0.34065553283454575, 0.34011665052006446
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.687552781901232, 0.8434629180663467, 0.844089863834879,
+          0.8434629180663467, 0.8481852279992084, 0.004722309932862205,
+          0.844089863834879, 0.004722309932862205, 0.848812173767741
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89123623105394],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_303",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_303/scr",
+        "server_job_id": 303,
+        "orb1afile": "server_2021-06-09-21.17.49/job_303/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.0260069370269775,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89123623105394,
+      "scf_dipole_moment": [
+        0.0019717506535186762, 2.32185928206504, -3.149284335460001e-6
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      -0.001702544770992225, 0.02583090447706321, 5.137505924583788e-7,
+      0.02377943223737547, -0.013606506866598062, -3.066127561402669e-7,
+      -0.022076886028152887, -0.012224397405045967, -2.0713782177419052e-7
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.0, -1.4401100599999999, 0.92698325, 0.0, 1.43511006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6804286953252277, 0.33994179907885924, 0.3404868962463574
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.6878100440774482, 0.8442196358349731, 0.8435904082424927,
+          0.8442196358349731, 0.8491817548212333, 0.004962118986259989,
+          0.8435904082424927, 0.004962118986259989, 0.8485525272287522
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89145509885712],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_304",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_304/scr",
+        "server_job_id": 304,
+        "orb1afile": "server_2021-06-09-21.17.49/job_304/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.0503900051116943,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89145509885712,
+      "scf_dipole_moment": [
+        -0.0019556243430545123, 2.3185665528011645, -3.1444795481817958e-6
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      0.0016855705128787804, 0.023888234310314893, 5.260104420778871e-7,
+      0.019977456715094405, -0.011263797472587267, -3.2044060672834437e-7,
+      -0.021663026826773818, -0.012624435611057305, -2.0556981669779578e-7
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.0, -1.43511006, 0.93198325, 0.0, 1.43511006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6800246480588985, 0.3397978396038416, 0.3402268084550575
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.6883013291295672, 0.8443980453326236, 0.8439032837969426,
+          0.8443980453326236, 0.8491549809246697, 0.004756935592046687,
+          0.8439032837969426, 0.004756935592046687, 0.8486602193889886
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89140987362488],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_305",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_305/scr",
+        "server_job_id": 305,
+        "orb1afile": "server_2021-06-09-21.17.49/job_305/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.0177841186523438,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89140987362488,
+      "scf_dipole_moment": [
+        0.0025131179395072685, 2.3214704861697832, -3.197418785312959e-6
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      0.0013637912923861067, 0.023792758426204652, 5.309591105279882e-7,
+      0.02070484069963968, -0.011396850631756189, -3.2403907673498305e-7,
+      -0.022068630426324815, -0.012395907464584854, -2.0692002337078643e-7
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.0, -1.43511006, 0.92198325, 0.0, 1.43511006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6811802057872853, 0.3408005947432192, 0.34037961104405634
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.687058211598595, 0.8432842934179756, 0.8437739181806314,
+          0.8432842934179756, 0.8482131121210374, 0.0049288187030639575,
+          0.8437739181806314, 0.0049288187030639575, 0.8487027368836935
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89128561212398],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_306",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_306/scr",
+        "server_job_id": 306,
+        "orb1afile": "server_2021-06-09-21.17.49/job_306/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.0139670372009277,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89128561212398,
+      "scf_dipole_moment": [
+        -0.0024966975963362377, 2.3189421637402754, -3.1677899811470495e-6
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      -0.0013787977765327992, 0.025908676900080363, 5.224815101675077e-7,
+      0.023047387759035087, -0.013455524846908984, -3.1144200439207493e-7,
+      -0.021668589293574292, -0.012453151388055972, -2.110395026945638e-7
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.0, -1.43511006, 0.92698325, 0.005, 1.43511006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6806039887763156, 0.34030139457533426, 0.34030259420098596
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.687678930228488, 0.8438401183316976, 0.8438388118967777,
+          0.8438401183316976, 0.8486830287010613, 0.004842910369365614,
+          0.8438388118967777, 0.004842910369365614, 0.8486817222661429
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89135056978961],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_307",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_307/scr",
+        "server_job_id": 307,
+        "orb1afile": "server_2021-06-09-21.17.49/job_307/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.0121488571166992,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89135056978961,
+      "scf_dipole_moment": [
+        6.312508679970478e-6, 2.32020951950602, 0.005154437947254054
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      2.8199479212108413e-6, 0.024846987460482306, 4.747944518820424e-5,
+      0.0218662568076545, -0.012422291022089277, -5.825095007305802e-5,
+      -0.021869077801805248, -0.012424694201566333, 1.0771504116968177e-5
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.0, -1.43511006, 0.92698325, -0.005, 1.43511006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6806040757181577, 0.3403014869249449, 0.3403025887932096
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.6876787856243762, 0.843839983196903, 0.8438388024274777,
+          0.843839983196903, 0.8486828995221549, 0.004842916325252371,
+          0.8438388024274777, 0.004842916325252371, 0.8486817187527289
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89135059371301],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_308",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_308/scr",
+        "server_job_id": 308,
+        "orb1afile": "server_2021-06-09-21.17.49/job_308/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.0125300884246826,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89135059371301,
+      "scf_dipole_moment": [
+        6.449312417035468e-6, 2.3202092937281016, -0.005160862707090186
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      2.840048463025971e-6, 0.024846997958508088, -4.6423587053288006e-5,
+      0.021866258522899418, -0.012422292190580025, 5.761379929255378e-5,
+      -0.021869100315821788, -0.012424705733099478, -1.1190214325124698e-5
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.0, -1.43511006, 0.92698325, 0.0, 1.4401100599999999,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.680428584361799, 0.34048663260688217, 0.33994195175491604
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.6878101283096747, 0.8435905817524169, 0.8442195465572566,
+          0.8435905817524169, 0.8485527116150865, 0.004962129862668992,
+          0.8442195465572566, 0.004962129862668992, 0.8491816764199271
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89145501979583],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_309",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_309/scr",
+        "server_job_id": 309,
+        "orb1afile": "server_2021-06-09-21.17.49/job_309/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.0293779373168945,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89145501979583,
+      "scf_dipole_moment": [
+        0.0019573862347147235, 2.3185664049888977, -3.217629009502676e-6
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      -0.001685801730808603, 0.02388825459055388, 5.371832521934725e-7,
+      0.021663143142272523, -0.012624542479095668, -3.2140447268510643e-7,
+      -0.019977341667345883, -0.011263712883818333, -2.1577877204211637e-7
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.0, -1.43511006, 0.92698325, 0.0, 1.43011006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6807722902837394, 0.3401164223820332, 0.34065586790170677
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.687552720105682, 0.8440899615326716, 0.8434627585730099,
+          0.8440899615326716, 0.8488122720624868, 0.00472231052981591,
+          0.8434627585730099, 0.00472231052981591, 0.8481850691028245
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89123621026984],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_310",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_310/scr",
+        "server_job_id": 310,
+        "orb1afile": "server_2021-06-09-21.17.49/job_310/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.0118529796600342,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89123621026984,
+      "scf_dipole_moment": [
+        -0.00196899496327092, 2.3218596473985302, -3.189704776225319e-6
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      0.001702268585930032, 0.02583090053054915, 5.198462474549294e-7,
+      0.022077033683421426, -0.012224498215894941, -3.1718937693722026e-7,
+      -0.023779301820217286, -0.013606401375592714, -2.0265686214940294e-7
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.0, -1.43511006, 0.92698325, 0.0, 1.43511006,
+        0.93198325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6800246857015093, 0.3402266281326465, 0.33979805756885284
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.688301363677816, 0.8439033599065786, 0.8443980037712524,
+          0.8439033599065786, 0.8486602887810295, 0.0047569288744512914,
+          0.8443980037712524, 0.0047569288744512914, 0.8491549326457023
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.89140980314556],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_311",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_311/scr",
+        "server_job_id": 311,
+        "orb1afile": "server_2021-06-09-21.17.49/job_311/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.013197898864746,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.89140980314556,
+      "scf_dipole_moment": [
+        -0.002510484970010037, 2.3214711186433483, -3.2010786696809973e-6
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      -0.0013640371670140742, 0.02379272204538524, 5.3105290795741e-7,
+      0.0220687606878964, -0.01239599011983672, -3.171347280865061e-7,
+      -0.020704722559707456, -0.01139673136887906, -2.139181842146511e-7
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.0, -1.43511006, 0.92698325, 0.0, 1.43511006,
+        0.92198325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6811801757406961, 0.34037934055961105, 0.34080083518109605
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.6870581956803292, 0.8437740491148297, 0.8432841465654826,
+          0.8437740491148297, 0.8487028717913083, 0.004928822676476499,
+          0.8432841465654826, 0.004928822676476499, 0.8482129692419622
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.8912857505046],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_312",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_312/scr",
+        "server_job_id": 312,
+        "orb1afile": "server_2021-06-09-21.17.49/job_312/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.0158488750457764,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.8912857505046,
+      "scf_dipole_moment": [
+        0.0024990628372258206, 2.3189417427286902, -3.1879719870143046e-6
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      0.0013785453315673106, 0.025908696351707283, 5.229963286863544e-7,
+      0.02166871709046958, -0.012453264934141062, -3.188025263314034e-7,
+      -0.023047263222214315, -0.013455431237788418, -2.041937810803021e-7
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.0, -1.43511006, 0.92698325, 0.0, 1.43511006,
+        0.92698325, 0.005
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6806039547742913, 0.34030224465491565, 0.34030171011937305
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.687678898632491, 0.843839067966, 0.8438398306664925, 0.843839067966,
+          0.8486819898717131, 0.004842921905713234, 0.8438398306664925,
+          0.004842921905713234, 0.848682752572205
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.8913504951701],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_313",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_313/scr",
+        "server_job_id": 313,
+        "orb1afile": "server_2021-06-09-21.17.49/job_313/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 1.020975112915039,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.8913504951701,
+      "scf_dipole_moment": [
+        -4.497105438574775e-6, 2.3202094752421454, 0.005154394517085685
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      -3.1151447201418522e-6, 0.02484699276748309, 4.748971392121626e-5,
+      0.021869238326544194, -0.012424812787348971, 1.0656499445664826e-5,
+      -0.021866122726520165, -0.012422179870903716, -5.814620941488953e-5
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.0, -1.43511006, 0.92698325, 0.0, 1.43511006,
+        0.92698325, -0.005
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "gradient",
+    "model": { "method": "pbe0", "basis": "3-21g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.6806040392098431, 0.3403023302794378, 0.3403017089304077
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.6876788214322165, 0.843838952182477, 0.8438398692497324,
+          0.843838952182477, 0.8486818705840009, 0.004842918401524239,
+          0.8438398692497324, 0.004842918401524239, 0.8486827876512553
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-75.8913505647229],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_314",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_314/scr",
+        "server_job_id": 314,
+        "orb1afile": "server_2021-06-09-21.17.49/job_314/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "wall_time": 0.96209716796875,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "username": "cbh",
+      "hostname": "Coltons-MacBook-Pro.local"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -75.8913505647229,
+      "scf_dipole_moment": [
+        -4.207758688275793e-6, 2.3202093022702046, -0.005160870080437508
+      ]
+    },
+    "wavefunction": null,
+    "return_result": [
+      -3.111869951136615e-6, 0.024846998500683393, -4.642194602786471e-5,
+      0.021869228837209237, -0.012424812948261615, -1.1300462636684269e-5,
+      -0.021866116178351436, -0.0124221832030523, 5.7722406453456464e-5
+    ],
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  },
+  {
+    "id": null,
+    "schema_name": "qcschema_output",
+    "schema_version": 1,
+    "molecule": {
+      "schema_name": "qcschema_molecule",
+      "schema_version": 2,
+      "validated": true,
+      "symbols": ["O", "H", "H"],
+      "geometry": [
+        0.0, -0.19760802, 0.0, -1.43511006, 0.92698325, 0.0, 1.43511006,
+        0.92698325, 0.0
+      ],
+      "name": "H2O",
+      "molecular_charge": 0.0,
+      "molecular_multiplicity": 1,
+      "fix_com": false,
+      "fix_orientation": false,
+      "provenance": {
+        "creator": "QCElemental",
+        "version": "v0.20.0",
+        "routine": "qcelemental.molparse.from_schema"
+      }
+    },
+    "driver": "energy",
+    "model": { "method": "b3lyp", "basis": "6-31g" },
+    "keywords": {},
+    "protocols": {},
+    "extras": {
+      "qcvars": {
+        "charges": [
+          -0.7052464328803953, 0.35262338899400125, 0.3526230438863809
+        ],
+        "spins": [0.0, 0.0, 0.0],
+        "meyer_bond_order": [
+          1.6601653596929342, 0.8300825187827858, 0.8300828409101687,
+          0.8300825187827858, 0.8296783011238729, -0.0004042176589112989,
+          0.8300828409101687, -0.0004042176589112989, 0.8296786232512556
+        ],
+        "orb_size": null,
+        "excited_state_energies": [-76.38521615124822],
+        "cis_transition_dipoles": null,
+        "compressed_bond_order": null,
+        "compressed_hessian": null,
+        "compressed_ao_data": null,
+        "compressed_primitive_data": null,
+        "compressed_mo_vector": null,
+        "imd_mmatom_gradient": null
+      },
+      "job_extras": {
+        "job_dir": "server_2021-06-09-21.17.49/job_407",
+        "job_scr_dir": "server_2021-06-09-21.17.49/job_407/scr",
+        "server_job_id": 407,
+        "orb1afile": "server_2021-06-09-21.17.49/job_407/scr/c0",
+        "orb1bfile": null
+      },
+      "molden": null
+    },
+    "provenance": {
+      "creator": "terachem_pbs",
+      "version": "1.9-2021.01-dev",
+      "routine": "tcpb.TCProtobufClient.compute",
+      "hostname": "Coltons-MacBook-Pro.local",
+      "wall_time": 1.024172067642212,
+      "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+      "qcengine_version": "v0.18.0+36.g0490362",
+      "username": "cbh"
+    },
+    "properties": {
+      "calcinfo_nmo": 13,
+      "calcinfo_nalpha": 10,
+      "calcinfo_nbeta": 0,
+      "calcinfo_natom": 3,
+      "return_energy": -76.38521615124822,
+      "scf_dipole_moment": [
+        -4.77354087664879e-7, 2.467638524728274, -1.5748444546861145e-6
+      ]
+    },
+    "wavefunction": null,
+    "return_result": -76.38521615124822,
+    "stdout": null,
+    "stderr": null,
+    "success": true,
+    "error": null
+  }
+]

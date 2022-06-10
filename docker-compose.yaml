@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  broker:
+    image: rabbitmq:3.8-management-alpine
+    container_name: bigqc_broker
+    # Must specify hostname since data is stored based on hostname and we don't want a
+    # random, docker-assigned hostname with each new restart of the service. This would
+    # result in any past messages stored by the former container in the volume to be
+    # unseen by the new container.
+    # https://hub.docker.com/_/rabbitmq/ under "How to use this image"
+    hostname: rmq-host1
+    ports:
+      # Open rabbit to localhost for dev container access
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - broker:/var/lib/rabbitmq
+
+  backend:
+    image: redis:6-alpine
+    container_name: bigqc_backend
+    ports:
+      # Open redis to localhost for dev container access
+      - 6379:6379
+    volumes:
+      - backend:/data
+
+  worker:
+    build:
+      context: .
+      dockerfile: worker.dockerfile
+    container_name: bigqc_worker
+    depends_on:
+      - broker
+      - backend
+    environment:
+      - bigqc_broker_url=amqp://broker
+      - bigqc_backend_url=redis://backend/0
+      - C_FORCE_ROOT=true # to run celery as root with pickle serializer; OK since in container
+      # Set concurrency to fix number of worker processes
+      # - bigqc_worker_concurrency=1
+    volumes:
+      # Mount in code so service just has to be restarted instead of rebuilt
+      # when code changes
+      - ./bigqc:/code/bigqc
+      - worker:/tmp
+
+volumes:
+  broker:
+  backend:
+  worker:

@@ -1,0 +1,105 @@
+{
+  "id": null,
+  "schema_name": "qcschema_output",
+  "schema_version": 1,
+  "molecule": {
+    "schema_name": "qcschema_molecule",
+    "schema_version": 2,
+    "validated": true,
+    "symbols": ["O", "H", "H"],
+    "geometry": [
+      0.0, -0.19760802, 0.0, -1.43511006, 0.92698325, 0.0, 1.43511006,
+      0.92698325, 0.0
+    ],
+    "name": "H2O",
+    "molecular_charge": 0.0,
+    "molecular_multiplicity": 1,
+    "fix_com": false,
+    "fix_orientation": false,
+    "provenance": {
+      "creator": "QCElemental",
+      "version": "v0.20.0",
+      "routine": "qcelemental.molparse.from_schema"
+    }
+  },
+  "driver": "properties",
+  "model": { "method": "b3lyp", "basis": "6-31g" },
+  "keywords": {},
+  "protocols": {},
+  "extras": {
+    "qcvars": {
+      "charges": [-0.7052464328803953, 0.35262338899400125, 0.3526230438863809],
+      "spins": [0.0, 0.0, 0.0],
+      "meyer_bond_order": [
+        1.6601653596929342, 0.8300825187827858, 0.8300828409101687,
+        0.8300825187827858, 0.8296783011238729, -0.0004042176589112989,
+        0.8300828409101687, -0.0004042176589112989, 0.8296786232512556
+      ],
+      "orb_size": null,
+      "excited_state_energies": [-76.38521615124822],
+      "cis_transition_dipoles": null,
+      "compressed_bond_order": null,
+      "compressed_hessian": null,
+      "compressed_ao_data": null,
+      "compressed_primitive_data": null,
+      "compressed_mo_vector": null,
+      "imd_mmatom_gradient": null
+    },
+    "job_extras": {
+      "job_dir": "server_2021-06-09-21.17.49/job_407",
+      "job_scr_dir": "server_2021-06-09-21.17.49/job_407/scr",
+      "server_job_id": 407,
+      "orb1afile": "server_2021-06-09-21.17.49/job_407/scr/c0",
+      "orb1bfile": null
+    },
+    "molden": null
+  },
+  "provenance": {
+    "creator": "terachem_pbs",
+    "version": "1.9-2021.01-dev",
+    "routine": "tcpb.TCProtobufClient.compute",
+    "username": "cbh",
+    "wall_time": 1.024172067642212,
+    "qcengine_version": "v0.18.0+36.g0490362",
+    "cpu": "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+    "hostname": "Coltons-MacBook-Pro.local"
+  },
+  "properties": {
+    "calcinfo_nmo": 13,
+    "calcinfo_nalpha": 10,
+    "calcinfo_nbeta": 0,
+    "calcinfo_natom": 3,
+    "return_energy": -76.38521615124822,
+    "scf_dipole_moment": [
+      -4.77354087664879e-7, 2.467638524728274, -1.5748444546861145e-6
+    ]
+  },
+  "wavefunction": null,
+  "return_result": {
+    "freqs_wavenumber": [
+      1653.789223783134, 3816.1576755865945, 3951.623983068307
+    ],
+    "normal_modes_cart": [
+      [
+        -3.641869984093893e-8, -0.07315504299098163, -4.1930469698314916e-33,
+        0.4003020556450193, 0.5805879799737578, 4.934100218291111e-33,
+        -0.4003014775777595, 0.5805884329629829, -1.4802300654873333e-32
+      ],
+      [
+        -3.1832235762480204e-6, -0.046476144003040634, -1.3386520445190937e-33,
+        -0.6023591682893024, 0.3688338046528736, -7.42496137563468e-33,
+        0.6024096950060223, 0.3688733987621399, 2.227488412690404e-32
+      ],
+      [
+        0.06995750744891366, -2.235927444821509e-6, -6.548047357516412e-38,
+        -0.5552395451509028, 0.4350963891892067, -3.4861033503691132e-37,
+        -0.5551829798900444, -0.43506089872807363, 1.045831005110734e-36
+      ]
+    ],
+    "g_total_au": 0.003003982849605417
+  },
+  "stdout": null,
+  "stderr": null,
+  "success": true,
+  "error": null
+}
