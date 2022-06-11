@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     bigqc_prefetch_multiplier: int = 1
     # Set concurrent number of worker processes. If None defaults to # of logical cores
     # https://docs.celeryq.dev/en/stable/userguide/configuration.html#std-setting-worker_concurrency
-    bigqc_worker_concurrency: Optional[int] = None
+    bigqc_worker_concurrency: Optional[int] = 1
     bigqc_default_hessian_dh: float = 5.0e-3
 
     class Config:

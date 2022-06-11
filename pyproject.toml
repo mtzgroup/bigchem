@@ -12,6 +12,8 @@ qcengine = {git = "https://github.com/coltonbh/QCEngine.git", rev = "feature-ter
 geometric = {git = "https://github.com/coltonbh/geomeTRIC.git", rev = "bugfix-no-dirname-for-run-json"}
 pyberny = "^0.6.3"
 pydantic = {extras = ["dotenv"], version = "^1.9.1"}
+qcelemental = "0.24.0"
+tcpb = "^0.12.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
@@ -22,6 +24,7 @@ pytest = "^7.1.2"
 pre-commit = "^2.19.0"
 pytest-cov = "^3.0.0"
 autoflake = "^1.4"
+pytest-timeout = "^2.1.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
