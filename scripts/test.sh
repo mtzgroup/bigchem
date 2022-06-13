@@ -1,4 +1,4 @@
-set -xe
+set -x
 
 # Start docker redis, rabbitmq, and psi4 celery worker containers
 docker-compose up -d --build

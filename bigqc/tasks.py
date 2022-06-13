@@ -1,5 +1,5 @@
 from itertools import zip_longest
-from typing import List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import numpy as np
 import qcengine as qcng
@@ -8,33 +8,43 @@ from qcelemental.models import (
     AtomicInput,
     AtomicResult,
     FailedOperation,
-    OptimizationInput,
     OptimizationResult,
 )
+from qcelemental.models.basemodels import BaseModel
 
-from .app import app
+from .app import bigqc
 from .config import get_settings
 
 settings = get_settings()
 
 
-@app.task
+@bigqc.task
 def compute(
-    atomic_input: AtomicInput, engine: str, raise_error: bool = False
+    input_data: Union[Dict[str, Any], "AtomicInput"],
+    program: str,
+    raise_error: bool = False,
+    local_options: Optional[Dict[str, Any]] = None,
+    return_dict: bool = False,
 ) -> Union[AtomicResult, FailedOperation]:
     """Celery task wrapper around qcengine.compute"""
-    return qcng.compute(atomic_input, engine, raise_error=raise_error)
+    return qcng.compute(input_data, program, raise_error, local_options, return_dict)
 
 
-@app.task
+@bigqc.task
 def compute_procedure(
-    input: OptimizationInput, procedure: str, raise_error: bool = False
+    input_data: Union[Dict[str, Any], BaseModel],  # Usually OptimizationInput
+    procedure: str,
+    raise_error: bool = False,
+    local_options: Optional[Dict[str, str]] = None,
+    return_dict: bool = False,
 ) -> Union[OptimizationResult, FailedOperation]:
     """Celery task wrapper around qcengine.compute_procedure"""
-    return qcng.compute_procedure(input, procedure, raise_error=raise_error)
+    return qcng.compute_procedure(
+        input_data, procedure, raise_error, local_options, return_dict
+    )
 
 
-@app.task
+@bigqc.task
 def hessian(
     gradients: List[AtomicResult], dh: float
 ) -> Union[AtomicResult, FailedOperation]:
@@ -78,7 +88,7 @@ def hessian(
     return AtomicResult(**result)
 
 
-@app.task
+@bigqc.task
 def frequency_analysis(
     input_data: AtomicResult, **kwargs
 ) -> Union[AtomicResult, FailedOperation]:
@@ -115,7 +125,7 @@ def frequency_analysis(
     return AtomicResult(**result)
 
 
-@app.task
+@bigqc.task
 def add(x, y):
     """Add two numbers
 
@@ -124,7 +134,7 @@ def add(x, y):
     return x + y
 
 
-@app.task
+@bigqc.task
 def csum(values: List[Union[float, int]], extra: int = 0) -> Union[float, int]:
     """Sum all the values in a list
 

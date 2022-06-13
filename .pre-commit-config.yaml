@@ -36,6 +36,6 @@ repos:
         name: tests
         stages: [push]
         language: system
-        entry: poetry run pytest
+        entry: sh scripts/test.sh
         types: [python]
         pass_filenames: false

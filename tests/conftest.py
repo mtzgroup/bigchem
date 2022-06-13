@@ -5,6 +5,12 @@ import qcengine as qcng
 
 
 @pytest.fixture
+def hydrogen():
+    """Hydrogen Molecule"""
+    return qcng.get_molecule("hydrogen")
+
+
+@pytest.fixture
 def water():
     """Water Molecule"""
     return qcng.get_molecule("water")

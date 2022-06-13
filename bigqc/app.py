@@ -9,7 +9,7 @@ from .config import get_settings
 
 settings = get_settings()
 
-app = Celery(
+bigqc = Celery(
     # Name of current module is first argument
     # https://docs.celeryproject.org/en/stable/getting-started/first-steps-with-celery.html#application
     "tasks",
@@ -27,7 +27,7 @@ register(
     content_encoding="utf-8",
 )
 
-app.conf.update(
+bigqc.conf.update(
     # All configuration documentation here:
     # https://docs.celeryq.dev/en/stable/userguide/configuration.html
     # task_serializer="qceljson",
@@ -48,7 +48,7 @@ app.conf.update(
 # broker behind a reverse proxy (like traefik) that dynamically provisions certificates.
 # https://docs.celeryq.dev/en/stable/userguide/configuration.html#std-setting-broker_use_ssl
 if "amqps" in settings.bigqc_broker_url:
-    app.conf.update(
+    bigqc.conf.update(
         broker_use_ssl={
             "cert_reqs": ssl.CERT_NONE,
         },
