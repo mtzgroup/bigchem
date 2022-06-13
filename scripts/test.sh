@@ -4,7 +4,7 @@ set -x
 docker-compose up -d --build
 
 # Run tests
-poetry run pytest --cov-report html:htmlcov --cov
+poetry run pytest --cov-report html:htmlcov --cov -v
 
 # Stop docker containers
 docker-compose down
