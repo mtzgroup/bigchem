@@ -29,13 +29,15 @@ RUN conda install psi4=1.5 \
     # for psutil in qcengine
     # https://github.com/giampaolo/psutil/blob/master/INSTALL.rst
     apt-get install -y gcc python3-dev && \
-    pip install "poetry==$POETRY_VERSION"
+    python -m pip install --upgrade pip && \ 
+    python -m pip install "poetry==$POETRY_VERSION"
 
 
-# Install dependencies
+# Install BigQC and additional worker dependencies
 WORKDIR /code/
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml poetry.lock docker/worker.requirements.txt ./
 RUN poetry install --no-dev --no-interaction --no-ansi
+RUN python -m pip install -r worker.requirements.txt
 
 # Copy in code
 COPY bigqc/ bigqc/

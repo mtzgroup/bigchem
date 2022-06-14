@@ -1,0 +1,3 @@
+tcpb==0.12.0
+pyberny==0.6.3
+qcengine @ git+https://github.com/coltonbh/QCEngine.git@feature-terachem-frontend-harness

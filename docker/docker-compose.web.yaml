@@ -1,0 +1,61 @@
+# A bash-able template that will fill with variables if correct environment variables are loaded
+# source context.{dev | prod}
+# eval "echo \"$(cat $(pwd)/docker-compose.template.yaml)\"" > output.yaml
+version: \"3.8\"
+
+services:
+  broker:
+    networks:
+      - traefik-public
+    env_file: rabbit.env
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+
+        # RabbitMQ
+        - traefik.tcp.routers.bigqc-rabbitmq.rule=HostSNI(\`*\`)
+        - traefik.tcp.routers.bigqc-rabbitmq.entrypoints=rabbitmq-secure
+        - traefik.tcp.routers.bigqc-rabbitmq.service=bigqc-rabbitmq-service
+        - traefik.tcp.routers.bigqc-rabbitmq.tls=true
+        - traefik.tcp.routers.bigqc-rabbitmq.tls.certresolver=le
+        - traefik.tcp.services.bigqc-rabbitmq-service.loadbalancer.server.port=5672
+
+        # MGMT Console
+        - traefik.http.routers.bigqc-rabbitmq-console.rule=Host(${MQ_CONSOLE_TRAEFIK_HOST})
+        - traefik.http.routers.bigqc-rabbitmq-console.entrypoints=https
+        - traefik.http.routers.bigqc-rabbitmq-console.tls=true
+        - traefik.http.routers.bigqc-rabbitmq-console.tls.certresolver=le
+        - traefik.http.routers.bigqc-rabbitmq-console.service=bigqc-rabbitmq-console-service
+        - traefik.http.services.bigqc-rabbitmq-console-service.loadbalancer.server.port=15672
+  redis:
+    networks:
+      - traefik-public
+    volumes:
+      - redis:/data
+      - ./redis.conf:/etc/redis/redis.conf
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+
+        - traefik.tcp.routers.bigqc-redis.rule=HostSNI(\`*\`)
+        - traefik.tcp.routers.bigqc-redis.entrypoints=redis-secure
+        - traefik.tcp.routers.bigqc-redis.tls=true
+        - traefik.tcp.routers.bigqc-redis.tls.certresolver=le
+        - traefik.tcp.routers.bigqc-redis.service=bigqc-redis-service
+        - traefik.tcp.services.bigqc-redis-service.loadbalancer.server.port=6379
+    command: redis-server /etc/redis/redis.conf
+
+volumes:
+  rabbitmq:
+  redis:
+
+networks:
+  traefik-public:
+    external: true

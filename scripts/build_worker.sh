@@ -2,4 +2,4 @@
 
 set -xe
 
-docker build -t coltonbh/bigqc-worker:$(poetry version -s) -f worker.dockerfile .
+docker build -t coltonbh/bigqc-worker:$(poetry version -s) -f docker/worker.dockerfile .
