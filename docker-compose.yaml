@@ -29,7 +29,7 @@ services:
   worker:
     build:
       context: .
-      dockerfile: worker.dockerfile
+      dockerfile: docker/worker.dockerfile
     container_name: bigqc_worker
     depends_on:
       - broker
