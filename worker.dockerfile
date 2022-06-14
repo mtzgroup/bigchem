@@ -16,14 +16,18 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_VIRTUALENVS_CREATE=false
 
 # Install QC packages
-# https://github.com/giampaolo/psutil/blob/master/INSTALL.rst
-RUN conda install psi4=1.6 -c psi4 && \
-    # msgpack-python is for psi4
-    conda install msgpack-python && \ 
-    conda install -c conda-forge rdkit=2020.09.5 && \
-    conda install -c conda-forge xtb-python=20.2 && \
+RUN conda install psi4=1.5 \
+    libint2=*=hc9558a2_9 \
+    pytest=5 \
+    pcmsolver=*=py39h6d17ec8_2 \
+    # for psi4
+    msgpack-python \
+    rdkit=2020.09.5 \
+    xtb-python=20.2 \
+    -c psi4 -c conda-forge && \
     apt-get update && \
-    # Need gcc and python3-dev for python psutil package (used by qcengine)
+    # for psutil in qcengine
+    # https://github.com/giampaolo/psutil/blob/master/INSTALL.rst
     apt-get install -y gcc python3-dev && \
     pip install "poetry==$POETRY_VERSION"
 

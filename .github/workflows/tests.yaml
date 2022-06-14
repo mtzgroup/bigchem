@@ -1,0 +1,40 @@
+name: Tests
+
+on: [push]
+
+env:
+  POETRY_VIRTUALENVS_CREATE: false
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.7
+      env:
+        BIGQC_BROKER_URL: amqp://broker
+        BIGQC_BACKEND_URL: redis://backend/0
+
+    services:
+      broker:
+        image: rabbitmq:3.8-management-alpine
+        # ports:
+        #   - 5672:5672
+      backend:
+        image: redis:6-alpine
+        ports:
+          - 6379:6379
+      worker:
+        image: coltonbh/bigqc-worker
+        env:
+          BIGQC_BROKER_URL: amqp://broker
+          BIGQC_BACKEND_URL: redis://backend/0
+          C_FORCE_ROOT: true # to run celery as root with pickle serializer
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install poetry
+        run: pip install poetry
+      - name: Install repo
+        run: poetry install --no-interaction --no-ansi
+      - name: Run tests
+        run: pytest --cov-report html:htmlcov --cov -v

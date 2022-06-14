@@ -7,6 +7,7 @@ from bigqc.canvas import group
 
 # NOTE: Not checking aggressively for correctness. Check that with test_hessian_task,
 # may want to improve in future.
+@pytest.mark.skip("Long test")
 @pytest.mark.parametrize(
     "driver,model,engine,batch",
     (
@@ -44,6 +45,7 @@ def test_parallel_hessian(water, driver, model, engine, batch):
         assert isinstance(r, AtomicResult)
 
 
+@pytest.mark.skip("Long test")
 @pytest.mark.parametrize(
     "driver,model,engine,kwargs,batch",
     (
