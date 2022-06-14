@@ -8,7 +8,7 @@ version: "3.8"
 
 # Default images and setup for worker containers
 x-default-worker: &default-worker
-  image: mtzgroup/terachem-cloud-worker:0.6.2
+  image: coltonbh/bigqc-worker:0.1.0
   env_file: worker.env
   environment:
     - TERACHEM_PBS_PORT=11111
