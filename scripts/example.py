@@ -17,8 +17,8 @@ my_input = AtomicInput(
 
 print("Submitting computation to backend.")
 async_result = compute.delay(my_input, "psi4")
-# async_result = qc_compute.delay(my_input, "psi4")
 print("Submitted!")
+
 # Check status
 while async_result.status in UNREADY_STATES:
     print(f"Computation status: {async_result.status}")
