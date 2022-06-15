@@ -5,14 +5,12 @@ from kombu.serialization import register
 from qcelemental.util.serialization import json_dumps as qcel_json_dumps
 from qcelemental.util.serialization import json_loads as qcel_json_loads
 
-from .config import get_settings
-
-settings = get_settings()
+from .config import settings
 
 bigqc = Celery(
-    # Name of current module is first argument
-    # https://docs.celeryproject.org/en/stable/getting-started/first-steps-with-celery.html#application
-    "tasks",
+    # Name of top-level module is first argument
+    # https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html#application
+    "bigqc",
     broker=settings.bigqc_broker_url,
     backend=settings.bigqc_backend_url,
 )

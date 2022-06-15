@@ -3,13 +3,11 @@
 from celery.canvas import Signature, group
 from qcelemental.models import AtomicInput, DriverEnum
 
-from .config import get_settings
+from .config import settings
 from .helpers import _gradient_inputs
 from .tasks import compute as compute_task
 from .tasks import frequency_analysis as frequency_analysis_task
 from .tasks import hessian as hessian_task
-
-settings = get_settings()
 
 
 def parallel_hessian(

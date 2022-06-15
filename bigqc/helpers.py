@@ -3,9 +3,7 @@ from typing import List
 
 from qcelemental.models import AtomicInput
 
-from .config import get_settings
-
-settings = get_settings()
+from .config import settings
 
 
 def _gradient_inputs(

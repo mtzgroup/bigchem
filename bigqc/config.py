@@ -1,5 +1,4 @@
 """Settings and Configuration for workers. Read more: https://pydantic-docs.helpmanual.io/usage/settings/"""
-from functools import lru_cache
 from pathlib import Path
 from typing import Optional
 
@@ -35,9 +34,4 @@ class Settings(BaseSettings):
             secrets_dir = _docker_secrets_dir
 
 
-@lru_cache()
-def get_settings():
-    """Settings object to use throughout the app as a dependency
-    https://fastapi.tiangolo.com/advanced/settings/#creating-the-settings-only-once-with-lru_cache
-    """
-    return Settings()
+settings = Settings()
