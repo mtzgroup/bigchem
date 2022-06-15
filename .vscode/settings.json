@@ -9,6 +9,7 @@
         "qceljson",
         "rdkit",
         "reqs",
-        "wavenumber"
+        "wavenumber",
+        "xstream"
     ]
 }
