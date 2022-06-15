@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
+- Wrapped `qcng.compute` and `qcng.compute_procedure` directly with `bigqc.task` rather than redefining each function
+- Simplified settings by removing `get_settings` function in favor of globally defined `settings` object. (No advantage to using a callable since we are not using dependency injection of a settings callable.)
+- Updated app name to `bigqc` from `tasks` in `app.py`.
+
 ### Added
 
 ### Removed

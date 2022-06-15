@@ -1,47 +1,17 @@
 from itertools import zip_longest
-from typing import Any, Dict, List, Optional, Union
+from typing import List, Union
 
 import numpy as np
 import qcengine as qcng
 from geometric.normal_modes import frequency_analysis as geometric_frequency_analysis
-from qcelemental.models import (
-    AtomicInput,
-    AtomicResult,
-    FailedOperation,
-    OptimizationResult,
-)
-from qcelemental.models.basemodels import BaseModel
+from qcelemental.models import AtomicResult, FailedOperation
 
 from .app import bigqc
-from .config import get_settings
 
-settings = get_settings()
-
-
-@bigqc.task
-def compute(
-    input_data: Union[Dict[str, Any], "AtomicInput"],
-    program: str,
-    raise_error: bool = False,
-    local_options: Optional[Dict[str, Any]] = None,
-    return_dict: bool = False,
-) -> Union[AtomicResult, FailedOperation]:
-    """Celery task wrapper around qcengine.compute"""
-    return qcng.compute(input_data, program, raise_error, local_options, return_dict)
+compute = bigqc.task(qcng.compute)
 
 
-@bigqc.task
-def compute_procedure(
-    input_data: Union[Dict[str, Any], BaseModel],  # Usually OptimizationInput
-    procedure: str,
-    raise_error: bool = False,
-    local_options: Optional[Dict[str, str]] = None,
-    return_dict: bool = False,
-) -> Union[OptimizationResult, FailedOperation]:
-    """Celery task wrapper around qcengine.compute_procedure"""
-    return qcng.compute_procedure(
-        input_data, procedure, raise_error, local_options, return_dict
-    )
+compute_procedure = bigqc.task(qcng.compute_procedure)
 
 
 @bigqc.task
