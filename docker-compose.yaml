@@ -37,7 +37,6 @@ services:
     environment:
       - bigqc_broker_url=amqp://broker
       - bigqc_backend_url=redis://backend/0
-      - C_FORCE_ROOT=true # to run celery as root with pickle serializer; OK since in container
       # Set concurrency to fix number of worker processes
       # - bigqc_worker_concurrency=1
     volumes:

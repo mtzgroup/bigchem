@@ -13,10 +13,14 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_DEFAULT_TIMEOUT=100 \
     POETRY_VERSION=1.1.13 \
     # Install to system python, no need for venv
-    POETRY_VIRTUALENVS_CREATE=false
+    POETRY_VIRTUALENVS_CREATE=false \
+    # To run celery as root with pickle serializer; OK since in container
+    C_FORCE_ROOT=true
 
 # Install QC packages
-RUN conda install psi4=1.5 \
+RUN conda install \
+    # https://github.com/psi4/psi4/issues/2596
+    psi4=1.5 \
     libint2=*=hc9558a2_9 \
     pytest=5 \
     pcmsolver=*=py39h6d17ec8_2 \

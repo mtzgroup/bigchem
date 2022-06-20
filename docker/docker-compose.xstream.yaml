@@ -15,7 +15,6 @@ x-default-worker: &default-worker
   environment:
     - TERACHEM_PBS_HOST={{.Node.Hostname}}-terachem-{{.Task.Slot}}
     - TERACHEM_FE_HOST={{.Node.Hostname}}-terachem-frontend
-    - C_FORCE_ROOT=true # to run celery as root with pickle serializer
   volumes:
     # qcengine uses /tmp by default for scratch directory
     - scratch:/tmp
@@ -32,7 +31,6 @@ services:
       # here overrides all values set in *default-worker, even if not defined twice
       - TERACHEM_PBS_HOST={{.Node.Hostname}}-terachem-0
       - TERACHEM_FE_HOST={{.Node.Hostname}}-terachem-frontend
-      - C_FORCE_ROOT=true
     deploy:
       mode: global
 

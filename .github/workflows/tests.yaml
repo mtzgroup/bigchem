@@ -28,7 +28,6 @@ jobs:
         env:
           BIGQC_BROKER_URL: amqp://broker
           BIGQC_BACKEND_URL: redis://backend/0
-          C_FORCE_ROOT: true # to run celery as root with pickle serializer
 
     steps:
       - uses: actions/checkout@v3
