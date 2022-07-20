@@ -4,7 +4,7 @@ import qcengine as qcng
 from celery.states import UNREADY_STATES
 from qcelemental.models import AtomicInput
 
-from bigqc.tasks import compute
+from bigchem.tasks import compute
 
 print(
     "Be sure to run 'docker-compose up -d' from the root directory before running this"

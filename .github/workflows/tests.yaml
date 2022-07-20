@@ -11,8 +11,8 @@ jobs:
     container:
       image: python:3.7
       env:
-        BIGQC_BROKER_URL: amqp://broker
-        BIGQC_BACKEND_URL: redis://backend/0
+        BIGCHEM_BROKER_URL: amqp://broker
+        BIGCHEM_BACKEND_URL: redis://backend/0
 
     services:
       broker:
@@ -24,10 +24,10 @@ jobs:
         ports:
           - 6379:6379
       worker:
-        image: coltonbh/bigqc-worker
+        image: coltonbh/bigchem-worker
         env:
-          BIGQC_BROKER_URL: amqp://broker
-          BIGQC_BACKEND_URL: redis://backend/0
+          BIGCHEM_BROKER_URL: amqp://broker
+          BIGCHEM_BACKEND_URL: redis://backend/0
 
     steps:
       - uses: actions/checkout@v3

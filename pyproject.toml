@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "bigqc"
+name = "bigchem"
 version = "0.1.3"
 description = "A distributed system for scaling and parallelizing quantum chemistry calculations"
 authors = ["Colton Hicks <github@coltonhicks.com>"]

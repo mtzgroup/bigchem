@@ -10,7 +10,7 @@ from qcelemental.models.procedures import (
     TrajectoryProtocolEnum,
 )
 
-from bigqc.tasks import compute_procedure as cp_task
+from bigchem.tasks import compute_procedure as cp_task
 
 environ["TERACHEM_PBS_HOST"] = "127.0.0.1"
 environ["TERACHEM_PBS_PORT"] = "11111"

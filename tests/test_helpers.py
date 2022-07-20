@@ -1,6 +1,6 @@
 from qcelemental.models.results import AtomicInput
 
-from bigqc.helpers import _gradient_inputs
+from bigchem.helpers import _gradient_inputs
 
 
 def test_gradient_inputs(water):

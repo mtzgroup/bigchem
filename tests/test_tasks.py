@@ -8,8 +8,8 @@ from qcelemental.models import (
 )
 from qcelemental.util.serialization import json_loads
 
-from bigqc.canvas import group  # type:ignore
-from bigqc.tasks import compute, compute_procedure, frequency_analysis, hessian
+from bigchem.canvas import group  # type:ignore
+from bigchem.tasks import compute, compute_procedure, frequency_analysis, hessian
 
 
 def test_hessian_task(test_data_dir, water):

@@ -1,8 +1,8 @@
 import pytest
 from qcelemental.models.results import AtomicInput, AtomicResult
 
-from bigqc.algos import parallel_frequency_analysis, parallel_hessian
-from bigqc.canvas import group
+from bigchem.algos import parallel_frequency_analysis, parallel_hessian
+from bigchem.canvas import group
 
 
 # NOTE: Not checking aggressively for correctness. Check that with test_hessian_task,

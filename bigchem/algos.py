@@ -1,4 +1,4 @@
-"""Top level functions for parallelized BigQC algorithms"""
+"""Top level functions for parallelized BigChem algorithms"""
 
 from celery.canvas import Signature, group
 from qcelemental.models import AtomicInput, DriverEnum
@@ -13,7 +13,7 @@ from .tasks import hessian as hessian_task
 def parallel_hessian(
     input_data: AtomicInput,
     engine: str,
-    dh: float = settings.bigqc_default_hessian_dh,
+    dh: float = settings.bigchem_default_hessian_dh,
 ) -> Signature:
     """Create parallel hessian signature
 
@@ -46,7 +46,7 @@ def parallel_hessian(
 def parallel_frequency_analysis(
     input_data: AtomicInput,
     engine: str,
-    dh: float = settings.bigqc_default_hessian_dh,
+    dh: float = settings.bigchem_default_hessian_dh,
     **kwargs,
 ) -> Signature:
     """Create frequency_analysis signature leveraging parallel hessian

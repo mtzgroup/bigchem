@@ -4,7 +4,7 @@ version: "3.8"
 
 # Default images and setup for worker containers
 x-default-worker: &default-worker
-  image: coltonbh/bigqc-worker:{$BIGQC_VERSION}
+  image: coltonbh/bigchem-worker:{$BIGCHEM_VERSION}
   environment:
     - TERACHEM_PBS_HOST={{.Node.Hostname}}-terachem-{{.Task.Slot}}
     - TERACHEM_FE_HOST={{.Node.Hostname}}-terachem-frontend
@@ -48,7 +48,7 @@ services:
       placement:
         constraints:
           - node.hostname==fire-11-03
-    command: celery -A bigqc.tasks worker -Q private --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
+    command: celery -A bigchem.tasks worker -Q private --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
 
 secrets:
   terachem_license:

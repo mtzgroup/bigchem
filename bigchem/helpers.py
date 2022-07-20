@@ -7,7 +7,7 @@ from .config import settings
 
 
 def _gradient_inputs(
-    input_data: AtomicInput, dh: float = settings.bigqc_default_hessian_dh
+    input_data: AtomicInput, dh: float = settings.bigchem_default_hessian_dh
 ) -> List[AtomicInput]:
     """Create AtomicInput gradient calculations for a numerical hessian
 

@@ -1,4 +1,4 @@
-# BigQC
+# BigChem
 
 A distributed system for scaling and parallelizing quantum chemistry calculations.
 
@@ -10,7 +10,7 @@ Install project dependencies using [poetry](https://python-poetry.org/)
 poetry install
 ```
 
-Check that your installation is working correctly by running the test. (Requires docker-compose).
+Check that your installation is working correctly by running the tests. (Requires `docker-compose`).
 
 ```sh
 sh scripts/test.sh
@@ -22,6 +22,12 @@ Run the following commands to startup a broker, backend, and worker.
 
 ```sh
 docker-compose up -d --build
+```
+
+Stop these services by running:
+
+```sh
+docker-compose down
 ```
 
 Then run the following script to see an example of how to submit a computation and retrieve its result.
