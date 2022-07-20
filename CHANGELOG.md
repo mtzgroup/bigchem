@@ -6,11 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.2.0] - 2022-07-19
+
 ## Changed
 
 - Changed name from `BigQC` to `BigChem` to highlight that backend packages and routines may be related to any computational chemistry algorithm, not just quantum chemistry.
 
-## [0.1.3]
+## [0.1.3] - 2022-06-20
 
 ### Added
 
@@ -18,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added `:latest` tag to `build_worker.sh` script.
 - Added `push_worker.sh` scripts so I don't forget to push the tag and the image as the `latest` tag to the docker repo.
 
-## [0.1.2]
+## [0.1.2] - 2022-06-15
 
 ### Changed
 
@@ -26,7 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Simplified settings by removing `get_settings` function in favor of globally defined `settings` object. (No advantage to using a callable since we are not using dependency injection of a settings callable.)
 - Updated app name to `bigqc` from `tasks` in `app.py`.
 
-## [0.1.1]
+## [0.1.1] - 2022-06-14
 
 ### Changed
 
@@ -40,13 +42,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Removed
 
-## [0.1.0]
+## [0.1.0] - 2022-06-14
 
 ### Added
 
 - Initial release of core BigQC feature set. Tasks for `compute` (single point energy, gradient, hessian, and properties calculations) and `compute_procedure` (geometry optimization routine). Algorithms for distributed hessian and normal mode analysis with their associated tasks.
 
-[unreleased]: https://github.com/coltonbh/bigchem/compare/0.1.3...HEAD
+[unreleased]: https://github.com/coltonbh/bigchem/compare/0.2.0...HEAD
+[0.2.0]: https://github.com/coltonbh/bigchem/releases/tag/0.2.0
 [0.1.3]: https://github.com/coltonbh/bigchem/releases/tag/0.1.3
 [0.1.2]: https://github.com/coltonbh/bigchem/releases/tag/0.1.2
 [0.1.1]: https://github.com/coltonbh/bigchem/releases/tag/0.1.1
