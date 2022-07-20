@@ -1,4 +1,4 @@
-# Dockerfile for BigQC Worker. Contains BigQC code and CPU-only QC Packages
+# Dockerfile for BigChem Worker. Contains BigChem code and CPU-only QC Packages
 # Follows https://stackoverflow.com/a/54763270/5728276
 FROM continuumio/miniconda3:4.10.3
 
@@ -37,15 +37,15 @@ RUN conda install \
     python -m pip install "poetry==$POETRY_VERSION"
 
 
-# Install BigQC and additional worker dependencies
+# Install BigChem and additional worker dependencies
 WORKDIR /code/
 COPY pyproject.toml poetry.lock docker/worker.requirements.txt ./
 RUN poetry install --no-dev --no-interaction --no-ansi
 RUN python -m pip install -r worker.requirements.txt
 
 # Copy in code
-COPY bigqc/ bigqc/
+COPY bigchem/ bigchem/
 
 # Run without heartbeat, mingle, gossip to reduce network overhead
 # https://stackoverflow.com/questions/66961952/how-can-i-scale-down-celery-worker-network-overhead
-CMD ["sh", "-c", "celery -A bigqc.tasks worker --without-heartbeat --without-mingle --without-gossip --loglevel=INFO"]
+CMD ["sh", "-c", "celery -A bigchem.tasks worker --without-heartbeat --without-mingle --without-gossip --loglevel=INFO"]

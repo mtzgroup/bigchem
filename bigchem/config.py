@@ -15,17 +15,17 @@ class Settings(BaseSettings):
     """
 
     # broker example: "amqps://admin123:supersecret987@mq-connect.dev.mtzlab.com:5671"; #  pragma: allowlist secret
-    bigqc_broker_url: str = "amqp://localhost"
+    bigchem_broker_url: str = "amqp://localhost"
     # backend example: "rediss://:password123@redis.dev.mtzlab.com:6379/0?ssl_cert_reqs=CERT_NONE"; #  pragma: allowlist secret
-    bigqc_backend_url: str = "redis://localhost/0"
+    bigchem_backend_url: str = "redis://localhost/0"
     # Workers will grab this many tasks at once. Increase prefetch if tasks are small
     # relative to network overhead time.
     # # https://docs.celeryproject.org/en/stable/userguide/optimizing.html#prefetch-limits
-    bigqc_prefetch_multiplier: int = 1
+    bigchem_prefetch_multiplier: int = 1
     # Set concurrent number of worker processes. If None defaults to # of logical cores
     # https://docs.celeryq.dev/en/stable/userguide/configuration.html#std-setting-worker_concurrency
-    bigqc_worker_concurrency: Optional[int] = 1
-    bigqc_default_hessian_dh: float = 5.0e-3
+    bigchem_worker_concurrency: Optional[int] = 1
+    bigchem_default_hessian_dh: float = 5.0e-3
 
     class Config:
         _docker_secrets_dir = "/run/secrets"

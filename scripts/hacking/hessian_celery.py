@@ -2,8 +2,8 @@ import numpy as np
 from celery.result import AsyncResult
 from qcelemental.models import AtomicInput, Molecule
 
-from bigqc.algos import parallel_hessian
-from bigqc.canvas import group
+from bigchem.algos import parallel_hessian
+from bigchem.canvas import group
 
 water = Molecule(
     symbols=["O", "H", "H"],

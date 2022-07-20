@@ -2,5 +2,5 @@
 
 set -xe
 
-docker push coltonbh/bigqc-worker:$(poetry version -s)
-docker push coltonbh/bigqc-worker:latest
+docker push coltonbh/bigchem-worker:$(poetry version -s)
+docker push coltonbh/bigchem-worker:latest

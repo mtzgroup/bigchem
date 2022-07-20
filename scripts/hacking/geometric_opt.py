@@ -7,7 +7,7 @@ from qcelemental.models.procedures import (
     TrajectoryProtocolEnum,
 )
 
-from bigqc.tasks import compute_procedure as cp_task
+from bigchem.tasks import compute_procedure as cp_task
 
 water = qcng.get_molecule("water")
 op = OptimizationProtocols(trajectory=TrajectoryProtocolEnum.all)

@@ -6,15 +6,15 @@ import qcengine as qcng
 from geometric.normal_modes import frequency_analysis as geometric_frequency_analysis
 from qcelemental.models import AtomicResult, FailedOperation
 
-from .app import bigqc
+from .app import bigchem
 
-compute = bigqc.task(qcng.compute)
-
-
-compute_procedure = bigqc.task(qcng.compute_procedure)
+compute = bigchem.task(qcng.compute)
 
 
-@bigqc.task
+compute_procedure = bigchem.task(qcng.compute_procedure)
+
+
+@bigchem.task
 def hessian(
     gradients: List[AtomicResult], dh: float
 ) -> Union[AtomicResult, FailedOperation]:
@@ -58,7 +58,7 @@ def hessian(
     return AtomicResult(**result)
 
 
-@bigqc.task
+@bigchem.task
 def frequency_analysis(
     input_data: AtomicResult, **kwargs
 ) -> Union[AtomicResult, FailedOperation]:
@@ -95,7 +95,7 @@ def frequency_analysis(
     return AtomicResult(**result)
 
 
-@bigqc.task
+@bigchem.task
 def add(x, y):
     """Add two numbers
 
@@ -104,7 +104,7 @@ def add(x, y):
     return x + y
 
 
-@bigqc.task
+@bigchem.task
 def csum(values: List[Union[float, int]], extra: int = 0) -> Union[float, int]:
     """Sum all the values in a list
 

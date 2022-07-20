@@ -24,20 +24,20 @@ services:
         - traefik.constraint-label=traefik-public
 
         # RabbitMQ
-        - traefik.tcp.routers.bigqc-rabbitmq.rule=HostSNI(\`*\`)
-        - traefik.tcp.routers.bigqc-rabbitmq.entrypoints=rabbitmq-secure
-        - traefik.tcp.routers.bigqc-rabbitmq.service=bigqc-rabbitmq-service
-        - traefik.tcp.routers.bigqc-rabbitmq.tls=true
-        - traefik.tcp.routers.bigqc-rabbitmq.tls.certresolver=le
-        - traefik.tcp.services.bigqc-rabbitmq-service.loadbalancer.server.port=5672
+        - traefik.tcp.routers.bigchem-rabbitmq.rule=HostSNI(\`*\`)
+        - traefik.tcp.routers.bigchem-rabbitmq.entrypoints=rabbitmq-secure
+        - traefik.tcp.routers.bigchem-rabbitmq.service=bigchem-rabbitmq-service
+        - traefik.tcp.routers.bigchem-rabbitmq.tls=true
+        - traefik.tcp.routers.bigchem-rabbitmq.tls.certresolver=le
+        - traefik.tcp.services.bigchem-rabbitmq-service.loadbalancer.server.port=5672
 
         # MGMT Console
-        - traefik.http.routers.bigqc-rabbitmq-console.rule=Host(${MQ_CONSOLE_TRAEFIK_HOST})
-        - traefik.http.routers.bigqc-rabbitmq-console.entrypoints=https
-        - traefik.http.routers.bigqc-rabbitmq-console.tls=true
-        - traefik.http.routers.bigqc-rabbitmq-console.tls.certresolver=le
-        - traefik.http.routers.bigqc-rabbitmq-console.service=bigqc-rabbitmq-console-service
-        - traefik.http.services.bigqc-rabbitmq-console-service.loadbalancer.server.port=15672
+        - traefik.http.routers.bigchem-rabbitmq-console.rule=Host(${MQ_CONSOLE_TRAEFIK_HOST})
+        - traefik.http.routers.bigchem-rabbitmq-console.entrypoints=https
+        - traefik.http.routers.bigchem-rabbitmq-console.tls=true
+        - traefik.http.routers.bigchem-rabbitmq-console.tls.certresolver=le
+        - traefik.http.routers.bigchem-rabbitmq-console.service=bigchem-rabbitmq-console-service
+        - traefik.http.services.bigchem-rabbitmq-console-service.loadbalancer.server.port=15672
   backend:
     image: redis:6-alpine
     networks:
@@ -51,12 +51,12 @@ services:
         - traefik.docker.network=traefik-public
         - traefik.constraint-label=traefik-public
 
-        - traefik.tcp.routers.bigqc-redis.rule=HostSNI(\`*\`)
-        - traefik.tcp.routers.bigqc-redis.entrypoints=redis-secure
-        - traefik.tcp.routers.bigqc-redis.tls=true
-        - traefik.tcp.routers.bigqc-redis.tls.certresolver=le
-        - traefik.tcp.routers.bigqc-redis.service=bigqc-redis-service
-        - traefik.tcp.services.bigqc-redis-service.loadbalancer.server.port=6379
+        - traefik.tcp.routers.bigchem-redis.rule=HostSNI(\`*\`)
+        - traefik.tcp.routers.bigchem-redis.entrypoints=redis-secure
+        - traefik.tcp.routers.bigchem-redis.tls=true
+        - traefik.tcp.routers.bigchem-redis.tls.certresolver=le
+        - traefik.tcp.routers.bigchem-redis.service=bigchem-redis-service
+        - traefik.tcp.services.bigchem-redis-service.loadbalancer.server.port=6379
     command: redis-server /etc/redis/redis.conf
 
 volumes:

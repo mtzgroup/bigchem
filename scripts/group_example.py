@@ -1,7 +1,7 @@
 from celery.canvas import group
 from qcelemental.models import AtomicInput, Molecule
 
-from bigqc.tasks import compute
+from bigchem.tasks import compute
 
 print(
     "Be sure to run 'docker-compose up -d' from the root directory before running this"

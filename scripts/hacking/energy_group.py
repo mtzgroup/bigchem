@@ -2,8 +2,8 @@
 
 from qcelemental.models import AtomicInput, Molecule
 
-from bigqc.canvas import group
-from bigqc.tasks import compute
+from bigchem.canvas import group
+from bigchem.tasks import compute
 
 water = Molecule.from_data("pubchem:water")
 atomic_input = AtomicInput(

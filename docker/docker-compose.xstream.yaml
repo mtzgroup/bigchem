@@ -1,8 +1,8 @@
-# Docker stack specification for running BigQC on XStream
+# Docker stack specification for running BigChem on XStream
 # NOTE: depends on a single worker.env file alongside this .yaml file containing two
 # environment variables; fill these with the URLs of the broker and backend.
-# BIGQC_BROKER_URL=amqps://admin123:supersecret987@mq-connect.dev.mtzlab.com:5671 # pragma: allowlist secret
-# BIGQC_BACKEND_URL=rediss://:password123@redis.dev.mtzlab.com:6379/0?ssl_cert_reqs=CERT_NONE # pragma: allowlist secret
+# BIGCHEM_BROKER_URL=amqps://admin123:supersecret987@mq-connect.dev.mtzlab.com:5671 # pragma: allowlist secret
+# BIGCHEM_BACKEND_URL=rediss://:password123@redis.dev.mtzlab.com:6379/0?ssl_cert_reqs=CERT_NONE # pragma: allowlist secret
 
 # Using Service Templates:
 # https://docs.docker.com/engine/reference/commandline/service_create/#create-services-using-templates
@@ -10,7 +10,7 @@ version: "3.8"
 
 # Default images and setup for worker containers
 x-default-worker: &default-worker
-  image: coltonbh/bigqc-worker:{$BIGQC_VERSION}
+  image: coltonbh/bigchem-worker:{$BIGCHEM_VERSION}
   env_file: worker.env
   environment:
     - TERACHEM_PBS_HOST={{.Node.Hostname}}-terachem-{{.Task.Slot}}

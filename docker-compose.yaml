@@ -3,7 +3,7 @@ version: "3.8"
 services:
   broker:
     image: rabbitmq:3.8-management-alpine
-    container_name: bigqc_broker
+    container_name: bigchem_broker
     # Must specify hostname since data is stored based on hostname and we don't want a
     # random, docker-assigned hostname with each new restart of the service. This would
     # result in any past messages stored by the former container in the volume to be
@@ -19,7 +19,7 @@ services:
 
   backend:
     image: redis:6-alpine
-    container_name: bigqc_backend
+    container_name: bigchem_backend
     ports:
       # Open redis to localhost for dev container access
       - 6379:6379
@@ -30,19 +30,19 @@ services:
     build:
       context: .
       dockerfile: docker/worker.dockerfile
-    container_name: bigqc_worker
+    container_name: bigchem_worker
     depends_on:
       - broker
       - backend
     environment:
-      - bigqc_broker_url=amqp://broker
-      - bigqc_backend_url=redis://backend/0
+      - bigchem_broker_url=amqp://broker
+      - bigchem_backend_url=redis://backend/0
       # Set concurrency to fix number of worker processes
-      # - bigqc_worker_concurrency=1
+      # - bigchem_worker_concurrency=1
     volumes:
       # Mount in code so service just has to be restarted instead of rebuilt
       # when code changes
-      - ./bigqc:/code/bigqc
+      - ./bigchem:/code/bigchem
       - worker:/tmp
 
 volumes:
