@@ -122,6 +122,12 @@ If you want to scale your worker subprocesses locally, uncomment and adjust the 
 
 If you want to add additional Quantum Chemistry programs (or any program!) to the worker, modify the `docker/worker.dockerfile` to install the program and then rebuild the image by running `docker-compose up -d --build`.
 
+If you have a GPU on your machine and want to run TeraChem as part of BigChem, include `docker/docker-compose.terachem.local` when you start BigChem:
+
+```sh
+docker-compose -f docker-compose.yaml -f docker/docker-compose.terachem.local.yaml up -d --build
+```
+
 ### Deployment
 
 Deploying BigChem to a production environment consists of running a `broker` and a `backend` that are reachable by `workers` and then as many workers as you'd like. Workers will connect to the `broker` and `backend` and BigChem will automatically coordinate efficient distribution of `Tasks` across all workers and the synchronization of more sophisticated `Algorithms` that need to pass results between workers. Deployment can be done with or without Docker, depending on the access you have to the underlying hardware. We strongly recommend deploying with Docker if you are able.
