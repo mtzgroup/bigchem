@@ -109,7 +109,7 @@ def csum(values: List[Union[float, int]], extra: int = 0) -> Union[float, int]:
     """Sum all the values in a list
 
     NOTE: Used for design testing as a summation at the end of add (a chord)
-        e.g., async_result = group()
+        e.g., async_result = group(add.s(i, i) for i in range(max)) | csum.s()
     """
     values.append(extra)
     return sum(values)

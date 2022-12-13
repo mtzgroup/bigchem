@@ -37,7 +37,7 @@ services:
     environment:
       - bigchem_broker_url=amqp://broker
       - bigchem_backend_url=redis://backend/0
-      # Set concurrency to fix number of worker processes
+      # Set concurrency to fix number of worker processes, set to 0 to default to the number of CPUs on your machine
       # - bigchem_worker_concurrency=1
     volumes:
       # Mount in code so service just has to be restarted instead of rebuilt

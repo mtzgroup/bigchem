@@ -4,7 +4,7 @@ from qcelemental.models import AtomicInput, Molecule
 from bigchem.tasks import compute
 
 print(
-    "Be sure to run 'docker-compose up -d' from the root directory before running this"
+    "Be sure to run 'docker-compose up -d --build' from the root directory before running this"
     " script!\n"
 )
 water = Molecule.from_data("pubchem:caffeine")
