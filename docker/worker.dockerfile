@@ -18,18 +18,18 @@ ENV PYTHONUNBUFFERED=1 \
     C_FORCE_ROOT=true
 
 # Install QC packages
-RUN conda install \
+# RUN conda install \
     # https://github.com/psi4/psi4/issues/2596
-    psi4=1.5 \
-    libint2=*=hc9558a2_9 \
-    pytest=5 \
-    pcmsolver=*=py39h6d17ec8_2 \
-    # for psi4
-    msgpack-python \
-    rdkit=2020.09.5 \
-    xtb-python=20.2 \
-    -c psi4 -c conda-forge && \
-    apt-get update && \
+    # psi4=1.5 \
+    # libint2=*=hc9558a2_9 \
+    # pytest=5 \
+    # pcmsolver=*=py39h6d17ec8_2 \
+    # # for psi4
+    # msgpack-python \
+    # rdkit=2020.09.5 \
+    # xtb-python=20.2 \
+    # -c psi4 -c conda-forge && \
+RUN apt-get update && \
     # for psutil in qcengine
     # https://github.com/giampaolo/psutil/blob/master/INSTALL.rst
     apt-get install -y gcc python3-dev && \
