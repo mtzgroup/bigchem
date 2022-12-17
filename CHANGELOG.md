@@ -6,16 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.3.0] - 2022-12-16
+
+### Added
+
 - Added extensive documentation to README.md to guide new users and developers.
+
+### Changed
+
 - Switched default worker environment from `conda` to `micromamba` to accelerate build times (dramatically!).
 - Created `env.lock` file for reproducible builds of `micromamba/conda` installs
 - Updated `psi4==1.5 -> 1.7`
 - Updated `qcengine==0.21.0 -> 0.26.0`
 - Updated `qcelemental==0.24.0 -> 0.25.1`
+- Switched geomeTRIC from personal patched version to new 1.0 release.
 
 ## [0.2.0] - 2022-07-19
 
-## Changed
+### Changed
 
 - Changed name from `BigQC` to `BigChem` to highlight that backend packages and routines may be related to any computational chemistry algorithm, not just quantum chemistry.
 
@@ -37,17 +45,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [0.1.1] - 2022-06-14
 
+### Added
+
+- `docker-compose.web.yaml` to specify middleware services for a deployment behind `traefik` reverse proxy.
+
 ### Changed
 
 - Separated out dependencies only required for the worker.
 - Cleaned up root of project by moving files to `docker` directory
 - Cleaned up `docker-compose.xstream.yaml` stack specification
-
-### Added
-
-- `docker-compose.web.yaml` to specify middleware services for a deployment behind `traefik` reverse proxy.
-
-### Removed
 
 ## [0.1.0] - 2022-06-14
 
@@ -55,7 +61,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Initial release of core BigQC feature set. Tasks for `compute` (single point energy, gradient, hessian, and properties calculations) and `compute_procedure` (geometry optimization routine). Algorithms for distributed hessian and normal mode analysis with their associated tasks.
 
-[unreleased]: https://github.com/coltonbh/bigchem/compare/0.2.0...HEAD
+[unreleased]: https://github.com/coltonbh/bigchem/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/coltonbh/bigchem/releases/tag/0.3.0
 [0.2.0]: https://github.com/coltonbh/bigchem/releases/tag/0.2.0
 [0.1.3]: https://github.com/coltonbh/bigchem/releases/tag/0.1.3
 [0.1.2]: https://github.com/coltonbh/bigchem/releases/tag/0.1.2
