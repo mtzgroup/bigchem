@@ -4,6 +4,18 @@ A distributed system for scaling and parallelizing quantum chemistry calculation
 
 ## Getting Started
 
+⚠️ NOTE: Most Quantum Chemistry packages (including those used by default in BigChem's worker--psi4, xtb, and rdkit) are only compiled and released for the x86 architecture, not the ARM architecture. This means **BigChem's worker will not work or build on ARM machines like Apple's M1 chip**. If you want to run Quantum Chemistry programs on your ARM machine, please reach out to your favorite QC developer and ask for distributions compiled for ARM. When they exist, I'll add them to BigChem's ARM builds.
+
+If you'd like to play with BigChem without executing QC programs on your ARM machine, comment out the `worker` in the `docker-compose.yaml` file, then run the following commands to run a local version of a BigChem worker that can execute the `add` and `csum` `Tasks` to explore how BigChem works:
+
+```sh
+docker-compose up -d
+poetry install
+poetry run celery -A bigchem.tasks worker --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
+```
+
+✅ All x86 Architecture machines can follow the usual instructions below:
+
 Install project dependencies using [poetry](https://python-poetry.org/)
 
 ```sh
@@ -131,6 +143,8 @@ docker-compose -f docker-compose.yaml -f docker/docker-compose.terachem.local.ya
 ### Deployment
 
 Deploying BigChem to a production environment consists of running a `broker` and a `backend` that are reachable by `workers` and then as many workers as you'd like. Workers will connect to the `broker` and `backend` and BigChem will automatically coordinate efficient distribution of `Tasks` across all workers and the synchronization of more sophisticated `Algorithms` that need to pass results between workers. Deployment can be done with or without Docker, depending on the access you have to the underlying hardware. We strongly recommend deploying with Docker if you are able.
+
+All configurable environment variables for BigChem can be found in `bigchem/config.py`. If environment variables are set with the same names found as attributes on the `Settings` object, they will be automatically picked up and used by BigChem. Examples of this can be found in the `docker-compose.yaml` file where various settings are modified via environment variables. Variables can be lowercase or all UPPER_CASE.
 
 #### Broker and Backend
 
