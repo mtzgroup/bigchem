@@ -1,6 +1,6 @@
 # Dockerfile for BigChem Worker. Contains BigChem code and CPU-only QC Packages
 # Follows https://stackoverflow.com/a/54763270/5728276
-FROM mambaorg/micromamba:1.1.0-jammy
+FROM continuumio/miniconda3:4.10.3
 
 LABEL maintainer="Colton Hicks <colton@coltonhicks.com>"
 
@@ -13,30 +13,28 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_DEFAULT_TIMEOUT=100 \
     POETRY_VERSION=1.3.1 \
     # Install to system python, no need for venv
-    POETRY_VIRTUALENVS_CREATE=false
+    POETRY_VIRTUALENVS_CREATE=false \
+    # To run celery as root with pickle serializer; OK since in container
+    C_FORCE_ROOT=true
 
-# Perform root tasks
-WORKDIR /code/
-USER root
+# Install System Packages
 RUN apt-get update && \
     # for psutil in qcengine
     # https://github.com/giampaolo/psutil/blob/master/INSTALL.rst
     apt-get install -y gcc python3-dev && \
-    # So $MAMBA_USER can read/write to /code/
-    chown -R $MAMBA_USER /code/
-USER $MAMBA_USER
+    python -m pip install --upgrade pip && \ 
+    python -m pip install "poetry==$POETRY_VERSION"
 
-# Install BigChem and QC Program
-COPY --chown=$MAMBA_USER:$MAMBA_USER pyproject.toml poetry.lock docker/env.lock ./
-RUN micromamba install -y -n base -f env.lock && \
-    micromamba clean --all --yes
-ARG MAMBA_DOCKERFILE_ACTIVATE=1  # (otherwise python will not be found)
-RUN python -m pip install --upgrade pip && \ 
-    python -m pip install "poetry==$POETRY_VERSION" && \
-    poetry install --only main --no-interaction --no-ansi
+# Install QC Packages and BigChem
+WORKDIR /code/
+COPY pyproject.toml poetry.lock docker/env.yaml ./
+RUN conda env update -f env.yaml && \
+    conda clean -afy
+RUN poetry install --no-dev --no-interaction --no-ansi
+# RUN python -m pip install -r worker.requirements.txt
 
 # Copy in code
-COPY --chown=$MAMBA_USER:$MAMBA_USER bigchem/ bigchem/
+COPY bigchem/ bigchem/
 
 # Run without heartbeat, mingle, gossip to reduce network overhead
 # https://stackoverflow.com/questions/66961952/how-can-i-scale-down-celery-worker-network-overhead

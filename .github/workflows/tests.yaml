@@ -2,38 +2,18 @@ name: Tests
 
 on: [push]
 
-env:
-  POETRY_VIRTUALENVS_CREATE: false
-
 jobs:
   tests:
     runs-on: ubuntu-latest
-    container:
-      image: python:3.7
-      env:
-        BIGCHEM_BROKER_URL: amqp://broker
-        BIGCHEM_BACKEND_URL: redis://backend/0
-
-    services:
-      broker:
-        image: rabbitmq:3.8-management-alpine
-        # ports:
-        #   - 5672:5672
-      backend:
-        image: redis:6-alpine
-        ports:
-          - 6379:6379
-      worker:
-        image: coltonbh/bigchem-worker
-        env:
-          BIGCHEM_BROKER_URL: amqp://broker
-          BIGCHEM_BACKEND_URL: redis://backend/0
-
     steps:
       - uses: actions/checkout@v3
+      - name: Install docker-compose
+        run: curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      - name: Build BigChem Worker and Start BigChem Services
+        run: docker-compose up -d --build
       - name: Install poetry
         run: pip install poetry
       - name: Install repo
         run: poetry install --no-interaction --no-ansi
       - name: Run tests
-        run: pytest --cov-report html:htmlcov --cov -v
+        run: poetry run pytest --cov-report html:htmlcov --cov -v

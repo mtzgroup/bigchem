@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+- Added extensive documentation to README.md to guide new users and developers.
+- Switched default worker environment from `conda` to `micromamba` to accelerate build times (dramatically!).
+- Created `env.lock` file for reproducible builds of `micromamba/conda` installs
+- Updated `psi4==1.5 -> 1.7`
+- Updated `qcengine==0.21.0 -> 0.26.0`
+- Updated `qcelemental==0.24.0 -> 0.25.1`
+
 ## [0.2.0] - 2022-07-19
 
 ## Changed
