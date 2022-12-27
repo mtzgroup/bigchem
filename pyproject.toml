@@ -3,6 +3,8 @@ name = "bigchem"
 version = "0.3.0"
 description = "A distributed system for scaling and parallelizing quantum chemistry calculations"
 authors = ["Colton Hicks <github@coltonhicks.com>"]
+readme = "README.md"
+homepage = "https://github.com/coltonbh/bigchem"
 license = "MIT"
 
 [tool.poetry.dependencies]
