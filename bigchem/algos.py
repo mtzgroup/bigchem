@@ -1,13 +1,18 @@
 """Top level functions for parallelized BigChem algorithms"""
+from typing import Any, Dict, List
 
-from celery.canvas import Signature, group
-from qcelemental.models import AtomicInput, DriverEnum
+from celery.canvas import Signature, chain, group
+from qcelemental.models import AtomicInput, DriverEnum, Molecule
 
 from .config import settings
 from .helpers import _gradient_inputs
-from .tasks import compute as compute_task
-from .tasks import frequency_analysis as frequency_analysis_task
-from .tasks import hessian as hessian_task
+from .tasks import (
+    compute,
+    compute_procedure,
+    frequency_analysis,
+    hessian,
+    result_to_input,
+)
 
 
 def parallel_hessian(
@@ -40,7 +45,7 @@ def parallel_hessian(
     gradients.append(AtomicInput(**energy_calc))
 
     # | is chain operator in celery
-    return group(compute_task.s(inp, engine) for inp in gradients) | hessian_task.s(dh)
+    return group(compute.s(inp, engine) for inp in gradients) | hessian.s(dh)
 
 
 def parallel_frequency_analysis(
@@ -72,4 +77,39 @@ def parallel_frequency_analysis(
     hessian_inp["driver"] = DriverEnum.hessian
     hessian_sig = parallel_hessian(AtomicInput(**hessian_inp), engine, dh)
     # | is celery chain operator
-    return hessian_sig | frequency_analysis_task.s(**kwargs)
+    return hessian_sig | frequency_analysis.s(**kwargs)
+
+
+def multistep_opt(
+    initial_molecule: Molecule,
+    procedure: str,
+    input_specs: List[Dict[str, Any]],
+) -> Signature:
+    """Use multiple QC packages to sequentially optimize a molecule
+
+    Params:
+        initial_molecule: The initial Molecule on which to begin an optimization
+        procedure: The name of the procedure to run ("geometric" or "berny")
+        input_specs: List of dicts containing the parameters for each optimization.
+            Keys and values correspond to the arguments required to create an
+            OptimizationInput object minus 'initial_molecule'. E.g.,
+            {
+                "keywords": {"program": "name_of_gradient_engine"},
+                "input_specification": {"model": {"method": "b3lyp", "basis": "6-31g"}}
+            }
+    """
+    # Create first optimization in the chain
+    task_chain = chain(
+        compute_procedure.s(
+            {"initial_molecule": initial_molecule, **input_specs[0]}, procedure
+        )
+    )
+
+    # Add subsequent optimizations to the chain
+    for input_spec in input_specs[1:]:  # all input specs after the first
+        task_chain = (
+            task_chain
+            | result_to_input.s(**input_spec)
+            | compute_procedure.s(procedure)
+        )
+    return task_chain

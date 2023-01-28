@@ -1,6 +1,6 @@
 # Dockerfile for BigChem Worker. Contains BigChem code and CPU-only QC Packages
 # Follows https://stackoverflow.com/a/54763270/5728276
-FROM mambaorg/micromamba:1.1.0-jammy
+FROM mambaorg/micromamba:1.3-jammy
 
 LABEL maintainer="Colton Hicks <colton@coltonhicks.com>"
 

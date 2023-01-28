@@ -7,10 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install docker-compose
-        run: curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
       - name: Build BigChem Worker and Start BigChem Services
-        run: docker-compose up -d --build
+        run: docker compose up -d --build
       - name: Install poetry
         run: pip install poetry
       - name: Install repo

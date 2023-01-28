@@ -6,10 +6,10 @@ A distributed system for scaling and parallelizing quantum chemistry calculation
 
 ⚠️ NOTE: Most Quantum Chemistry packages (including those used by default in BigChem's worker--psi4, xtb, and rdkit) are only compiled and released for the x86 architecture, not the ARM architecture. This means **BigChem's worker will not work or build on ARM machines like Apple's M1 chip**. If you want to run Quantum Chemistry programs on your ARM machine, please reach out to your favorite QC developer and ask for distributions compiled for ARM. When they exist, I'll add them to BigChem's ARM builds.
 
-If you'd like to play with BigChem without executing QC programs on your ARM machine, comment out the `worker` in the `docker-compose.yaml` file, then run the following commands to run a local version of a BigChem worker that can execute the `add` and `csum` `Tasks` to explore how BigChem works:
+If you'd like to play with BigChem without executing QC programs on your ARM machine, comment out the `worker` in the `docker-compose.yaml` file, then run the following commands to run a local version of a BigChem worker that can execute the `add` and `csum` `Tasks` to explore how BigChem works. Note Docker has updated the `docker-compose` command to be a subcommand of the Docker CLI `docker compose` (no `-`). If you are running an older version of Docker Desktop you may still need to use the `docker-compose` command instead.
 
 ```sh
-docker-compose up -d
+docker compose up -d
 poetry install
 poetry run celery -A bigchem.tasks worker --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
 ```
@@ -22,7 +22,7 @@ Install project dependencies using [poetry](https://python-poetry.org/)
 poetry install
 ```
 
-Check that your installation is working correctly by running the tests. (Requires `docker-compose`).
+Check that your installation is working correctly by running the tests. (Requires `docker compose`).
 
 ```sh
 sh scripts/test.sh
@@ -33,13 +33,13 @@ You can review test coverage in the now-generated `htmlcov` folder; open `index.
 Run the following commands to start a broker, backend, and worker.
 
 ```sh
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
 Stop these services by running:
 
 ```sh
-docker-compose down
+docker compose down
 ```
 
 Then run the following script to see an example of how to submit a computation and retrieve its result.
@@ -117,7 +117,7 @@ How do you know how many subprocesses to run? Generally, this depends on the nat
 The `docker-compose.yaml` file creates a local BigChem system with a single worker for executing tasks.
 
 ```sh
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
 This command starts up the three BigChem components: a `broker`, a `backend` and a `worker`. The `broker` is a RabbitMQ instance with an admin dashboard available at `http://localhost:15672` using the username and password `guest` and `guest`. The `broker` receives `Tasks` and by default places them on the `celery` queue for consumption by workers. The `backend` is a `redis` instance. The `worker` will get built from the `docker/worker.dockerfile` file and will contain `BigChem`, `psi4`, `rdkit`, and `xtb`. The `worker` will consume tasks from the `broker` and write results to the `backend`.
@@ -128,16 +128,16 @@ Services can be monitored in real time using the `container_name` specified in t
 docker logs {container_name} -f
 ```
 
-If new `Tasks` are added to BigChem or existing tasks are modified, the worker must be restarted to pickup the new or modified `Tasks`. You can restart the worker by either rebuilding the container (`docker-compose up -d --build`) or by just restarting the worker since the code is mounted into the container directly (`docker restart bigchem_worker`), generally restarting the worker should be faster.
+If new `Tasks` are added to BigChem or existing tasks are modified, the worker must be restarted to pickup the new or modified `Tasks`. You can restart the worker by either rebuilding the container (`docker compose up -d --build`) or by just restarting the worker since the code is mounted into the container directly (`docker restart bigchem_worker`), generally restarting the worker should be faster.
 
 If you want to scale your worker subprocesses locally, uncomment and adjust the `bigchem_worker_concurrency` variable to your desired number or to `0` to automatically scale to the number of CPU cores on your machine.
 
-If you want to add additional Quantum Chemistry programs (or any program!) to the worker, modify the `docker/worker.dockerfile` to install the program and then rebuild the image by running `docker-compose up -d --build`.
+If you want to add additional Quantum Chemistry programs (or any program!) to the worker, modify the `docker/worker.dockerfile` to install the program and then rebuild the image by running `docker compose up -d --build`.
 
 If you have a GPU on your machine and want to run TeraChem as part of BigChem, include `docker/docker-compose.terachem.local` when you start BigChem:
 
 ```sh
-docker-compose -f docker-compose.yaml -f docker/docker-compose.terachem.local.yaml up -d --build
+docker compose -f docker-compose.yaml -f docker/docker-compose.terachem.local.yaml up -d --build
 ```
 
 ### Deployment
@@ -190,8 +190,8 @@ As a simple example, let's assume you want to put one worker on each node in you
 ```yaml
 # NOTE: depends on a single worker.env file alongside this .yaml file containing two
 # environment variables; fill these with the URLs of the broker and backend.
-# BIGCHEM_BROKER_URL=amqps://admin123:supersecret987@mq-connect.dev.mtzlab.com:5671 # pragma: allowlist secret
-# BIGCHEM_BACKEND_URL=rediss://:password123@redis.dev.mtzlab.com:6379/0?ssl_cert_reqs=CERT_NONE # pragma: allowlist secret
+# BIGCHEM_BROKER_URL=amqps://admin123:supersecret987@rabbit.mydomain.com:5671 # pragma: allowlist secret
+# BIGCHEM_BACKEND_URL=rediss://:password123@redis.mydomain.com:6379/0?ssl_cert_reqs=CERT_NONE # pragma: allowlist secret
 version: "3.8"
 
 services:
@@ -268,16 +268,16 @@ If you want to add additional Quantum Chemistry programs you can modify the `wor
 
 Docker makes it easy to deploy a few or hundreds of workers across distributed resources, manage package dependencies, and ensure that each node is running identical code. But Docker is not required to run BigChem workers. The only thing that is required is a BigChem install and any additional executables (like Quantum Chemistry programs) that the `Tasks` use.
 
-You can install BigChem on a node by running the following from the root directory of this codebase. This command will install BigChem and all its required Python dependencies (but not external programs like `psi4` or `TeraChem`):
+You can install BigChem on a node by running the following command. This command will install BigChem and all its required Python dependencies (but not external programs like `psi4` or `TeraChem`):
+
+```sh
+python -m pip install bigchem
+```
+
+Or if you are wanting to run your own modified version of BigChem, place the source code on a node and from the root directory of this codebase run:
 
 ```sh
 python -m pip install .
-```
-
-You may also need to install additional dependencies found in `worker.requirements.txt` depending on the state of various BigChem dependencies:
-
-```sh
-python -m pip install -r docker/worker.requirements.txt
 ```
 
 Workers can be started by running the following:
@@ -288,4 +288,4 @@ celery -A bigchem.tasks worker --without-heartbeat --without-mingle --without-go
 
 Note this is the same command issued in the `worker.dockerfile`. Additional executables--like Quantum Chemistry packages used by `Tasks`--must be installed separately on each node. You can learn more about controlling workers in the [Celery documentation](https://docs.celeryq.dev/en/stable/userguide/workers.html).
 
-Deploying non-Dockerized workers on each node consists of pulling down the BigChem repo on each node (likely using `git`), installing it using the `pip` command noted above, and then starting the workers with the `celery` command. That's it!
+Deploying non-Dockerized workers on each node consists of installing the BigChem repo on each node, and then starting the workers with the `celery` command. That's it!

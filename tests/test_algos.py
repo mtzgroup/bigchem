@@ -1,7 +1,7 @@
 import pytest
-from qcelemental.models.results import AtomicInput, AtomicResult
+from qcelemental.models import AtomicInput, AtomicResult, OptimizationResult
 
-from bigchem.algos import parallel_frequency_analysis, parallel_hessian
+from bigchem.algos import multistep_opt, parallel_frequency_analysis, parallel_hessian
 from bigchem.canvas import group
 
 
@@ -80,3 +80,33 @@ def test_parallel_frequency_analysis(water, driver, model, engine, kwargs, batch
         result = [result]
     for r in result:
         assert isinstance(r, AtomicResult)
+
+
+@pytest.mark.timeout(65)
+def test_multistep_opt(hydrogen):
+    """See note in test_compute re: timeout"""
+    # Define multi-package input_specs
+    input_specs = [
+        {
+            "keywords": {"program": "xtb"},
+            "input_specification": {"model": {"method": "GFN2-xTB"}},
+        },
+        {
+            "keywords": {"program": "psi4"},
+            "input_specification": {"model": {"method": "b3lyp", "basis": "sto-3g"}},
+        },
+    ]
+    # Submit job
+    future_result = multistep_opt(hydrogen, "geometric", input_specs)()
+    result = future_result.get()
+
+    # Assertions
+    assert future_result.ready() is True
+    assert isinstance(result, OptimizationResult)
+
+    # Check that the final optimization is performed with the last input_spec
+    assert result.keywords == input_specs[-1]["keywords"]
+    assert (
+        result.input_specification.model.dict()
+        == input_specs[-1]["input_specification"]["model"]
+    )
