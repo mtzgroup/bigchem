@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Modified `env.yaml` to allow flexible versions for worker packages and created a new `env.lock` file for workers.
+- Updated `tcpb>=0.13.0` to better return `stdout` data from a crashed TeraChem server.
 
 ## [0.3.0] - 2022-12-16
 

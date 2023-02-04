@@ -26,11 +26,14 @@ RUN apt-get update && \
     chown -R $MAMBA_USER /code/
 USER $MAMBA_USER
 
-# Install BigChem and QC Program
-COPY --chown=$MAMBA_USER:$MAMBA_USER pyproject.toml poetry.lock docker/env.lock ./
+# Install QC Programs
+COPY --chown=$MAMBA_USER:$MAMBA_USER docker/env.lock ./
 RUN micromamba install -y -n base -f env.lock && \
     micromamba clean --all --yes
 ARG MAMBA_DOCKERFILE_ACTIVATE=1  # (otherwise python will not be found)
+
+# Install BigChem
+COPY --chown=$MAMBA_USER:$MAMBA_USER pyproject.toml poetry.lock ./
 RUN python -m pip install --upgrade pip && \ 
     python -m pip install "poetry==$POETRY_VERSION" && \
     poetry install --only main --no-interaction --no-ansi
