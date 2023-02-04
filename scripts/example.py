@@ -7,7 +7,7 @@ from qcelemental.models import AtomicInput
 from bigchem.tasks import compute
 
 print(
-    "Be sure to run 'docker-compose up -d' from the root directory before running this"
+    "Be sure to run 'docker compose up -d' from the root directory before running this"
     " script!\n"
 )
 water = qcng.get_molecule("water")

@@ -4,7 +4,13 @@ from typing import List, Union
 import numpy as np
 import qcengine as qcng
 from geometric.normal_modes import frequency_analysis as geometric_frequency_analysis
-from qcelemental.models import AtomicResult, FailedOperation
+from qcelemental.models import (
+    AtomicInput,
+    AtomicResult,
+    FailedOperation,
+    OptimizationInput,
+    OptimizationResult,
+)
 
 from .app import bigchem
 
@@ -12,6 +18,29 @@ compute = bigchem.task(qcng.compute)
 
 
 compute_procedure = bigchem.task(qcng.compute_procedure)
+
+
+@bigchem.task
+def result_to_input(
+    result: Union[AtomicResult, FailedOperation, OptimizationResult], **kwargs
+) -> Union[AtomicInput, OptimizationResult]:
+    """Convert a result object into an input object for a subsequent calculation.
+
+    NOTE: This task requires additional work to cover more general cases. This skeleton
+        is primarily to give an initial example of basic multi-package geometry
+        optimization. The function can become more general purpose once QCSchema 2.0 is
+        released.
+    """
+    if isinstance(result, FailedOperation):
+        raise ValueError(
+            "Previous operation failed and cannot be converted to a new input."
+        )
+    if isinstance(result, AtomicResult):
+        # TODO: Add wavefunction passing for TeraChem
+        raise NotImplementedError("No implementation for AtomicResult objects yet.")
+    else:
+        # isinstance(result, OptimizationResult):
+        return OptimizationInput(initial_molecule=result.final_molecule, **kwargs)
 
 
 @bigchem.task

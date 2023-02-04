@@ -2,6 +2,7 @@
     "python.formatting.provider": "black",
     "cSpell.words": [
         "amqps",
+        "berny",
         "bigchem",
         "freqs",
         "kombu",

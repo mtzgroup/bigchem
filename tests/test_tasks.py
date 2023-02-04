@@ -3,13 +3,20 @@ import pytest
 from qcelemental.models import (
     AtomicInput,
     AtomicResult,
+    FailedOperation,
     OptimizationInput,
     OptimizationResult,
 )
 from qcelemental.util.serialization import json_loads
 
 from bigchem.canvas import group  # type:ignore
-from bigchem.tasks import compute, compute_procedure, frequency_analysis, hessian
+from bigchem.tasks import (
+    compute,
+    compute_procedure,
+    frequency_analysis,
+    hessian,
+    result_to_input,
+)
 
 
 def test_hessian_task(test_data_dir, water):
@@ -166,3 +173,57 @@ def test_compute_procedure_optimization(
         result = [result]
     for r in result:
         assert isinstance(r, OptimizationResult)
+
+
+def test_result_to_input_atomic_result(water):
+    result = AtomicResult(
+        molecule=water,
+        driver="energy",
+        provenance={"creator": "fake"},
+        success=True,
+        properties={},
+        model={"method": "b3lyp", "basis": "6-31g"},
+        return_result=-76.38506640227922,
+    )
+    # Not yet implemented. Remove this test once implemented
+    with pytest.raises(NotImplementedError):
+        result_to_input(result)
+
+
+def test_result_to_input_failed_operation(water):
+    fo = FailedOperation(
+        input_data="fake",
+        success=False,
+        error={"error_type": "issue", "error_message": "something went wrong"},
+    )
+    # Not yet implemented. Remove this test once implemented
+    with pytest.raises(ValueError):
+        result_to_input(fo)
+
+
+def test_result_to_input_optimization_result(water):
+    opt_result = OptimizationResult(
+        input_specification={"model": {"method": "b3lyp", "basis": "6-31g"}},
+        initial_molecule=water,
+        provenance={"creator": "fake"},
+        final_molecule=water,
+        trajectory=[],
+        success=True,
+        energies=[1, 2, 3],
+    )
+
+    new_spec = {
+        "keywords": {"program": "new_prog"},
+        "input_specification": {
+            "model": {"method": "new_methods", "basis": "new_basis"}
+        },
+        "extras": {"ex1": "ex1"},
+    }
+    new_input = result_to_input(opt_result, **new_spec)
+    assert (
+        new_input.input_specification.model.dict()
+        == new_spec["input_specification"]["model"]
+    )
+
+    assert new_input.keywords == new_spec["keywords"]
+    assert new_input.extras == new_spec["extras"]

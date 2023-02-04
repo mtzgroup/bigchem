@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Added
+
+- `multistep_opt` algorithm and associated `multistep_opt.py` script to demonstrate how multiple QC packages can be used in unison to optimize a molecule.
+- `result_to_input` task to transform results from one process (like an optimization) into inputs for the next (perhaps a subsequent optimization step). The enables the easy chaining together of multiple packages in `multistep_opt`.
+
+### Changed
+
+- Modified `env.yaml` to allow flexible versions for worker packages and created a new `env.lock` file for workers.
+
 ## [0.3.0] - 2022-12-16
 
 ### Added
