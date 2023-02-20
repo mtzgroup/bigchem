@@ -4,7 +4,7 @@ version = "0.4.0"
 description = "A distributed system for scaling and parallelizing quantum chemistry calculations"
 authors = ["Colton Hicks <github@coltonhicks.com>"]
 readme = "README.md"
-homepage = "https://github.com/coltonbh/bigchem"
+homepage = "https://github.com/mtzgroup/bigchem"
 license = "MIT"
 
 [tool.poetry.dependencies]

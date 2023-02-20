@@ -10,7 +10,7 @@ version: "3.8"
 
 # Default images and setup for worker containers
 x-default-worker: &default-worker
-  image: coltonbh/bigchem-worker:{$BIGCHEM_VERSION}
+  image: mtzgroup/bigchem-worker:{$BIGCHEM_VERSION}
   env_file: worker.env
   environment:
     - TERACHEM_PBS_HOST={{.Node.Hostname}}-terachem-{{.Task.Slot}}

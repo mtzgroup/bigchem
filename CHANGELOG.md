@@ -73,11 +73,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Initial release of core BigQC feature set. Tasks for `compute` (single point energy, gradient, hessian, and properties calculations) and `compute_procedure` (geometry optimization routine). Algorithms for distributed hessian and normal mode analysis with their associated tasks.
 
-[unreleased]: https://github.com/coltonbh/bigchem/compare/0.4.0...HEAD
-[0.4.0]: https://github.com/coltonbh/bigchem/releases/tag/0.4.0
-[0.3.0]: https://github.com/coltonbh/bigchem/releases/tag/0.3.0
-[0.2.0]: https://github.com/coltonbh/bigchem/releases/tag/0.2.0
-[0.1.3]: https://github.com/coltonbh/bigchem/releases/tag/0.1.3
-[0.1.2]: https://github.com/coltonbh/bigchem/releases/tag/0.1.2
-[0.1.1]: https://github.com/coltonbh/bigchem/releases/tag/0.1.1
-[0.1.0]: https://github.com/coltonbh/bigchem/releases/tag/0.1.0
+[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.4.0...HEAD
+[0.4.0]: https://github.com/mtzgroup/bigchem/releases/tag/0.4.0
+[0.3.0]: https://github.com/mtzgroup/bigchem/releases/tag/0.3.0
+[0.2.0]: https://github.com/mtzgroup/bigchem/releases/tag/0.2.0
+[0.1.3]: https://github.com/mtzgroup/bigchem/releases/tag/0.1.3
+[0.1.2]: https://github.com/mtzgroup/bigchem/releases/tag/0.1.2
+[0.1.1]: https://github.com/mtzgroup/bigchem/releases/tag/0.1.1
+[0.1.0]: https://github.com/mtzgroup/bigchem/releases/tag/0.1.0
