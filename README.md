@@ -196,7 +196,7 @@ version: "3.8"
 
 services:
   worker:
-    image: coltonbh/bigchem-worker
+    image: mtzgroup/bigchem-worker
     env_file: worker.env
     environment:
       - bigchem_worker_concurrency=2
