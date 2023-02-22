@@ -1,7 +1,7 @@
 """Top level functions for parallelized BigChem algorithms"""
 from typing import Any, Dict, List
 
-from celery.canvas import Signature, chain, group
+from celery.canvas import Signature, group
 from qcelemental.models import AtomicInput, DriverEnum, Molecule
 
 from .config import settings
@@ -99,10 +99,8 @@ def multistep_opt(
             }
     """
     # Create first optimization in the chain
-    task_chain = chain(
-        compute_procedure.s(
-            {"initial_molecule": initial_molecule, **input_specs[0]}, procedure
-        )
+    task_chain = compute_procedure.s(
+        {"initial_molecule": initial_molecule, **input_specs[0]}, procedure
     )
 
     # Add subsequent optimizations to the chain
