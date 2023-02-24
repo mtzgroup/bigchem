@@ -1,5 +1,5 @@
 """This scripts shows to easy it is to seamlessly interoperate four QC programs--
-geometric, xtb, terachem, and psi4--to quickly achieve a computational outcome
+geometric, xtb, TeraChem, and psi4--to quickly achieve a computational outcome
 such as a highly optimized geometry while distributing work across all available
 worker instances simultaneously."""
 
@@ -7,6 +7,10 @@ from qcelemental.models import Molecule
 
 from bigchem.algos import multistep_opt
 from bigchem.canvas import group
+
+# Define the molecules of interest
+molecule_names = ["water", "caffeine", "aspirin", "benzene", "thf"]
+molecules = [Molecule.from_data(f"pubchem:{name}") for name in molecule_names]
 
 # Define the parameters for each program
 input_specifications = [
@@ -24,11 +28,8 @@ input_specifications = [
     },
 ]
 
-# Define the molecules of interest
-molecule_names = ["water", "caffeine", "aspirin", "benzene", "thf"]
-molecules = [Molecule.from_data(f"pubchem:{name}") for name in molecule_names]
 
-# Create a group of chains.
+# Create a group of chains (each chain is one sequence of multi-step optimizations).
 future_result = group(
     multistep_opt(molecule, "geometric", input_specifications) for molecule in molecules
 ).delay()

@@ -42,10 +42,10 @@ Stop these services by running:
 docker compose down
 ```
 
-Then run the following script to see an example of how to submit a computation and retrieve its result.
+Then run the following script to see an example of how to submit a computation and retrieve its result. Many more examples can be found in the `examples` directory.
 
 ```sh
-poetry run python -m scripts.example
+poetry run python examples/example.py
 ```
 
 ## Getting into the Details
@@ -134,7 +134,7 @@ If you want to scale your worker subprocesses locally, uncomment and adjust the 
 
 If you want to add additional Quantum Chemistry programs (or any program!) to the worker, modify the `docker/worker.dockerfile` to install the program and then rebuild the image by running `docker compose up -d --build`.
 
-If you have a GPU on your machine and want to run TeraChem as part of BigChem, include `docker/docker-compose.terachem.local` when you start BigChem:
+If you have a GPU on your machine and want to run TeraChem as part of BigChem, include `docker/docker-compose.terachem.local` when you start BigChem. Note this depends upon a `.env` file in the root of the project containing the environment variable `TERACHEM_LICENSE_PATH=/path/to/your/terachem/license.key` set to the path on your local machine to a TeraChem license.
 
 ```sh
 docker compose -f docker-compose.yaml -f docker/docker-compose.terachem.local.yaml up -d --build
@@ -144,7 +144,7 @@ docker compose -f docker-compose.yaml -f docker/docker-compose.terachem.local.ya
 
 Deploying BigChem to a production environment consists of running a `broker` and a `backend` that are reachable by `workers` and then as many workers as you'd like. Workers will connect to the `broker` and `backend` and BigChem will automatically coordinate efficient distribution of `Tasks` across all workers and the synchronization of more sophisticated `Algorithms` that need to pass results between workers. Deployment can be done with or without Docker, depending on the access you have to the underlying hardware. We strongly recommend deploying with Docker if you are able.
 
-All configurable environment variables for BigChem can be found in `bigchem/config.py`. If environment variables are set with the same names found as attributes on the `Settings` object, they will be automatically picked up and used by BigChem. Examples of this can be found in the `docker-compose.yaml` file where various settings are modified via environment variables. Variables can be lowercase or all UPPER_CASE.
+All configurable environment variables for BigChem can be found in `bigchem/config.py`. If environment variables are set with the same names found as attributes on the `Settings` object, they will be automatically picked up and used by BigChem. Examples of this can be found in the `docker-compose.yaml` file where various settings are modified via environment variables. Variables can be `lower_case` or all `UPPER_CASE`.
 
 #### Broker and Backend
 
@@ -210,7 +210,7 @@ volumes:
   scratch:
 ```
 
-This definition depends on a `worker.env` file living next to the `docker-compose.workers.yaml` file that defines the URLs at which workers can locate the BigChem `broker` and `backend`. If the addresses are local to your cluster and don't contain secrets (like passwords) then you can just place the addresses directly in the `docker-compose.workers.yaml` file as environment variables and delete the `env_file` line from the file. The `worker.env` file should look like this but be filled with the corresponding usernames, passwords, and hosts.
+This definition depends on a `worker.env` file living next to the `docker-compose.workers.yaml` file that defines the URLs at which workers can locate the BigChem `broker` and `backend`. If the addresses are local to your cluster and don't contain secrets (like passwords) then you can just place the addresses directly in the `docker-compose.workers.yaml` file as environment variables and delete the `env_file` line from the file. The `worker.env` file should look like this but be filled with the corresponding usernames, passwords, and hosts. If you are using insecure (non-encrypted) protocols over a local network change `amqps` to `amqp` and change the port from `5671` to `5672` (or remove it, `5672` is the default port for RabbitMQ) and `rediss` to `redis` and remove `?ssl_cert_reqs=CERT_NONE` to denote the use of insecure protocols (you may also remove the `6379` port specification). The `docker-compose.yaml` file in the root shows an example of insecure URLs without usernames, passwords, or ports.
 
 ```sh
 BIGCHEM_BROKER_URL=amqps://${USERNAME}:${PASSWORD}@${YOUR_DOMAIN_DOT_COM}:5671

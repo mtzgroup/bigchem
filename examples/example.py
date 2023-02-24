@@ -19,11 +19,12 @@ print("Submitting computation to backend.")
 async_result = compute.delay(my_input, "psi4")
 print("Submitted!")
 
-# Check status
+# Checking status; don't write a loop like this in your actual code :)
 while async_result.status in UNREADY_STATES:
     print(f"Computation status: {async_result.status}")
     sleep(0.2)
 # Block until result is ready
 result = async_result.get()
+# Remove result from the backend
 async_result.forget()
 print(f"Computation Result: {result}")

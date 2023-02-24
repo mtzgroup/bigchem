@@ -47,7 +47,7 @@ def result_to_input(
 def hessian(
     gradients: List[AtomicResult], dh: float
 ) -> Union[AtomicResult, FailedOperation]:
-    """Compute hessian in parallel from array of gradient computations
+    """Compute hessian from an array of gradient computations
 
     Params:
         gradients: List of gradient AtomicResult objects alternating between a
