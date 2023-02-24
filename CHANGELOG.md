@@ -6,12 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Added
+
+- Multiple scripts to `/examples/` directory to show basic utilization of BigChem.
+
 ## [0.4.0] - 2023-02-3
 
 ### Added
 
 - `multistep_opt` algorithm and associated `multistep_opt.py` script to demonstrate how multiple QC packages can be used in unison to optimize a molecule.
-- `result_to_input` task to transform results from one process (like an optimization) into inputs for the next (perhaps a subsequent optimization step). The enables the easy chaining together of multiple packages in `multistep_opt`.
+- `result_to_input` task to transform results from one process (like an optimization) into inputs for the next (perhaps a subsequent optimization step). This enables easy chaining together of multiple packages in `multistep_opt`.
 
 ### Changed
 
