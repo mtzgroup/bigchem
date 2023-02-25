@@ -2,9 +2,9 @@
 
 A distributed system for scaling and parallelizing quantum chemistry calculations.
 
-## Getting Started
+## ⚠️ A Note About x86 and ARM Architectures
 
-⚠️ NOTE: Most Quantum Chemistry packages (including those used by default in BigChem's worker--psi4, xtb, and rdkit) are only compiled and released for the x86 architecture, not the ARM architecture. This means **BigChem's worker will not work or build on ARM machines like Apple's M1 chip**. If you want to run Quantum Chemistry programs on your ARM machine, please reach out to your favorite QC developer and ask for distributions compiled for ARM. When they exist, I'll add them to BigChem's ARM builds.
+Most Quantum Chemistry packages (including those used by default in BigChem's worker--psi4, xtb, and rdkit) are only compiled and released for the x86 architecture, not the ARM architecture. This means **BigChem's worker will not work or build on ARM machines like Apple's M1 chip**. If you want to run Quantum Chemistry programs on your ARM machine, please reach out to your favorite QC developer and ask for distributions compiled for ARM. When they exist, I'll add them to BigChem's ARM builds.
 
 If you'd like to play with BigChem without executing QC programs on your ARM machine, comment out the `worker` in the `docker-compose.yaml` file, then run the following commands to run a local version of a BigChem worker that can execute the `add` and `csum` `Tasks` to explore how BigChem works. Note Docker has updated the `docker-compose` command to be a subcommand of the Docker CLI `docker compose` (no `-`). If you are running an older version of Docker Desktop you may still need to use the `docker-compose` command instead.
 
@@ -14,9 +14,15 @@ poetry install
 poetry run celery -A bigchem.tasks worker --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
 ```
 
-✅ All x86 Architecture machines can follow the usual instructions below:
+## 🐰 Quickstart
 
-Install project dependencies using [poetry](https://python-poetry.org/)
+✅ Make sure you are on an x86 machine (not an ARM machine like Apple's M chip series)
+
+✅ Install [poetry](https://python-poetry.org/) to install BigChem
+
+### 💻 Run BigChem on a Single Node (like your laptop)
+
+Install project dependencies
 
 ```sh
 poetry install
@@ -25,7 +31,7 @@ poetry install
 Check that your installation is working correctly by running the tests. (Requires `docker compose`).
 
 ```sh
-sh scripts/test.sh
+bash scripts/test.sh
 ```
 
 You can review test coverage in the now-generated `htmlcov` folder; open `index.html` in a browser.
@@ -36,16 +42,58 @@ Run the following commands to start a broker, backend, and worker.
 docker compose up -d --build
 ```
 
-Stop these services by running:
+You can stop these services by running:
 
 ```sh
 docker compose down
 ```
 
-Then run the following script to see an example of how to submit a computation and retrieve its result. Many more examples can be found in the `examples` directory.
+With BigChem running (`docker compose up -d --build`) execute scripts in the `examples` directory to see how to perform computations using BigChem. Add the `-i` flag when running python to drop into an interactive terminal after a script executes to interact with the returned objects.
 
 ```sh
-poetry run python examples/example.py
+poetry run python -i examples/example.py
+```
+
+### 💻💻💻 Run BigChem on Multiple Nodes
+
+You do not need to install BigChem or any Quantum Chemistry package on each node. You only need to have [Docker](https://www.docker.com/) installed on each node. We will use Docker to distribute BigChem to each node using [Docker Swarm](https://docs.docker.com/engine/swarm/). We assume the nodes are networked together and reachable via TCP connections on port `2377` (docker swarm port).
+
+Execute the following commands on the node you wish to be your "Manager" node, the node from which you will control the system.
+
+- Start a Swarm
+
+```sh
+docker swarm init
+```
+
+- Collect the join command for adding worker nodes to this swarm
+
+```sh
+docker swarm join-token worker
+```
+
+- Run the printed command on all the nodes you wish to join your swarm and then return to the Manager node.
+
+```sh
+  docker swarm join --token super-secret-token-xxx ip-addr-of-manager:2377
+```
+
+- From your manager node deploy BigChem. This will start a broker and backend running on the manager node and one BigChem worker on each node. If you would like to increase the number of BigChem processes running on each node uncomment and edit the `bigchem_worker_concurrency` value in the `docker/quickstart.yaml` file.
+
+```sh
+docker stack deploy -c docker/quickstart.yaml --prune bigchem
+```
+
+- Send work to BigChem by running any of the scripts in the `example` directory
+
+```sh
+poetry run python -i examples/energy.py
+```
+
+- Shutdown BigChem
+
+```sh
+docker stack rm bigchem
 ```
 
 ## Getting into the Details
