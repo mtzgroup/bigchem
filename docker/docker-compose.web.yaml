@@ -5,7 +5,7 @@ version: \"3.8\"
 
 services:
   broker:
-    image: rabbitmq:3.8-management-alpine
+    image: rabbitmq:3.11-management-alpine
     # Must specify hostname since data is stored based on hostname and we don't want a random, docker-assigned
     # hostname with each new restart of the service. This would result in any past messages stored by the
     # former container in the volume to be unseen by the new container.
@@ -39,7 +39,7 @@ services:
         - traefik.http.routers.bigchem-rabbitmq-console.service=bigchem-rabbitmq-console-service
         - traefik.http.services.bigchem-rabbitmq-console-service.loadbalancer.server.port=15672
   backend:
-    image: redis:6-alpine
+    image: redis:7-alpine
     networks:
       - traefik-public
     volumes:

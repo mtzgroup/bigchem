@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   broker:
-    image: rabbitmq:3.8-management-alpine
+    image: rabbitmq:3.11-management-alpine
     container_name: bigchem_broker
     # Must specify hostname since data is stored based on hostname and we don't want a
     # random, docker-assigned hostname with each new restart of the service. This would
@@ -18,7 +18,7 @@ services:
       - broker:/var/lib/rabbitmq
 
   backend:
-    image: redis:6-alpine
+    image: redis:7-alpine
     container_name: bigchem_backend
     ports:
       # Open redis to localhost for dev container access
