@@ -14,6 +14,10 @@ services:
       # Open rabbit to localhost for dev container access
       - 5672:5672
       - 15672:15672
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
     volumes:
       - broker:/var/lib/rabbitmq
 
@@ -25,11 +29,16 @@ services:
       - 6379:6379
     volumes:
       - backend:/data
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
 
   worker:
     build:
       context: .
       dockerfile: docker/worker.dockerfile
+    image: mtzgroup/bigchem-worker
     container_name: bigchem_worker
     depends_on:
       - broker
@@ -37,13 +46,16 @@ services:
     environment:
       - bigchem_broker_url=amqp://broker
       - bigchem_backend_url=redis://backend/0
-      # Set concurrency to fix number of worker processes, set to 0 to default to the number of CPUs on your machine
+      # Set concurrency to modify number of worker processes on each node
+      # Set to 0 to default to the number of CPUs on your machine
       # - bigchem_worker_concurrency=1
     volumes:
       # Mount in code so service just has to be restarted instead of rebuilt
       # when code changes
       - ./bigchem:/code/bigchem
       - worker:/tmp
+    deploy:
+      mode: global
 
 volumes:
   broker:

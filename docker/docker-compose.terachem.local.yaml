@@ -5,9 +5,6 @@ services:
     environment:
       - TERACHEM_FE_HOST=terachem-frontend
       - TERACHEM_PBS_HOST=terachem
-    env_file:
-      # .env file must live in root directory and contain TERACHEM_LICENSE_PATH=/your/path/to/license.key
-      - .env
 
   terachem:
     image: mtzgroup/terachem:1.9-2021.12-dev-arch-sm_52-sm_80
@@ -16,15 +13,21 @@ services:
       - 11111:11111
     volumes:
       - terachem-scratch:/scratch
-      # NOTE: Set path to license in .env file
-      - ${TERACHEM_LICENSE_PATH:-/nothing/here}:/terachem/license.key
+      # .env file must live in root of project and contain TERACHEM_LICENSE_PATH=/your/path/to/license.key
+      # - ${TERACHEM_LICENSE_PATH}:/terachem/license.key
     deploy:
       restart_policy:
         condition: on-failure
       resources:
         reservations:
           devices:
-            - capabilities: ["gpu"]
+            # More details: https://docs.docker.com/compose/gpu-support/
+            - driver: nvidia
+              # Uncomment to set device ids (default will use all)
+              # device_ids: ["0", "3"]
+              # Uncomment to set GPU count (default will use all)
+              # count: 3
+              capabilities: ["gpu"]
 
   terachem-frontend:
     image: mtzgroup/terachem-frontend:0.2.0-noproxy

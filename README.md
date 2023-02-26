@@ -81,7 +81,7 @@ docker swarm join-token worker
 - From your manager node deploy BigChem. This will start a broker and backend running on the manager node and one BigChem worker on each node. If you would like to increase the number of BigChem processes running on each node uncomment and edit the `bigchem_worker_concurrency` value in the `docker/quickstart.yaml` file.
 
 ```sh
-docker stack deploy -c docker/quickstart.yaml --prune bigchem
+docker stack deploy -c docker-compose.yaml --prune bigchem
 ```
 
 - Send work to BigChem by running any of the scripts in the `example` directory
@@ -95,6 +95,20 @@ poetry run python -i examples/energy.py
 ```sh
 docker stack rm bigchem
 ```
+
+### 💻 + 💪 Run BigChem on a Single Node with TeraChem (GPU Support)
+
+Same as above but use the following instead of `docker compose up -d --build`
+
+```sh
+docker compose -f docker-compose.yaml -f docker/docker-compose.terachem.local.yaml up -d --build
+```
+
+This will run TeraChem in unlicensed mode. If you'd like to use a license uncomment the `${TERACHEM_LICENSE_PATH}:/terachem/license.key` line in `docker/docker-compose.terachem.local.yaml` and add `TERACHEM_LICENSE_PATH=/path/to/your/license.key` using the path on your local machine containing the license.
+
+### 💻💻💻 + 💪💪💪 Run BigChem on Multiple Nodes with TeraChem (Multi-Node GPU Support)
+
+Details forthcoming
 
 ## Getting into the Details
 
@@ -182,7 +196,7 @@ If you want to scale your worker subprocesses locally, uncomment and adjust the 
 
 If you want to add additional Quantum Chemistry programs (or any program!) to the worker, modify the `docker/worker.dockerfile` to install the program and then rebuild the image by running `docker compose up -d --build`.
 
-If you have a GPU on your machine and want to run TeraChem as part of BigChem, include `docker/docker-compose.terachem.local` when you start BigChem. Note this depends upon a `.env` file in the root of the project containing the environment variable `TERACHEM_LICENSE_PATH=/path/to/your/terachem/license.key` set to the path on your local machine to a TeraChem license.
+If you have a GPU on your machine and want to run TeraChem as part of BigChem, include `docker/docker-compose.terachem.local` when you start BigChem. Note this depends upon a `.env` file in the root of the project containing the environment variable `TERACHEM_LICENSE_PATH=/path/to/your/terachem/license.key` set to the path on your local machine to a TeraChem license. Also you will need to follow [Docker's instructions](https://docs.docker.com/config/containers/resource_constraints/#gpu) to enable GPU support for Docker.
 
 ```sh
 docker compose -f docker-compose.yaml -f docker/docker-compose.terachem.local.yaml up -d --build
