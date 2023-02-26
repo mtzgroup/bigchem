@@ -1,0 +1,47 @@
+# For deploying one TeraChem isntance per node in swarm mode without needing to
+# register GPUs with docker. See /docs/swarm-gpus.md for more details.
+
+version: "3.8"
+
+services:
+  worker:
+    environment:
+      # So worker communicates with frontend on its same node
+      - TERACHEM_FE_HOST={{.Node.Hostname}}-terachem-frontend
+      - TERACHEM_PBS_HOST={{.Node.Hostname}}-terachem
+
+  terachem:
+    image: mtzgroup/terachem:1.9-2021.12-dev-arch-sm_52-sm_80
+    # Only used in swarm mode
+    hostname: "{{.Node.Hostname}}-terachem"
+    ports:
+      - 11111:11111
+    volumes:
+      - terachem-scratch:/scratch
+      # .env file must live in root of project and contain TERACHEM_LICENSE_PATH=/your/path/to/license.key
+      # - ${TERACHEM_LICENSE_PATH}:/terachem/license.key
+    deploy:
+      mode: global
+      # Uncomment and modify if using named resources on your swarm
+      # See docs/swarm-gpus.md for more details
+      # resources:
+      #   reservations:
+      #     generic_resources:
+      #       - discrete_resource_spec:
+      #           kind: "NVIDIA-GPU"
+      #           value: 1
+
+  terachem-frontend:
+    image: mtzgroup/terachem-frontend:0.2.0-noproxy
+    # Only used when deployed in swarm mode
+    hostname: "{{.Node.Hostname}}-terachem-frontend"
+    environment:
+      - WORKER_PROCESSES=1
+      - AUTOINDEX_FORMAT=json
+    ports:
+      - 8080:80
+    volumes:
+      - terachem-scratch:/usr/share/nginx/html
+
+volumes:
+  terachem-scratch:

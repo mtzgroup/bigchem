@@ -1,3 +1,5 @@
+# Runs terachem services using docker compose. Not valid for swarm because swam does
+# not support the "devices" field
 version: "3.8"
 
 services:
@@ -8,7 +10,6 @@ services:
 
   terachem:
     image: mtzgroup/terachem:1.9-2021.12-dev-arch-sm_52-sm_80
-    hostname: terachem
     ports:
       - 11111:11111
     volumes:
