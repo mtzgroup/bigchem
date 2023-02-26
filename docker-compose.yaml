@@ -14,6 +14,7 @@ services:
       # Open rabbit to localhost for dev container access
       - 5672:5672
       - 15672:15672
+    # Only used when deployed in swarm mode
     deploy:
       placement:
         constraints:
@@ -29,6 +30,7 @@ services:
       - 6379:6379
     volumes:
       - backend:/data
+    # Only used when deployed in swarm mode
     deploy:
       placement:
         constraints:
@@ -54,6 +56,7 @@ services:
       # when code changes
       - ./bigchem:/code/bigchem
       - worker:/tmp
+    # Only used when deployed in swarm mode
     deploy:
       mode: global
 

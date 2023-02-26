@@ -22,93 +22,127 @@ poetry run celery -A bigchem.tasks worker --without-heartbeat --without-mingle -
 
 ### 💻 Run BigChem on a Single Node (like your laptop)
 
-Install project dependencies
+- Install project dependencies
 
-```sh
-poetry install
-```
+  ```sh
+  poetry install
+  ```
 
-Check that your installation is working correctly by running the tests. (Requires `docker compose`).
+- Check that your installation is working correctly by running the tests. (Requires `docker compose`).
 
-```sh
-bash scripts/test.sh
-```
+  ```sh
+  bash scripts/test.sh
+  ```
 
-You can review test coverage in the now-generated `htmlcov` folder; open `index.html` in a browser.
+- You can review test coverage in the now-generated `htmlcov` folder; open `index.html` in a browser.
 
-Run the following commands to start a broker, backend, and worker.
+- Run the following commands to start a broker, backend, and worker.
 
-```sh
-docker compose up -d --build
-```
+  ```sh
+  docker compose up -d --build
+  ```
 
-You can stop these services by running:
+- You can stop these services by running:
 
-```sh
-docker compose down
-```
+  ```sh
+  docker compose down
+  ```
 
-With BigChem running (`docker compose up -d --build`) execute scripts in the `examples` directory to see how to perform computations using BigChem. Add the `-i` flag when running python to drop into an interactive terminal after a script executes to interact with the returned objects.
+- With BigChem running (`docker compose up -d --build`) execute scripts in the `examples` directory to see how to perform computations using BigChem. Add the `-i` flag when running python to drop into an interactive terminal after a script executes to interact with the returned objects.
 
-```sh
-poetry run python -i examples/example.py
-```
+  ```sh
+  poetry run python -i examples/example.py
+  ```
 
-### 💻💻💻 Run BigChem on Multiple Nodes
+If you would like to increase the number of BigChem worker processes running, uncomment and edit the `bigchem_worker_concurrency` value in the `docker-compose.yaml` file.
 
-You do not need to install BigChem or any Quantum Chemistry package on each node. You only need to have [Docker](https://www.docker.com/) installed on each node. We will use Docker to distribute BigChem to each node using [Docker Swarm](https://docs.docker.com/engine/swarm/). We assume the nodes are networked together and reachable via TCP connections on port `2377` (docker swarm port).
+### 💻💻💻 Run BigChem on Multiple Nodes (Swarm Mode)
+
+You do not need to install BigChem or any Quantum Chemistry package on each node. You only need to have [Docker](https://www.docker.com/) installed on each node. We will use [Docker Swarm](https://docs.docker.com/engine/swarm/) to distribute BigChem to each node. We assume the nodes are networked together and reachable via **TCP port 2377** for cluster management communications, **TCP and UDP port 7946** for communication among nodes, and **UDP port 4789** for overlay network traffic.
 
 Execute the following commands on the node you wish to be your "Manager" node, the node from which you will control the system.
 
 - Start a Swarm
 
-```sh
-docker swarm init
-```
+  ```sh
+  docker swarm init
+  ```
 
 - Collect the join command for adding worker nodes to this swarm
 
-```sh
-docker swarm join-token worker
-```
+  ```sh
+  docker swarm join-token worker
+  ```
 
 - Run the printed command on all the nodes you wish to join your swarm and then return to the Manager node.
 
-```sh
+  ```sh
   docker swarm join --token super-secret-token-xxx ip-addr-of-manager:2377
-```
+  ```
 
-- From your manager node deploy BigChem. This will start a broker and backend running on the manager node and one BigChem worker on each node. If you would like to increase the number of BigChem processes running on each node uncomment and edit the `bigchem_worker_concurrency` value in the `docker/quickstart.yaml` file.
+- From your manager node deploy BigChem. This will start a broker and backend running on the manager node and one BigChem worker on each node.
 
-```sh
-docker stack deploy -c docker-compose.yaml --prune bigchem
-```
+  ```sh
+  docker stack deploy -c docker-compose.yaml --prune bigchem
+  ```
 
-- Send work to BigChem by running any of the scripts in the `example` directory
+- BigChem will now be running on all nodes. It may take a few moments for the services to start since the worker image is large and will need to be downloaded and decompressed on all nodes.
+- You can increase the number of BigChem worker processes running on each node by uncommenting and editing the `bigchem_worker_concurrency` value in the `docker-compose.yaml` file and then running `docker stack deploy ...` again.
 
-```sh
-poetry run python -i examples/energy.py
-```
+- Send work to BigChem by running any of the scripts in the `example` directory. Tasks will be distributed across all worker nodes.
+
+  ```sh
+  poetry run python -i examples/energy.py
+  ```
 
 - Shutdown BigChem
 
-```sh
-docker stack rm bigchem
-```
+  ```sh
+  docker stack rm bigchem
+  ```
 
 ### 💻 + 💪 Run BigChem on a Single Node with TeraChem (GPU Support)
 
-Same as above but use the following instead of `docker compose up -d --build`
+- Same as above but use the following instead of `docker compose up -d --build`
 
-```sh
-docker compose -f docker-compose.yaml -f docker/docker-compose.terachem.local.yaml up -d --build
-```
+  ```sh
+  docker compose -f docker-compose.yaml -f docker/docker-compose.terachem.yaml up -d --build
+  ```
 
-This will run TeraChem in unlicensed mode. If you'd like to use a license uncomment the `${TERACHEM_LICENSE_PATH}:/terachem/license.key` line in `docker/docker-compose.terachem.local.yaml` and add `TERACHEM_LICENSE_PATH=/path/to/your/license.key` using the path on your local machine containing the license.
+This will run TeraChem in unlicensed mode. If you'd like to use a license uncomment the `${TERACHEM_LICENSE_PATH}:/terachem/license.key` line in `docker/docker-compose.terachem.yaml` and add `TERACHEM_LICENSE_PATH=/path/to/your/license.key` using the path on your local machine containing the license.
 
-### 💻💻💻 + 💪💪💪 Run BigChem on Multiple Nodes with TeraChem (Multi-Node GPU Support)
+- Send work to TeraChem by modifying any of the `examples` scripts to use `terachem_fe` instead of `psi4`.
+- Run the `examples/terachem.py` script to see how to request files back from TeraChem
+  ```sh
+  poetry run python -i examples/terachem.py
+  ```
 
-Details forthcoming
+### 💻💻💻 + 💪💪💪 Run BigChem on Multiple Nodes with TeraChem (Swarm Mode)
+
+GPU support for Docker Swarm can be implemented multiple ways. We will demonstrated the simplest way here. For more details see [docs/swarm-gpus.md](./docs/swarm-gpus.md). First follow the instructions above to initialize a swarm.
+
+- Follow the instructions [here](https://docs.docker.com/config/containers/resource_constraints/#gpu) to install `nvidia-container-runtime` on each node.
+- Update (or create) `/etc/docker/daemon.json` on each node to use `nvidia` as the default runtime with the following:
+
+  ```json
+  {
+    "default-runtime": "nvidia",
+    "runtimes": {
+      "nvidia": {
+        "path": "nvidia-container-runtime",
+        "runtimeArgs": []
+      }
+    }
+  }
+  ```
+
+- Restart docker on each node `sudo service docker restart`
+
+- Run the following command to deploy BigChem and TeraChem to all nodes.
+  ```sh
+  docker stack deploy -c docker-compose.yaml -c docker/docker-compose.terachem.swarm.yaml --prune bigchem
+  ```
+- BigChem and TeraChem will now be running on all nodes. It may take a few moments for the services to start since both images are large and will need to be downloaded and decompressed on all nodes.
 
 ## Getting into the Details
 
@@ -116,7 +150,7 @@ Details forthcoming
 
 BigChem is built on [Celery](https://docs.celeryq.dev/en/stable/index.html) and uses a producer/consumer model for delivering and completing work tasks. You may refer to the Celery documentation for a deeper dive on technical details.
 
-Why is BigChem useful? Many computational chemistry tasks require large, distributed resources due to the scale or quantity of computations. Programming highly parallel or distributed computing tasks is challenging and requires specialized skills most computational chemists do not posses (or want to posses!). BigChem makes it easy to take advantage of modern, distributed system compute paradigms without requiring expert-level understanding of distributed systems or parallelization. To an end user, they appear to be writing very simple, single-threaded code, yet BigChem will efficiently distribute calculations across hundreds or thousands of compute nodes and deliver results back to the end user as if the calculations were performed on their own machine. BigChem makes it easy to benefit from highly parallel, distributed computations without needing deep knowledge about how to program such systems. BigChem is easy to use, easy to program, and easy to deploy across a few or thousands of nodes.
+Why is BigChem useful? Many computational chemistry tasks require large, distributed resources due to the scale or quantity of computations. Programming highly parallel or distributed computing tasks is challenging and requires specialized skills. BigChem makes it easy to take advantage of modern, distributed system compute paradigms without requiring expert-level understanding of distributed systems or parallelization. End users write very simple, single-threaded code, yet BigChem will efficiently distribute calculations across hundreds or thousands of compute nodes and deliver results back as if the calculations were performed on the local machine. BigChem is easy to use, easy to program, and easy to deploy across a few or thousands of nodes.
 
 BigChem has only a few key ideas that need to be mastered in order to execute distributed tasks or further develop the system to execute new tasks.
 
@@ -136,7 +170,7 @@ result.forget() # removes the result from the backend to free up resources for f
 
 BigChem's core object is a `Task`. A `Task` is simply a Python function wrapped with the `@bigchem.task` decorator. `Tasks` can be any computing objective written in any language, calling any subprocess, or leveraging any executable. Tasks that cannot be defined as pure Python code or are written in other languages can be called using Python's [subprocess module](https://docs.python.org/3/library/subprocess.html). Tasks can be found in the `bigchem/tasks.py` module. Once a `Task` is registered with BigChem, BigChem will automatically know how to execute it remotely on worker machines and distribute it across all available resources.
 
-`Tasks` can also be combined into more complex computational networks to create `Algorithms`. `Algorithms` make use of `Tasks` plus the `group`, `chain`, or `chord` primitive to define computational tasks comprised of many `Tasks` executed simultaneously or in sequence. Each `Task` in the `Algorithm` will be executed on different distributed workers in parallel. BigChem will orchestrate the execution `Tasks` and collection of results across distributed resources. `Algorithms` can be found in `bigchem/algos.py` or created on the fly using existing tasks. Below we create an `Algorithm` using BigChem's `add` and `csum` `Tasks`. The function returns a `Signature`, an object that contains the network of tasks to be executed and their arguments. The `Signature` can be executed on BigChem workers by calling `.delay()` or `.apply_async()` on the `Signature`.
+`Tasks` can also be combined into more complex computational networks to create `Algorithms`. `Algorithms` make use of `Tasks` plus the `group`, `chain`, or `chord` primitive to define computational tasks comprised of many `Tasks` executed simultaneously or in sequence. Each `Task` in the `Algorithm` will be executed on different distributed workers in parallel. BigChem will orchestrate the execution of `Tasks` and collection of results across distributed resources. `Algorithms` can be found in `bigchem/algos.py` or created on the fly using existing tasks. Below we create an `Algorithm` using BigChem's `add` and `csum` `Tasks`. The function returns a `Signature`, an object that contains the network of tasks to be executed and their arguments. The `Signature` can be executed on BigChem workers by calling `.delay()` or `.apply_async()` on the `Signature`.
 
 ```python
 from bigchem.tasks import add, csum
@@ -170,9 +204,9 @@ In summary, BigChem uses a `broker` to distribute `Tasks` to an arbitrary number
 
 A worker process knows about `Tasks` registered with BigChem, where to get work (the `broker`), and where to write results (the `backend`). A worker must have BigChem installed to know about registered `Tasks` and any other software called by `Tasks` installed (such as external Quantum Chemistry packages like `psi4` or `TeraChem`).
 
-Generally, you run a single worker on a given compute node. Unless you are using GPUs or other accelerators or have an unusually complicated deployment it probably doesn't make sense to run more than one worker per node. The worker itself can scale the number of subprocesses that it uses to process tasks by setting the `bigchem_worker_concurrency` environment variable to an integer greater than 1. So one worker can have multiple independent subprocesses accepting `Tasks`.
+Generally, you run a single worker on a given compute node. Unless you are using GPUs or other accelerators or have an unusually complicated deployment it probably doesn't make sense to run more than one worker per node. The worker itself can scale the number of subprocesses that it uses to process tasks by setting the `bigchem_worker_concurrency` environment variable. So one worker can have multiple independent subprocesses accepting `Tasks`.
 
-How do you know how many subprocesses to run? Generally, this depends on the nature of the `Tasks` you are executing. If you are executing code that makes efficient use of all CPU cores on a node, then having `bigchem_worker_concurrency=1` (the default value) is appropriate as the `Task` will be making efficient use of the node. If you are executing `Tasks` that are single-threaded (use only 1 CPU core at a time) then you should set `bigchem_worker_concurrency` to the number of cores on the machine. Setting `bigchem_worker_concurrency=0` will tell BigChem to automatically set the concurrency to the number of cores on the machine. Optimal performance tuning is idiosyncratic to the underlying code, so testing is key if you want to get maximum scaling performance from your code at various levels of concurrency. Scaling the number of nodes running workers will produce linear performance gains for the system.
+How do you know how many BigChem worker processes to run on each node? Generally, this depends on the nature of the `Tasks` you are executing. If you are executing code that makes efficient use of all CPU cores on a node, then having `bigchem_worker_concurrency=1` (the default value) is appropriate as the `Task` will be making efficient use of the node. If you are executing `Tasks` that are single-threaded (use only 1 CPU core at a time) then you should set `bigchem_worker_concurrency` to the number of cores on the machine. Setting `bigchem_worker_concurrency=0` will tell BigChem to automatically set the concurrency to the number of cores on the machine. Optimal performance tuning is idiosyncratic to the underlying code, so testing is key if you want to get maximum scaling performance from your code at various levels of concurrency. Scaling the number of nodes running workers will produce linear performance gains for the system.
 
 ### Local Development
 
@@ -196,15 +230,15 @@ If you want to scale your worker subprocesses locally, uncomment and adjust the 
 
 If you want to add additional Quantum Chemistry programs (or any program!) to the worker, modify the `docker/worker.dockerfile` to install the program and then rebuild the image by running `docker compose up -d --build`.
 
-If you have a GPU on your machine and want to run TeraChem as part of BigChem, include `docker/docker-compose.terachem.local` when you start BigChem. Note this depends upon a `.env` file in the root of the project containing the environment variable `TERACHEM_LICENSE_PATH=/path/to/your/terachem/license.key` set to the path on your local machine to a TeraChem license. Also you will need to follow [Docker's instructions](https://docs.docker.com/config/containers/resource_constraints/#gpu) to enable GPU support for Docker.
+If you have a GPU on your machine and want to run TeraChem as part of BigChem, include `docker/docker-compose.terachem.yaml` when you start BigChem. See the [TeraChem/GPU Section Above](#💻--💪-run-bigchem-on-a-single-node-with-terachem-gpu-support) above for more details.
 
 ```sh
-docker compose -f docker-compose.yaml -f docker/docker-compose.terachem.local.yaml up -d --build
+docker compose -f docker-compose.yaml -f docker/docker-compose.terachem.yaml up -d --build
 ```
 
 ### Deployment
 
-Deploying BigChem to a production environment consists of running a `broker` and a `backend` that are reachable by `workers` and then as many workers as you'd like. Workers will connect to the `broker` and `backend` and BigChem will automatically coordinate efficient distribution of `Tasks` across all workers and the synchronization of more sophisticated `Algorithms` that need to pass results between workers. Deployment can be done with or without Docker, depending on the access you have to the underlying hardware. We strongly recommend deploying with Docker if you are able.
+Deploying BigChem to a production environment consists of running a `broker` and a `backend` that are reachable by `workers` and then as many workers as you'd like. Workers will connect to the `broker` and `backend` and BigChem will automatically coordinate efficient distribution of `Tasks` across all workers and the synchronization of more sophisticated `Algorithms` that need to pass results between workers. Deployment can be done with or without Docker, depending on the access you have to the underlying hardware. We strongly recommend deploying with Docker if you are able. The Multi-Node (Swarm) examples in the [🐰 Quickstart](#🐰-quickstart) are both examples of production deployments.
 
 All configurable environment variables for BigChem can be found in `bigchem/config.py`. If environment variables are set with the same names found as attributes on the `Settings` object, they will be automatically picked up and used by BigChem. Examples of this can be found in the `docker-compose.yaml` file where various settings are modified via environment variables. Variables can be `lower_case` or all `UPPER_CASE`.
 
@@ -212,7 +246,7 @@ All configurable environment variables for BigChem can be found in `bigchem/conf
 
 The `broker` and `backend` need to be deployed somewhere that `workers` can connect to via a TCP connection. This means they can be deployed on a local cluster where workers will run, or on a remote server (like a cloud server) that has a public IP address and is reachable from anywhere. If you are deploying your `broker` and `backend` on a cloud service and connecting to them over the open internet we strongly recommend you use `TLS` connections to secure communication between your `workers`, `broker`, and `backend`. For an example of how to deploy a `broker` and `backend` securely behind a [Traefik](https://traefik.io/) reverse proxy that handles `TLS` for you, see `docker/docker-compose.web.yaml` and follow the instructions below. The configuration for running a Traefik reverse proxy can be found [here](https://github.com/mtzgroup/traefik-reverse-proxy).
 
-In the directory on the server from which the `docker-compose.web.yaml` file will deploy, create the following files and populate with their correct secrets:
+If you want to secure your broker/backend with usernames/passwords create the following files and populate with their correct secrets and then reference them in your `docker-compose.yaml` file as in `docker/docker-compose.web.yaml`.
 
 - `rabbit.env`
 
@@ -229,25 +263,9 @@ requirepass ${your_redis_password}
 
 #### Docker Swarm
 
-Deploying BigChem workers across many nodes on a cluster is very simple using [Docker Swarm](https://docs.docker.com/engine/swarm/).
+Deploying BigChem workers across many nodes on a cluster is very simple using [Docker Swarm](https://docs.docker.com/engine/swarm/). The examples in the [Quickstart](#🐰-quickstart) can get your started.
 
-1. Install [Docker](https://docs.docker.com/engine/install/) on each node.
-
-2. Initialize a swarm on one of the nodes. This node will become a "manager" node.
-
-```sh
-docker swarm init
-```
-
-3. Connect worker nodes to the swarm using the command printed out after running `docker swarm init`. Run this command on each node you want to join the swarm replacing the `token` with the appropriate `token` for your swarm.
-
-```sh
-docker swarm join --token SWMTKN-1-091mdkeudkeulq33aqv5rzdkruk3hxolisdcx8wn6wdz-883auzdk77dlkwejko97qr2hn
-```
-
-4. Create a `docker-compose.worker.yaml` file that defines the `worker` service and how you want to scale it. For a complete overview of all available options see the [docker-compose documentation](https://docs.docker.com/compose/compose-file/).
-
-As a simple example, let's assume you want to put one worker on each node in your swarm. The following `docker-compose.workers.yaml` specification would suffice:
+If you need to pass secrets (like usernames/password for your broker/backend) to your services use a `worker.env` file as described below. Omit `# pragma: allowlist secret` as that is just for linting purposes in the README.md.
 
 ```yaml
 # NOTE: depends on a single worker.env file alongside this .yaml file containing two
@@ -274,15 +292,17 @@ volumes:
 
 This definition depends on a `worker.env` file living next to the `docker-compose.workers.yaml` file that defines the URLs at which workers can locate the BigChem `broker` and `backend`. If the addresses are local to your cluster and don't contain secrets (like passwords) then you can just place the addresses directly in the `docker-compose.workers.yaml` file as environment variables and delete the `env_file` line from the file. The `worker.env` file should look like this but be filled with the corresponding usernames, passwords, and hosts. If you are using insecure (non-encrypted) protocols over a local network change `amqps` to `amqp` and change the port from `5671` to `5672` (or remove it, `5672` is the default port for RabbitMQ) and `rediss` to `redis` and remove `?ssl_cert_reqs=CERT_NONE` to denote the use of insecure protocols (you may also remove the `6379` port specification). The `docker-compose.yaml` file in the root shows an example of insecure URLs without usernames, passwords, or ports.
 
-```sh
-BIGCHEM_BROKER_URL=amqps://${USERNAME}:${PASSWORD}@${YOUR_DOMAIN_DOT_COM}:5671
-BIGCHEM_BACKEND_URL=rediss://:${PASSWORD}@${YOUR_DOMAIN_DOT_COM}:6379/0?ssl_cert_reqs=CERT_NONE
-```
+- `worker.env`
+
+  ```sh
+  BIGCHEM_BROKER_URL=amqps://${USERNAME}:${PASSWORD}@${YOUR_DOMAIN_DOT_COM}:5671
+  BIGCHEM_BACKEND_URL=rediss://:${PASSWORD}@${YOUR_DOMAIN_DOT_COM}:6379/0?ssl_cert_reqs=CERT_NONE
+  ```
 
 **NOTE:**
 
 - The usernames and passwords in the `worker.env` file should match those set in the `rabbit.env` and `redis.conf` files.
-- The amqpS/redisS protocols. Since we are connecting over the open internet we require TLS. Also note the use of the `5671` _secure_ port for `amqps` connections. This is the port on which `traefik` is listening for `amqps` connections.
+- The amqpS/redisS protocols. If you are connecting over the open internet you should require TLS. Also note the use of the `5671` _secure_ port for `amqps` connections. This is the port on which `traefik` is listening for `amqps` connections.
 - We do not verify the SSL certificate for `redis`. This is because `traefik` is dynamically generating and renewing SSL certificates so we do not have a "permanent" certificate that we can place on the client and use for verification. Very low risk of man-in-the-middle attacks here.
 - If your workers are not connecting over the open internet they can connect directly using insecure protocols to the broker/backend rather than proxying through the `traefik` reverse proxy.
 
@@ -314,9 +334,9 @@ Workers can be removed by running:
 docker stack rm bigchem
 ```
 
-For more sophisticated deployments you can tune how many workers run on each node, which queues each worker listens to (the `broker` can host multiple queues and workers can listen to one, many, or all of them, `Tasks` can be sent to specific queues by end users). And you can tune specific environment variables, like which GPU to use, for each individual worker. To see an example of a more sophisticated deployment see `docker/docker-compose.xstream.yaml`. This deployment runs workers in "replicated" mode (as opposed to global mode) to have more than one worker per node, makes use of constraints like the hostname of the node to determine worker placement, and uses dynamic environment variables so that each worker is assigned exactly one GPU to use for calculations on nodes that contain multiple GPUs. The `XStream` deployment allows independent scaling of workers on each node using the `docker service scale` command. Using only a few lines of configuration, one can deploy 88 workers across 88 GPUs on 6 different nodes with unique environment variables for each worker using a single command: `docker stack deploy -c docker-compose.xstream.yaml --prune bigchem`.
+For more sophisticated deployments you can tune how many workers run on each node, which queues each worker listens to (the `broker` can host multiple queues and workers can listen to one, many, or all of them, `Tasks` can be sent to specific queues by end users). And you can tune specific environment variables, like which GPU to use, for each individual worker. To see an example of a more sophisticated deployment see `docker/docker-compose.xstream.yaml`. This deployment runs workers in "replicated" mode (as opposed to global mode) to have more than one worker per node, makes use of constraints like the hostname of the node to determine worker placement, and uses dynamic environment variables so that each worker is assigned exactly one GPU to use for calculations on nodes that contain multiple GPUs. The `XStream` deployment allows independent scaling of workers on each node using the `docker service scale` command. Using only a few lines of configuration, one can deploy 88 workers across 88 GPUs on 6 different nodes with unique environment variables for each worker using a single command: `docker stack deploy -c docker-compose.xstream.yaml --prune bigchem`. See [Swarm GPUs](./docs/swarm-gpus.md) for more details on how to configure GPU support for Docker Swarm.
 
-If you want to build a custom worker image with additional `Tasks`, `Algorithms`, or Quantum Chemistry programs you can modify `bigchem/tasks.py` and/or `bigchem/algos.py` and build a new image running the following from the root directory:
+If you want to build a custom worker image with additional `Tasks`, `Algorithms`, or Quantum Chemistry programs you can modify `bigchem/tasks.py` and/or `bigchem/algos.py` and build a new image running the following from the root directory. Note that algorithms do not need to be written in the BigChem repo or deployed to workers. They can be written in any script without needing to deploy it to BigChem since algorithms are composed of `Tasks` that BigChem already knows about and orchestration primitives (`group`/`chain`/`chord`) that simply tell BigChem how to execute those `Tasks`.
 
 ```sh
 docker build -t whatever_you_name_your_image:0.1.0 .`
