@@ -5,7 +5,6 @@ Docker compose has [nice support for GPUs](https://docs.docker.com/compose/gpu-s
 ## Basic documentation
 
 - [NVIDIA container runtime for docker](https://docs.docker.com/config/containers/resource_constraints/#gpu). The runtime is no longer required to run GPU support with the docker cli or compose; however, it appears necessary so that one can set `Default Runtime: nvidia` for swarm mode.
-- [NVIDIA]
 - [docker compose GPU support](https://docs.docker.com/compose/gpu-support/)
 - [Good GitHub Gist Reference](https://gist.github.com/tomlankhorst/33da3c4b9edbde5c83fc1244f010815c) for an overview on Swarm with GPUs. It is a bit dated, but has good links and conversation.
 - [Miscellaneous Options](https://docs.docker.com/engine/reference/commandline/dockerd/#miscellaneous-options) for docker configuration. Go down to "Node Generic Resources" for an explanation of how this is intended to support NVIDIA GPUs. The main idea is one has to change the `/etc/docker/daemon.json` file to advertise the `node-generic-resources` (NVIDIA GPUs) on each node. GPUs have to be added by hand the the `daemon.json` file, swarm does not detect and advertise them automatically.
