@@ -80,3 +80,9 @@ services:
               kind: "NVIDIA-GPU"
               value: 2
 ```
+
+### GitHub Issues Tracking Swarm GPU Support
+
+- [Add support for devices with "service create"](https://github.com/moby/swarmkit/issues/1244). Opened July 2016
+- [Proposal: Device Support](https://github.com/moby/swarmkit/issues/2682). Opened July 2018
+- [Add support for devices in swarm](https://github.com/moby/moby/pull/44695). PR opened December 2022. Addresses the two issues above.

@@ -115,7 +115,7 @@ Execute the following commands on the node you wish to be your "Manager" node, t
   docker compose -f docker-compose.yaml -f docker/docker-compose.terachem.yaml up -d --build
   ```
 
-This will run TeraChem in unlicensed mode. If you'd like to use a license uncomment the `${TERACHEM_LICENSE_PATH}:/terachem/license.key` line in `docker/docker-compose.terachem.yaml` and add `TERACHEM_LICENSE_PATH=/path/to/your/license.key` using the path on your local machine containing the license.
+This will run TeraChem in unlicensed mode. If you'd like to use a license uncomment the `${TERACHEM_LICENSE_PATH}:/terachem/license.key` line in `docker/docker-compose.terachem.yaml` and add `TERACHEM_LICENSE_PATH=/path/to/your/license.key` to a `.env` file in the root of the project using the path on your local machine containing the license.
 
 - Send work to TeraChem by modifying any of the `examples` scripts to use `terachem_fe` instead of `psi4`.
 - Run the `examples/terachem.py` script to see how to request files back from TeraChem
@@ -144,10 +144,12 @@ GPU support for Docker Swarm can be implemented multiple ways. We will demonstra
 
 - Restart docker on each node `sudo service docker restart`
 
-- Run the following command to deploy BigChem and TeraChem to all nodes.
+- Run the following command to deploy BigChem and TeraChem to all nodes. **Note the second docker-compose file has a different name than the single-node file, `docker-compose.terachem.SWARM.yaml`.**
+
   ```sh
   docker stack deploy -c docker-compose.yaml -c docker/docker-compose.terachem.swarm.yaml --prune bigchem
   ```
+
 - BigChem and TeraChem will now be running on all nodes. It may take a few moments for the services to start since both images are large and will need to be downloaded and decompressed on all nodes.
 
 ## Getting into the Details
