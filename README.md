@@ -95,6 +95,12 @@ Execute the following commands on the node you wish to be your "Manager" node, t
   poetry run python -i examples/energy.py
   ```
 
+- NOTE: If the example scripts are hanging without printing out any status or completing it may be a `localhost` networking issue. Depending on your system configuration `localhost` may be resolving to an ipv4 or ipv6 address. If you deployed your swarm using an ipv4 address yet `localhost` refers to an `ipv6` address on your machine, you won't be able to talk to the broker/backend at `localhost`. Usually just the backend has issues. Try the following to explicitly connect to the backend at `127.0.0.1`. Add the `bigchem_broker_url=amqp://127.0.0.1` as well, if needed.
+
+  ```sh
+  bigchem_backend_url=redis://127.0.0.1/0 python examples/energy.py
+  ```
+
 - Shutdown BigChem
 
   ```sh
