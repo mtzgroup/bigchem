@@ -9,6 +9,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 
 - Multiple scripts to `/examples/` directory to show basic utilization of BigChem.
+- [docs/swarm-gpu.md](./docs/swarm-gpus.md) write up covering GPU support in Docker Swarm
+- TeraChem compose and swarm yaml specifications
+- Quickstart documentation to README.md
+
+### Changed
+
+- Dropped `docker-compose` from yaml filenames in `/docker` to make commands less verbose.
+- Modified `docker-compose.yaml` to work for both `compose` and `swarm`
 
 ## [0.4.0] - 2023-02-3
 

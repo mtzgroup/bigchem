@@ -112,10 +112,10 @@ Execute the following commands on the node you wish to be your "Manager" node, t
 - Same as above but use the following instead of `docker compose up -d --build`
 
   ```sh
-  docker compose -f docker-compose.yaml -f docker/docker-compose.terachem.yaml up -d --build
+  docker compose -f docker-compose.yaml -f docker/terachem.yaml up -d --build
   ```
 
-This will run TeraChem in unlicensed mode. If you'd like to use a license uncomment the `${TERACHEM_LICENSE_PATH}:/terachem/license.key` line in `docker/docker-compose.terachem.yaml` and add `TERACHEM_LICENSE_PATH=/path/to/your/license.key` to a `.env` file in the root of the project using the path on your local machine containing the license.
+This will run TeraChem in unlicensed mode. If you'd like to use a license uncomment the `${TERACHEM_LICENSE_PATH}:/terachem/license.key` line in `docker/terachem.yaml` and add `TERACHEM_LICENSE_PATH=/path/to/your/license.key` to a `.env` file in the root of the project using the path on your local machine containing the license.
 
 - Send work to TeraChem by modifying any of the `examples` scripts to use `terachem_fe` instead of `psi4`.
 - Run the `examples/terachem.py` script to see how to request files back from TeraChem
@@ -144,10 +144,10 @@ GPU support for Docker Swarm can be implemented multiple ways. We will demonstra
 
 - Restart docker on each node `sudo service docker restart`
 
-- Run the following command to deploy BigChem and TeraChem to all nodes. **Note the second docker-compose file has a different name than the single-node file, `docker-compose.terachem.SWARM.yaml`.**
+- Run the following command to deploy BigChem and TeraChem to all nodes. **Note the second docker-compose file has a different name than the single-node file, `terachem.SWARM.yaml`.**
 
   ```sh
-  docker stack deploy -c docker-compose.yaml -c docker/docker-compose.terachem.swarm.yaml --prune bigchem
+  docker stack deploy -c docker-compose.yaml -c docker/terachem.swarm.yaml --prune bigchem
   ```
 
 - BigChem and TeraChem will now be running on all nodes. It may take a few moments for the services to start since both images are large and will need to be downloaded and decompressed on all nodes.
@@ -238,10 +238,10 @@ If you want to scale your worker subprocesses locally, uncomment and adjust the 
 
 If you want to add additional Quantum Chemistry programs (or any program!) to the worker, modify the `docker/worker.dockerfile` to install the program and then rebuild the image by running `docker compose up -d --build`.
 
-If you have a GPU on your machine and want to run TeraChem as part of BigChem, include `docker/docker-compose.terachem.yaml` when you start BigChem. See the [TeraChem/GPU Section Above](#💻--💪-run-bigchem-on-a-single-node-with-terachem-gpu-support) above for more details.
+If you have a GPU on your machine and want to run TeraChem as part of BigChem, include `docker/terachem.yaml` when you start BigChem. See the [TeraChem/GPU Section Above](#💻--💪-run-bigchem-on-a-single-node-with-terachem-gpu-support) above for more details.
 
 ```sh
-docker compose -f docker-compose.yaml -f docker/docker-compose.terachem.yaml up -d --build
+docker compose -f docker-compose.yaml -f docker/terachem.yaml up -d --build
 ```
 
 ### Deployment
@@ -252,9 +252,9 @@ All configurable environment variables for BigChem can be found in `bigchem/conf
 
 #### Broker and Backend
 
-The `broker` and `backend` need to be deployed somewhere that `workers` can connect to via a TCP connection. This means they can be deployed on a local cluster where workers will run, or on a remote server (like a cloud server) that has a public IP address and is reachable from anywhere. If you are deploying your `broker` and `backend` on a cloud service and connecting to them over the open internet we strongly recommend you use `TLS` connections to secure communication between your `workers`, `broker`, and `backend`. For an example of how to deploy a `broker` and `backend` securely behind a [Traefik](https://traefik.io/) reverse proxy that handles `TLS` for you, see `docker/docker-compose.web.yaml` and follow the instructions below. The configuration for running a Traefik reverse proxy can be found [here](https://github.com/mtzgroup/traefik-reverse-proxy).
+The `broker` and `backend` need to be deployed somewhere that `workers` can connect to via a TCP connection. This means they can be deployed on a local cluster where workers will run, or on a remote server (like a cloud server) that has a public IP address and is reachable from anywhere. If you are deploying your `broker` and `backend` on a cloud service and connecting to them over the open internet we strongly recommend you use `TLS` connections to secure communication between your `workers`, `broker`, and `backend`. For an example of how to deploy a `broker` and `backend` securely behind a [Traefik](https://traefik.io/) reverse proxy that handles `TLS` for you, see `docker/web.yaml` and follow the instructions below. The configuration for running a Traefik reverse proxy can be found [here](https://github.com/mtzgroup/traefik-reverse-proxy).
 
-If you want to secure your broker/backend with usernames/passwords create the following files and populate with their correct secrets and then reference them in your `docker-compose.yaml` file as in `docker/docker-compose.web.yaml`.
+If you want to secure your broker/backend with usernames/passwords create the following files and populate with their correct secrets and then reference them in your `docker-compose.yaml` file as in `docker/web.yaml`.
 
 - `rabbit.env`
 
@@ -342,7 +342,7 @@ Workers can be removed by running:
 docker stack rm bigchem
 ```
 
-For more sophisticated deployments you can tune how many workers run on each node, which queues each worker listens to (the `broker` can host multiple queues and workers can listen to one, many, or all of them, `Tasks` can be sent to specific queues by end users). And you can tune specific environment variables, like which GPU to use, for each individual worker. To see an example of a more sophisticated deployment see `docker/docker-compose.xstream.yaml`. This deployment runs workers in "replicated" mode (as opposed to global mode) to have more than one worker per node, makes use of constraints like the hostname of the node to determine worker placement, and uses dynamic environment variables so that each worker is assigned exactly one GPU to use for calculations on nodes that contain multiple GPUs. The `XStream` deployment allows independent scaling of workers on each node using the `docker service scale` command. Using only a few lines of configuration, one can deploy 88 workers across 88 GPUs on 6 different nodes with unique environment variables for each worker using a single command: `docker stack deploy -c docker-compose.xstream.yaml --prune bigchem`. See [Swarm GPUs](./docs/swarm-gpus.md) for more details on how to configure GPU support for Docker Swarm.
+For more sophisticated deployments you can tune how many workers run on each node, which queues each worker listens to (the `broker` can host multiple queues and workers can listen to one, many, or all of them, `Tasks` can be sent to specific queues by end users). And you can tune specific environment variables, like which GPU to use, for each individual worker. To see an example of a more sophisticated deployment see `docker/xstream.yaml`. This deployment runs workers in "replicated" mode (as opposed to global mode) to have more than one worker per node, makes use of constraints like the hostname of the node to determine worker placement, and uses dynamic environment variables so that each worker is assigned exactly one GPU to use for calculations on nodes that contain multiple GPUs. The `XStream` deployment allows independent scaling of workers on each node using the `docker service scale` command. Using only a few lines of configuration, one can deploy 88 workers across 88 GPUs on 6 different nodes with unique environment variables for each worker using a single command: `docker stack deploy -c docker/xstream.yaml --prune bigchem`. See [Swarm GPUs](./docs/swarm-gpus.md) for more details on how to configure GPU support for Docker Swarm.
 
 If you want to build a custom worker image with additional `Tasks`, `Algorithms`, or Quantum Chemistry programs you can modify `bigchem/tasks.py` and/or `bigchem/algos.py` and build a new image running the following from the root directory. Note that algorithms do not need to be written in the BigChem repo or deployed to workers. They can be written in any script without needing to deploy it to BigChem since algorithms are composed of `Tasks` that BigChem already knows about and orchestration primitives (`group`/`chain`/`chord`) that simply tell BigChem how to execute those `Tasks`.
 
