@@ -8,6 +8,7 @@
         "kombu",
         "qcel",
         "qceljson",
+        "Quickstart",
         "rdkit",
         "reqs",
         "Tera",
