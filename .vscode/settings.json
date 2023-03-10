@@ -1,11 +1,15 @@
 {
     "python.formatting.provider": "black",
     "cSpell.words": [
+        "amqp",
         "amqps",
         "berny",
         "bigchem",
+        "boto",
+        "Cuda",
         "freqs",
         "kombu",
+        "mtzgroup",
         "qcel",
         "qceljson",
         "Quickstart",

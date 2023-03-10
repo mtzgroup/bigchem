@@ -29,7 +29,8 @@ repos:
     rev: v0.961
     hooks:
       - id: mypy
-        additional_dependencies: [tokenize-rt==3.2.0, pydantic>=1.0.0]
+        additional_dependencies:
+          [tokenize-rt==3.2.0, pydantic>=1.0.0, types-paramiko]
   - repo: local
     hooks:
       - id: tests

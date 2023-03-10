@@ -49,3 +49,11 @@ with open("tc.out", "w") as f:  # "w" for text data
 
 print(result)
 print("Check your directory for a 'c0', 'geom.molden', and 'tc.out' file.")
+
+# This command is not necessary. Sometime a reverse proxy holds open a connection.
+# This closes it gracefully. If instead the following error is raised when the script
+# exits it is not a problem:
+# 'ImportError: sys.meta_path is None, Python is likely shutting down'
+# It just means the redis client was holding open a connection and did not get a chance
+# to close it before python exited.
+future_result.backend.client.connection_pool.disconnect()

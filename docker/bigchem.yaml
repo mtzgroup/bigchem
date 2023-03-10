@@ -1,0 +1,91 @@
+# A union of the docker-compose.yaml and terachem.swarm.yaml files for a single file
+# deployment of BigChem to any Docker Swarm.
+
+# Deploy BigChem (with TeraChem and TeraChem frontend) across nodes. If you do not want
+# to deploy TeraChem comment out the "terachem" and "terachem-frontend" services below.
+
+# If you want workers to connect to a BigChem broker/backend running elsewhere, comment
+# out the broker and backend services and set set bigchem_broker_url and
+# bigchem_backend_url in this file or as environment variables using a .env file. See
+# docker/xstream.yaml for an example.
+
+# To run TeraChem in licensed mode copy a license.key file to the Swarm Manager node
+# and run "docker secret create terachem_license /path/to/license.key", the uncomment
+# the "secrets" yaml block in the TeraChem service below.
+
+version: "3.8"
+
+services:
+  broker:
+    image: rabbitmq:3.11-management-alpine
+    hostname: rmq-host1
+    ports:
+      - 5672:5672
+      - 15672:15672
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+    volumes:
+      - broker:/var/lib/rabbitmq
+
+  backend:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - backend:/data
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+
+  worker:
+    image: mtzgroup/bigchem-worker
+    environment:
+      - bigchem_broker_url=amqp://broker
+      - bigchem_backend_url=redis://backend/0
+      # So worker communicates with TeraChem and TC Frontend on its same node
+      - TERACHEM_FE_HOST={{.Node.Hostname}}-terachem-frontend
+      - TERACHEM_PBS_HOST={{.Node.Hostname}}-terachem
+    volumes:
+      - worker:/tmp
+    deploy:
+      mode: global
+
+  terachem:
+    # Must use older, Cuda 10.2 image on AWS p2 instances for some reason...
+    image: mtzgroup/terachem:1.9-2022.03-dev-cuda10.2-sm_37-sm_52-sm_60
+    hostname: "{{.Node.Hostname}}-terachem"
+    # secrets:
+    #   - source: terachem_license
+    #     target: /terachem/license.key
+    ports:
+      - 11111:11111
+    volumes:
+      - terachem:/scratch
+    deploy:
+      mode: global
+
+  terachem-frontend:
+    image: mtzgroup/terachem-frontend:0.2.0-noproxy
+    hostname: "{{.Node.Hostname}}-terachem-frontend"
+    environment:
+      - WORKER_PROCESSES=1
+      - AUTOINDEX_FORMAT=json
+    ports:
+      - 8080:80
+    volumes:
+      - terachem:/usr/share/nginx/html
+    deploy:
+      mode: global
+
+secrets:
+  terachem_license:
+    external: true
+
+volumes:
+  broker:
+  backend:
+  terachem:
+  worker:
