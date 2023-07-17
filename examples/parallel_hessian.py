@@ -1,18 +1,21 @@
-import qcengine as qcng
-from qcelemental.models import AtomicInput
+from pathlib import Path
+
+from qcio import Molecule, ProgramInput
 
 from bigchem.algos import parallel_hessian
 
-# Instantiate Molecule
-water = qcng.get_molecule("hydrogen")
+current_dir = Path(__file__).resolve().parent
 
-# Create AtomicInput
-my_input = AtomicInput(
-    molecule=water, model={"method": "b3lyp", "basis": "6-31g"}, driver="hessian"
+# Create the molecule
+h2o = Molecule.open(current_dir / "h2o.xyz")
+
+# Create ProgramInput
+my_input = ProgramInput(
+    molecule=h2o, model={"method": "b3lyp", "basis": "6-31g"}, calctype="hessian"
 )
 
 # Submit computation to BigChem
-future_result = parallel_hessian(my_input, "psi4").delay()
+future_result = parallel_hessian("psi4", my_input).delay()
 
 # Check status (optional)
 print(future_result.status)

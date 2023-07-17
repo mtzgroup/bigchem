@@ -13,7 +13,7 @@ import math
 from pathlib import Path
 from typing import List, Optional
 
-from qcelemental.models import AtomicInput, Molecule
+from qcio import Molecule, ProgramInput
 
 from bigchem.tasks import compute
 
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     for path in directory.iterdir():
         if len(molecules) == (limit or math.inf):
             break
-        molecule = Molecule.from_file(path, extras={"name": str(path.stem)})
+        molecule = Molecule.open(path, extras={"name": str(path.stem)})
         molecules.append(molecule)
 
     print("Done!")
@@ -50,12 +50,12 @@ if __name__ == "__main__":
     print("Submitting computations to BigChem using...")
     for molecule in molecules:
         fr = compute.delay(
-            AtomicInput(
+            program,
+            ProgramInput(
                 molecule=molecule,
                 model={"method": METHOD, "basis": BASIS},
                 driver=DRIVER,
             ),
-            program,
         )
         print(f"Submitted {molecule.extras['name']}")
         future_results.append(fr)
@@ -72,17 +72,17 @@ if __name__ == "__main__":
         result = fr.get()
         # Delete result from backend
         fr.forget()
-        with open(results / f"{result.molecule.extras['name']}.json", "w") as f:
-            f.write(result.json())
-        print(f"Collected result for {result.molecule.extras['name']}")
+        result.save(f"{result.input_data.molecule.extras['name']}.json")
+        print(f"Collected result for {result.input_data.molecule.extras['name']}")
 
     print("Done!")
     print(f"Your results are stored as JSON files in {results.absolute()}")
     print("Results can be opened and explored in python by running: ")
-    print(">>> from qcelemental.models import AtomicResult")
-    print(">>> result = AtomicResult.parse_file('path_to_file.json')")
+    print(">>> from qcio import SinglePointOutput")
+    print(">>> output = SinglePointOutput.open('path_to_file.json')")
     print(
-        "Explore results and properties at result.return_result, result.properties, and result.stdout"
+        "Explore results and properties at output.return_result, output.results, "
+        "and output.stdout"
     )
 
     # This command is unnecessary. It just cleans up keep-alive connections if the

@@ -9,7 +9,7 @@ Most Quantum Chemistry packages (including those used by default in BigChem's wo
 If you'd like to play with BigChem without executing QC programs on your ARM machine, comment out the `worker` in the `docker-compose.yaml` file, then run the following commands to run a local version of a BigChem worker that can execute the `add` and `csum` `Tasks` to explore how BigChem works. Note Docker has updated the `docker-compose` command to be a subcommand of the Docker CLI `docker compose` (no `-`). If you are running an older version of Docker Desktop you may still need to use the `docker-compose` command instead.
 
 ```sh
-docker compose up -d
+docker compose up -d --build
 poetry install
 poetry run celery -A bigchem.tasks worker --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
 ```

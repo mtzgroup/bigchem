@@ -1,6 +1,6 @@
 # Dockerfile for BigChem Worker. Contains BigChem code and CPU-only QC Packages
 # Follows https://stackoverflow.com/a/54763270/5728276
-FROM mambaorg/micromamba:1.3-jammy
+FROM mambaorg/micromamba:1.4-jammy
 
 LABEL maintainer="Colton Hicks <colton@coltonhicks.com>"
 
@@ -11,7 +11,6 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=off \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
-    POETRY_VERSION=1.3.1 \
     # Install to system python, no need for venv
     POETRY_VIRTUALENVS_CREATE=false
 
@@ -35,7 +34,7 @@ ARG MAMBA_DOCKERFILE_ACTIVATE=1  # (otherwise python will not be found)
 # Install BigChem
 COPY --chown=$MAMBA_USER:$MAMBA_USER pyproject.toml poetry.lock ./
 RUN python -m pip install --upgrade pip && \ 
-    python -m pip install "poetry==$POETRY_VERSION" && \
+    python -m pip install poetry && \
     poetry install --only main --no-interaction --no-ansi
 
 # Copy in code

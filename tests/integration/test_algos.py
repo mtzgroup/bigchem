@@ -1,5 +1,11 @@
 import pytest
-from qcelemental.models import AtomicInput, AtomicResult, OptimizationResult
+from qcio import (
+    CalcType,
+    DualProgramArgs,
+    OptimizationOutput,
+    ProgramInput,
+    SinglePointOutput,
+)
 
 from bigchem.algos import multistep_opt, parallel_frequency_analysis, parallel_hessian
 from bigchem.canvas import group
@@ -7,9 +13,9 @@ from bigchem.canvas import group
 
 # NOTE: Not checking aggressively for correctness. Check that with test_hessian_task,
 # may want to improve in future.
-@pytest.mark.skip("Long test")
+@pytest.mark.integration
 @pytest.mark.parametrize(
-    "driver,model,engine,batch",
+    "calctype,model,program,batch",
     (
         (
             "hessian",
@@ -26,13 +32,13 @@ from bigchem.canvas import group
     ),
 )
 @pytest.mark.timeout(450)
-def test_parallel_hessian(water, driver, model, engine, batch):
-    atomic_input = AtomicInput(
-        molecule=water,
-        driver=driver,
+def test_parallel_hessian(hydrogen, calctype, model, program, batch):
+    prog_input = ProgramInput(
+        molecule=hydrogen,
+        calctype=calctype,
         model=model,
     )
-    sig = parallel_hessian(atomic_input, engine)
+    sig = parallel_hessian(program, prog_input)
     if batch:
         sig = group([sig] * 2)
 
@@ -42,19 +48,18 @@ def test_parallel_hessian(water, driver, model, engine, batch):
     if not batch:
         result = [result]
     for r in result:
-        assert isinstance(r, AtomicResult)
+        assert isinstance(r, SinglePointOutput)
 
 
-@pytest.mark.skip("Long test")
+@pytest.mark.integration
 @pytest.mark.parametrize(
-    "driver,model,engine,kwargs,batch",
+    "calctype,model,program,kwargs,batch",
     (
         (
-            "properties",
+            "energy",
             {"method": "HF", "basis": "sto-3g"},
             "psi4",
             {
-                "energy": 1.5,
                 "temperature": 310,
                 "pressure": 1.2,
             },
@@ -63,13 +68,14 @@ def test_parallel_hessian(water, driver, model, engine, batch):
     ),
 )
 @pytest.mark.timeout(450)
-def test_parallel_frequency_analysis(water, driver, model, engine, kwargs, batch):
-    atomic_input = AtomicInput(
+def test_parallel_frequency_analysis(water, calctype, model, program, kwargs, batch):
+    # Must use water or some other non-linear molecule
+    prog_input = ProgramInput(
         molecule=water,
-        driver=driver,
+        calctype=calctype,
         model=model,
     )
-    sig = parallel_frequency_analysis(atomic_input, engine, **kwargs)
+    sig = parallel_frequency_analysis(program, prog_input, **kwargs)
     if batch:
         sig = group([sig] * 2)
 
@@ -79,34 +85,36 @@ def test_parallel_frequency_analysis(water, driver, model, engine, kwargs, batch
     if not batch:
         result = [result]
     for r in result:
-        assert isinstance(r, AtomicResult)
+        assert isinstance(r, SinglePointOutput)
 
 
 @pytest.mark.timeout(65)
 def test_multistep_opt(hydrogen):
     """See note in test_compute re: timeout"""
     # Define multi-package input_specs
-    input_specs = [
-        {
-            "keywords": {"program": "xtb"},
-            "input_specification": {"model": {"method": "GFN2-xTB"}},
-        },
-        {
-            "keywords": {"program": "psi4"},
-            "input_specification": {"model": {"method": "b3lyp", "basis": "sto-3g"}},
-        },
+    program_args = [
+        DualProgramArgs(
+            subprogram="xtb",
+            subprogram_args={"model": {"method": "GFN2-xTB"}},
+        ),
+        DualProgramArgs(
+            subprogram="psi4",
+            subprogram_args={"model": {"method": "b3lyp", "basis": "sto-3g"}},
+        ),
     ]
     # Submit job
-    future_result = multistep_opt(hydrogen, "geometric", input_specs)()
+    future_result = multistep_opt(
+        hydrogen, CalcType.optimization, ["geometric", "geometric"], program_args
+    )()
     result = future_result.get()
 
     # Assertions
     assert future_result.ready() is True
-    assert isinstance(result, OptimizationResult)
+    assert isinstance(result, OptimizationOutput)
 
     # Check that the final optimization is performed with the last input_spec
-    assert result.keywords == input_specs[-1]["keywords"]
+    assert result.input_data.subprogram == program_args[-1].subprogram
     assert (
-        result.input_specification.model.dict()
-        == input_specs[-1]["input_specification"]["model"]
+        result.input_data.subprogram_args.model
+        == program_args[-1].subprogram_args.model
     )

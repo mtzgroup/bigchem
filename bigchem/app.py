@@ -1,9 +1,6 @@
 import ssl
 
 from celery import Celery
-from kombu.serialization import register
-from qcelemental.util.serialization import json_dumps as qcel_json_dumps
-from qcelemental.util.serialization import json_loads as qcel_json_loads
 
 from .config import settings
 
@@ -13,16 +10,6 @@ bigchem = Celery(
     "bigchem",
     broker=settings.bigchem_broker_url,
     backend=settings.bigchem_backend_url,
-)
-
-# To serialize more complex data structures from QCElemental as json (like AtomicResult
-# objs)
-register(
-    "qceljson",
-    qcel_json_dumps,
-    qcel_json_loads,
-    content_type="application/x-qceljson",
-    content_encoding="utf-8",
 )
 
 bigchem.conf.update(
