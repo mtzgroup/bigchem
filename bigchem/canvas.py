@@ -1,4 +1,4 @@
-from celery.canvas import (  # noqa
+from celery.canvas import (  # noqa: F401
     Signature,
     chain,
     chord,

@@ -1,30 +1,31 @@
 """Top level functions for parallelized BigChem algorithms"""
-from typing import Any, Dict, List
+from typing import List, Union
 
-from celery.canvas import Signature, group
-from qcelemental.models import AtomicInput, DriverEnum, Molecule
-
-from .config import settings
-from .helpers import _gradient_inputs
-from .tasks import (
-    compute,
-    compute_procedure,
-    frequency_analysis,
-    hessian,
-    result_to_input,
+from qcio import (
+    CalcType,
+    DualProgramArgs,
+    DualProgramInput,
+    Molecule,
+    ProgramInput,
+    QCProgramArgs,
 )
+
+from .canvas import Signature, group
+from .config import settings
+from .tasks import assemble_hessian, compute, frequency_analysis, output_to_input
+from .utils import _gradient_inputs
 
 
 def parallel_hessian(
-    input_data: AtomicInput,
-    engine: str,
+    program: str,
+    prog_input: ProgramInput,
     dh: float = settings.bigchem_default_hessian_dh,
 ) -> Signature:
     """Create parallel hessian signature
 
     Params:
-        input_data: AtomicInput with driver=hessian
-        engine: Compute engine to use for gradient calculations
+        program: Compute engine to use for gradient calculations
+        prog_input: ProgramInput with driver=hessian
         dh: Displacement for finite difference computation
 
     Note: Creates a Celery Chord where gradients are computed in parallel, then the
@@ -35,30 +36,32 @@ def parallel_hessian(
         geometry. It is used to create the final AtomicResult object for the hessian.
     """
     assert (
-        input_data.driver == DriverEnum.hessian
-    ), f"input_data.driver should be '{DriverEnum.hessian}', got '{input_data.driver}'"
+        prog_input.calctype == CalcType.hessian
+    ), f"input_data.driver should be '{CalcType.hessian}', got '{prog_input.calctype}'"
 
-    gradients = _gradient_inputs(input_data, dh)
+    gradients = _gradient_inputs(prog_input, dh)
     # Perform basic energy computation on original molecule as final item in group
-    energy_calc = input_data.dict()
-    energy_calc["driver"] = "energy"
-    gradients.append(AtomicInput(**energy_calc))
+    energy_calc = prog_input.dict()
+    energy_calc["calctype"] = "energy"
+    gradients.append(ProgramInput(**energy_calc))
 
     # | is chain operator in celery
-    return group(compute.s(inp, engine) for inp in gradients) | hessian.s(dh)
+    return group(compute.s(program, p_inp) for p_inp in gradients) | assemble_hessian.s(
+        dh
+    )
 
 
 def parallel_frequency_analysis(
-    input_data: AtomicInput,
-    engine: str,
+    program: str,
+    prog_input: ProgramInput,
     dh: float = settings.bigchem_default_hessian_dh,
     **kwargs,
 ) -> Signature:
     """Create frequency_analysis signature leveraging parallel hessian
 
     Params:
-        input_data: AtomicInput with driver=properties
-        engine: Compute engine to use for gradient calculations to generate hessian
+        input_data: ProgramInput with driver=properties
+        program: Program to use for gradient calculations to generate hessian
         dh: Displacement for finite difference computation of hessian
         kwargs: Keywords passed to geomeTRIC's frequency_analysis function
             energy: float - Electronic energy passed to the harmonic free energy module
@@ -69,45 +72,43 @@ def parallel_frequency_analysis(
                 default: 1.0
 
     """
-    assert input_data.driver == DriverEnum.properties, (
-        f"input_data.driver should be '{DriverEnum.properties}', got "
-        f"'{input_data.driver}'"
-    )
-    hessian_inp = input_data.dict()
-    hessian_inp["driver"] = DriverEnum.hessian
-    hessian_sig = parallel_hessian(AtomicInput(**hessian_inp), engine, dh)
+    hessian_inp = prog_input.dict()
+    hessian_inp["calctype"] = CalcType.hessian
+    hessian_sig = parallel_hessian(program, ProgramInput(**hessian_inp), dh)
     # | is celery chain operator
     return hessian_sig | frequency_analysis.s(**kwargs)
 
 
 def multistep_opt(
-    initial_molecule: Molecule,
-    procedure: str,
-    input_specs: List[Dict[str, Any]],
+    molecule: Molecule,
+    calctype: CalcType,
+    programs: List[str],
+    program_args: List[Union[QCProgramArgs, DualProgramArgs]],
+    **kwargs,
 ) -> Signature:
-    """Use multiple QC packages to sequentially optimize a molecule
+    """Use multiple steps to sequentially optimize a molecule
 
     Params:
-        initial_molecule: The initial Molecule on which to begin an optimization
-        procedure: The name of the procedure to run ("geometric" or "berny")
-        input_specs: List of dicts containing the parameters for each optimization.
-            Keys and values correspond to the arguments required to create an
-            OptimizationInput object minus 'initial_molecule'. E.g.,
-            {
-                "keywords": {"program": "name_of_gradient_engine"},
-                "input_specification": {"model": {"method": "b3lyp", "basis": "6-31g"}}
-            }
+        program: The name of the program use for optimization
+        prog_inputs: Program inputs for each optimization step.
+        kwargs: All kwargs for qcop.compute() function
     """
     # Create first optimization in the chain
-    task_chain = compute_procedure.s(
-        {"initial_molecule": initial_molecule, **input_specs[0]}, procedure
-    )
+    if isinstance(program_args[0], QCProgramArgs):
+        first_opt = ProgramInput(
+            calctype=calctype, molecule=molecule, **program_args[0].dict()
+        )
+    else:
+        first_opt = DualProgramInput(
+            calctype=calctype, molecule=molecule, **program_args[0].dict()
+        )
+    task_chain = compute.s(programs[0], first_opt, **kwargs)
 
     # Add subsequent optimizations to the chain
-    for input_spec in input_specs[1:]:  # all input specs after the first
+    for program, prog_args in zip(programs[:1], program_args[1:]):
         task_chain = (
             task_chain
-            | result_to_input.s(**input_spec)
-            | compute_procedure.s(procedure)
+            | output_to_input.s(calctype, prog_args)
+            | compute.s(program, **kwargs)
         )
     return task_chain

@@ -1,83 +1,83 @@
+import json
+
 import numpy as np
 import pytest
-from qcelemental.models import (
-    AtomicInput,
-    AtomicResult,
-    FailedOperation,
-    OptimizationInput,
-    OptimizationResult,
+from qcio import (
+    CalcType,
+    DualProgramArgs,
+    OptimizationOutput,
+    ProgramInput,
+    SinglePointOutput,
 )
-from qcelemental.util.serialization import json_loads
 
 from bigchem.canvas import group  # type:ignore
-from bigchem.tasks import (
-    compute,
-    compute_procedure,
-    frequency_analysis,
-    hessian,
-    result_to_input,
-)
+from bigchem.tasks import assemble_hessian, compute, frequency_analysis, output_to_input
 
 
 def test_hessian_task(test_data_dir, water):
     """Ensure that my hessian implementation matches previous result from Umberto"""
 
     with open(test_data_dir / "hessian_gradients.json") as f:
-        gradients = [AtomicResult(**g) for g in json_loads(f.read())]
+        gradients = [SinglePointOutput(**g) for g in json.load(f)]
 
     # Testing task in foreground since no QC package is required
     # 5.03e-3 was the dh used to create these gradients
-    result = hessian(gradients, 5.0e-3)
+    result = assemble_hessian(gradients, 5.0e-3)
 
-    answer = AtomicResult.parse_file(test_data_dir / "hessian_answer.json")
+    answer = SinglePointOutput.parse_file(test_data_dir / "hessian_answer.json")
+
     np.testing.assert_almost_equal(
-        result.return_result, answer.return_result, decimal=5
+        result.return_result, answer.return_result, decimal=7
     )
-    assert result.driver == "hessian"
+    assert result.input_data.calctype == "hessian"
 
 
 def test_frequency_analysis_task(test_data_dir):
-    hessian_ar = AtomicResult.parse_file(test_data_dir / "hessian_answer.json")
-    result = frequency_analysis(hessian_ar)
+    hessian_ar = SinglePointOutput.parse_file(test_data_dir / "hessian_answer.json")
+    output = frequency_analysis(hessian_ar)
 
-    answer = AtomicResult.parse_file(test_data_dir / "frequency_analysis_answer.json")
+    answer = SinglePointOutput.parse_file(
+        test_data_dir / "frequency_analysis_answer.json"
+    )
 
     np.testing.assert_almost_equal(
-        result.return_result["freqs_wavenumber"],
-        answer.return_result["freqs_wavenumber"],
+        output.results.freqs_wavenumber,
+        answer.results.freqs_wavenumber,
         decimal=0,
     )
     np.testing.assert_almost_equal(
-        result.return_result["normal_modes_cart"],
-        answer.return_result["normal_modes_cart"],
-        decimal=0,
+        output.results.normal_modes_cartesian,
+        answer.results.normal_modes_cartesian,
+        decimal=6,
     )
     np.testing.assert_almost_equal(
-        result.return_result["g_total_au"],
-        answer.return_result["g_total_au"],
+        output.results.gibbs_free_energy,
+        answer.results.gibbs_free_energy,
         decimal=2,
     )
 
 
 def test_frequency_analysis_task_kwargs(test_data_dir):
-    hessian_ar = AtomicResult.parse_file(test_data_dir / "hessian_answer.json")
-    answer = AtomicResult.parse_file(test_data_dir / "frequency_analysis_answer.json")
+    hessian_ar = SinglePointOutput.parse_file(test_data_dir / "hessian_answer.json")
+    answer = SinglePointOutput.parse_file(
+        test_data_dir / "frequency_analysis_answer.json"
+    )
 
-    result = frequency_analysis(hessian_ar, energy=1.5, temperature=310, pressure=1.2)
+    output = frequency_analysis(hessian_ar, temperature=310, pressure=1.2)
 
     np.testing.assert_almost_equal(
-        result.return_result["freqs_wavenumber"],
-        answer.return_result["freqs_wavenumber"],
+        output.results.freqs_wavenumber,
+        answer.results.freqs_wavenumber,
         decimal=0,
     )
     np.testing.assert_almost_equal(
-        result.return_result["normal_modes_cart"],
-        answer.return_result["normal_modes_cart"],
-        decimal=0,
+        output.results.normal_modes_cartesian,
+        answer.results.normal_modes_cartesian,
+        decimal=7,
     )
     np.testing.assert_almost_equal(
-        result.return_result["g_total_au"],
-        1.5024387753853545,  # Different number from answer computed with no kwargs
+        output.results.gibbs_free_energy,
+        -76.38277740247364,  # Different number from answer computed with no kwargs
         decimal=2,
     )
 
@@ -100,10 +100,10 @@ def test_compute(hydrogen, program, model, keywords, batch):
     it's possible a few early misses on worker -> MQ connection results in the
     worker waiting up for 8 seconds (or longer) to retry connecting.
     """
-    atomic_input = AtomicInput(
-        molecule=hydrogen, driver="energy", model=model, keywords=keywords
+    prog_input = ProgramInput(
+        molecule=hydrogen, calctype="energy", model=model, keywords=keywords
     )
-    sig = compute.s(atomic_input, program)
+    sig = compute.s(program, prog_input)
     if batch:
         # Make list of inputs
         sig = group([sig] * 2)
@@ -119,111 +119,32 @@ def test_compute(hydrogen, program, model, keywords, batch):
     if not isinstance(result, list):
         result = [result]
     for r in result:
-        assert isinstance(r, AtomicResult)
+        assert isinstance(r, SinglePointOutput)
 
 
-@pytest.mark.parametrize(
-    "optimizer,model,keywords,batch",
-    (
-        (
-            "berny",
-            {"method": "HF", "basis": "sto-3g"},
-            {"program": "psi4", "maxsteps": 2},
-            False,
-        ),
-        (
-            "geometric",
-            {"method": "HF", "basis": "sto-3g"},
-            {"program": "psi4", "maxiter": 2},
-            False,
-        ),
-        ("geometric", {"method": "UFF"}, {"program": "rdkit", "maxiter": 2}, False),
-        ("geometric", {"method": "UFF"}, {"program": "rdkit", "maxiter": 2}, True),
-    ),
-)
-@pytest.mark.timeout(65)
-def test_compute_procedure_optimization(
-    hydrogen,
-    optimizer,
-    keywords,
-    model,
-    batch,
-):
-    """See note in test_compute re: timeout"""
-    optimization_input = OptimizationInput(
-        input_specification={"driver": "gradient", "model": model},
-        protocols={"trajectory": "all"},
-        initial_molecule=hydrogen,
-        keywords=keywords,
-    )
-
-    sig = compute_procedure.s(optimization_input, optimizer)
-    if batch:
-        sig = group([sig] * 2)
-
-    # Submit Job
-    future_result = sig.delay()
-    result = future_result.get()
-
-    # Assertions
-    assert future_result.ready() is True
-
-    # Check assertions about single results and groups
-    if not isinstance(result, list):
-        result = [result]
-    for r in result:
-        assert isinstance(r, OptimizationResult)
-
-
-def test_result_to_input_atomic_result(water):
-    result = AtomicResult(
-        molecule=water,
-        driver="energy",
-        provenance={"creator": "fake"},
-        success=True,
-        properties={},
-        model={"method": "b3lyp", "basis": "6-31g"},
-        return_result=-76.38506640227922,
-    )
-    # Not yet implemented. Remove this test once implemented
-    with pytest.raises(NotImplementedError):
-        result_to_input(result)
-
-
-def test_result_to_input_failed_operation(water):
-    fo = FailedOperation(
-        input_data="fake",
-        success=False,
-        error={"error_type": "issue", "error_message": "something went wrong"},
-    )
-    # Not yet implemented. Remove this test once implemented
-    with pytest.raises(ValueError):
-        result_to_input(fo)
-
-
-def test_result_to_input_optimization_result(water):
-    opt_result = OptimizationResult(
-        input_specification={"model": {"method": "b3lyp", "basis": "6-31g"}},
-        initial_molecule=water,
-        provenance={"creator": "fake"},
-        final_molecule=water,
-        trajectory=[],
-        success=True,
-        energies=[1, 2, 3],
-    )
-
-    new_spec = {
-        "keywords": {"program": "new_prog"},
-        "input_specification": {
-            "model": {"method": "new_methods", "basis": "new_basis"}
+def test_result_to_input_optimization_result(water, sp_output):
+    opt_result = OptimizationOutput(
+        input_data={
+            "model": {"method": "b3lyp", "basis": "6-31g"},
+            "molecule": water,
+            "calctype": CalcType.optimization,
         },
-        "extras": {"ex1": "ex1"},
-    }
-    new_input = result_to_input(opt_result, **new_spec)
-    assert (
-        new_input.input_specification.model.dict()
-        == new_spec["input_specification"]["model"]
+        provenance={"program": "fake-program"},
+        results={"trajectory": [sp_output]},
     )
 
-    assert new_input.keywords == new_spec["keywords"]
-    assert new_input.extras == new_spec["extras"]
+    program_args = DualProgramArgs(
+        **{
+            "keywords": {"program": "new_prog"},
+            "subprogram_args": {
+                "model": {"method": "new_methods", "basis": "new_basis"}
+            },
+            "subprogram": "new_subprogram",
+            "extras": {"ex1": "ex1"},
+        }
+    )
+    new_input = output_to_input(opt_result, CalcType.optimization, program_args)
+    assert new_input.subprogram_args.model.dict() == program_args.subprogram_args.model
+
+    assert new_input.keywords == program_args.keywords
+    assert new_input.extras == program_args.extras

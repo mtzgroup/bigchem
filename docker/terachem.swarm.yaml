@@ -1,4 +1,4 @@
-# For deploying one TeraChem isntance per node in swarm mode without needing to
+# For deploying one TeraChem instance per node in swarm mode without needing to
 # register GPUs with docker. See /docs/swarm-gpus.md for more details.
 
 version: "3.8"

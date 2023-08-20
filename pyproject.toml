@@ -8,20 +8,19 @@ homepage = "https://github.com/mtzgroup/bigchem"
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.7"
-celery = {extras = ["redis"], version = "^5.2.7"}
-qcengine = "0.26.0"
-pydantic = {extras = ["dotenv"], version = "^1.9.1"}
-qcelemental = "0.25.1"
+python = "^3.8.1"
+celery = { extras = ["redis"], version = "^5.2.7" }
+pydantic = { extras = ["dotenv"], version = "^1.9.1" }
 tcpb = ">=0.13.0"
-geometric = "1.0"
+geometric = ">=1.0.1"
 pyberny = "0.6.3"
+qcop = ">=0.3.2"
+qcio = ">=0.4.2"
 
 [tool.poetry.group.dev.dependencies]
-black = "^22.3.0"
-mypy = "^0.961"
+black = "^23.3.0"
+mypy = "^1.4.1"
 isort = "^5.10.1"
-flake8 = "^4.0.1"
 pytest = "^7.1.2"
 pre-commit = "^2.19.0"
 pytest-cov = "^3.0.0"
@@ -30,6 +29,7 @@ pytest-timeout = "^2.1.0"
 boto3 = "^1.26.82"
 paramiko = "^3.0.0"
 types-paramiko = "^3.0.0.4"
+ruff = "^0.0.278"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -37,6 +37,11 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 testpaths = "tests/"
+addopts = "-m 'not integration'"
+markers = [
+  "integration: marks tests as integration (deselect with '-m \"not integration\"')",
+]
+
 
 [tool.black]
 line-length = 88
@@ -48,14 +53,12 @@ line_length = 88
 multi_line_output = 3
 use_parentheses = true
 
+[tool.ruff.per-file-ignores]
+'bigchem/__init__.py' = ['F405', 'F403']
+
 [tool.coverage.run]
 branch = true
-omit = [
-  "*/tests/*",
-  "*/migrations/*",
-  "*site-packages*",
-  "*__init__.py",
-]
+omit = ["*/tests/*", "*/migrations/*", "*site-packages*", "*__init__.py"]
 
 [tool.mypy]
 plugins = "pydantic.mypy"

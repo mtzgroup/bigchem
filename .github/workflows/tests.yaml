@@ -9,9 +9,18 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build BigChem Worker and Start BigChem Services
         run: docker compose up -d --build
+      - uses: actions/setup-python@v4
+        name: Set up Python
+        with:
+          python-version: "3.8"
       - name: Install poetry
         run: pip install poetry
       - name: Install repo
         run: poetry install --no-interaction --no-ansi
       - name: Run tests
-        run: poetry run pytest --cov-report html:htmlcov --cov -v
+        run: bash scripts/tests.sh
+      - name: Upload coverage HTML
+        uses: actions/upload-artifact@v3
+        with:
+          name: htmlcov
+          path: htmlcov

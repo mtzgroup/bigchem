@@ -5,18 +5,19 @@ from typing import Optional
 from pydantic import BaseSettings
 
 
-class Settings(BaseSettings):
+class Settings(BaseSettings):  # type: ignore
     """Main Settings object for application.
 
     Never instantiate this class directly. Use the get_settings() method below.
 
-    Will read environment variables and docker secrets automatically and map to lowercase
+    Will read environment variables and docker secrets automatically and map to
+    lowercase
     https://pydantic-docs.helpmanual.io/usage/settings/
     """
 
-    # broker example: "amqps://admin123:supersecret987@mq-connect.dev.mtzlab.com:5671"; #  pragma: allowlist secret
+    # broker example: "amqps://admin123:supersecret987@mq-connect.dev.mtzlab.com:5671"; #  pragma: allowlist secret # noqa: E501
     bigchem_broker_url: str = "amqp://localhost"
-    # backend example: "rediss://:password123@redis.dev.mtzlab.com:6379/0?ssl_cert_reqs=CERT_NONE"; #  pragma: allowlist secret
+    # backend example: "rediss://:password123@redis.dev.mtzlab.com:6379/0?ssl_cert_reqs=CERT_NONE"; #  pragma: allowlist secret  # noqa: E501
     bigchem_backend_url: str = "redis://localhost/0"
     # Workers will grab this many tasks at once. Increase prefetch if tasks are small
     # relative to network overhead time.

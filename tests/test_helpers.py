@@ -1,13 +1,16 @@
-from qcelemental.models.results import AtomicInput
+from qcio import CalcType, ProgramInput
 
-from bigchem.helpers import _gradient_inputs
+from bigchem.utils import _gradient_inputs
 
 
 def test_gradient_inputs(water):
     dh = 1
 
     gradients = _gradient_inputs(
-        AtomicInput(molecule=water, model={"method": "fake"}, driver="hessian"), dh
+        ProgramInput(
+            molecule=water, model={"method": "fake"}, calctype=CalcType.hessian
+        ),
+        dh,
     )
 
     assert len(gradients) == (3 * 2 * len(water.symbols))
@@ -20,5 +23,5 @@ def test_gradient_inputs(water):
             geoms.append(modified_geom)
 
     for i, geom in enumerate(geoms):
-        assert gradients[i].driver == "gradient"
+        assert gradients[i].calctype == CalcType.gradient
         assert (gradients[i].molecule.geometry.flatten() == geom).all()

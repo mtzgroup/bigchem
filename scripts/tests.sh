@@ -6,7 +6,7 @@ set -x
 docker compose up -d --build
 
 # Run tests
-poetry run pytest --cov-report html:htmlcov --cov -v
+poetry run pytest --cov-report=term-missing --cov-report html:htmlcov --cov-config=pyproject.toml --cov=bigchem --cov=tests .
 
 # Stop docker containers
 docker compose down
