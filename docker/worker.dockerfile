@@ -1,6 +1,8 @@
-# Dockerfile for BigChem Worker. Contains BigChem code and CPU-only QC Packages
+# Dockerfile for BigChem Worker. Contains BigChem code and QC programs.
 # Follows https://stackoverflow.com/a/54763270/5728276
-FROM mambaorg/micromamba:1.4-jammy
+
+ARG BASE_IMAGE=mambaorg/micromamba:1.4-jammy
+FROM $BASE_IMAGE
 
 LABEL maintainer="Colton Hicks <colton@coltonhicks.com>"
 
@@ -31,7 +33,7 @@ RUN micromamba install -y -n base -f env.lock && \
     micromamba clean --all --yes
 ARG MAMBA_DOCKERFILE_ACTIVATE=1  # (otherwise python will not be found)
 
-# Install BigChem
+# Install BigChem dependencies
 COPY --chown=$MAMBA_USER:$MAMBA_USER pyproject.toml poetry.lock ./
 RUN python -m pip install --upgrade pip && \ 
     python -m pip install poetry && \

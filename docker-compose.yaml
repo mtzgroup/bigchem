@@ -55,6 +55,7 @@ services:
       # Mount in code so service just has to be restarted instead of rebuilt
       # when code changes
       - ./bigchem:/code/bigchem
+      # Mount worker volume to /tmp for scratch space
       - worker:/tmp
     # Only used when deployed in swarm mode
     deploy:
