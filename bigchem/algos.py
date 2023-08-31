@@ -41,7 +41,7 @@ def parallel_hessian(
 
     gradients = _gradient_inputs(prog_input, dh)
     # Perform basic energy computation on original molecule as final item in group
-    energy_calc = prog_input.dict()
+    energy_calc = prog_input.model_dump()
     energy_calc["calctype"] = "energy"
     gradients.append(ProgramInput(**energy_calc))
 
@@ -72,7 +72,7 @@ def parallel_frequency_analysis(
                 default: 1.0
 
     """
-    hessian_inp = prog_input.dict()
+    hessian_inp = prog_input.model_dump()
     hessian_inp["calctype"] = CalcType.hessian
     hessian_sig = parallel_hessian(program, ProgramInput(**hessian_inp), dh)
     # | is celery chain operator
@@ -96,11 +96,11 @@ def multistep_opt(
     # Create first optimization in the chain
     if isinstance(program_args[0], QCProgramArgs):
         first_opt = ProgramInput(
-            calctype=calctype, molecule=molecule, **program_args[0].dict()
+            calctype=calctype, molecule=molecule, **program_args[0].model_dump()
         )
     else:
         first_opt = DualProgramInput(
-            calctype=calctype, molecule=molecule, **program_args[0].dict()
+            calctype=calctype, molecule=molecule, **program_args[0].model_dump()
         )
     task_chain = compute.s(programs[0], first_opt, **kwargs)
 

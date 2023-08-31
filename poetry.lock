@@ -1545,66 +1545,54 @@ tests = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "qcio"
-version = "0.4.2"
+version = "0.5.0"
 description = "Beautiful and user friendly data structures for quantum chemistry."
 optional = false
-python-versions = "^3.8"
-files = []
-develop = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "qcio-0.5.0-py3-none-any.whl", hash = "sha256:dfa356db90e7ac3a645a57f22ce5b8dcbf67b2eafc8de976cd2126495e464774"},
+    {file = "qcio-0.5.0.tar.gz", hash = "sha256:f2fdf50115b6119a84b33366c39d3e4dc8ca410b08934168c206a546dd916c81"},
+]
 
 [package.dependencies]
 numpy = ">=1.20"
 pydantic = ">=2.0.0"
-pyyaml = "^6.0"
-toml = "^0.10.2"
-typing-extensions = "^4.7.1"
-
-[package.source]
-type = "git"
-url = "https://github.com/coltonbh/qcio.git"
-reference = "feature-pydanticv2"
-resolved_reference = "fcf560fbe31ba5f355c5f838a16d43d657d6a25f"
+pyyaml = ">=6.0,<7.0"
+toml = ">=0.10.2,<0.11.0"
+typing-extensions = ">=4.7.1,<5.0.0"
 
 [[package]]
 name = "qcop"
-version = "0.3.2"
+version = "0.4.0"
 description = "A package for operating Quantum Chemistry programs using qcio standardized data structures."
 optional = false
-python-versions = "^3.8.1"
-files = []
-develop = false
+python-versions = ">=3.8.1,<4.0.0"
+files = [
+    {file = "qcop-0.4.0-py3-none-any.whl", hash = "sha256:a4b3bf76ecb54dee8ca8744fdd929bbd9ad583417756191b6d1020e12fb825fe"},
+    {file = "qcop-0.4.0.tar.gz", hash = "sha256:e66afd74148a470f6dbb877c52dc95e8553ed4c26f40b1d074cf6213d411b742"},
+]
 
 [package.dependencies]
 geometric = {version = ">=1.0.1", extras = ["geometric"]}
 qcelemental = {version = ">=0.26.0", extras = ["qcengine"]}
 qcengine = {version = ">=0.27.0", extras = ["qcengine"]}
-qcio = {git = "https://github.com/coltonbh/qcio.git", rev = "feature-pydanticv2"}
-qcparse = {git = "https://github.com/coltonbh/qcparse.git", rev = "feature-pydanticv2"}
-
-[package.source]
-type = "git"
-url = "https://github.com/coltonbh/qcop.git"
-reference = "feature-pydanticv2"
-resolved_reference = "02ba07928ea909d1dcc422e461ce2e38ff78e06a"
+qcio = ">=0.5.0"
+qcparse = ">=0.5.0"
 
 [[package]]
 name = "qcparse"
-version = "0.4.1"
+version = "0.5.0"
 description = "A package for parsing Quantum Chemistry program file outputs into structured qcio data objects."
 optional = false
-python-versions = "^3.8.1"
-files = []
-develop = false
+python-versions = ">=3.8.1,<4.0.0"
+files = [
+    {file = "qcparse-0.5.0-py3-none-any.whl", hash = "sha256:887c25701661b72e44be2b5dd3910bf78d67cdf58fa150c055c1addcabf539ca"},
+    {file = "qcparse-0.5.0.tar.gz", hash = "sha256:84e511ab3af3b0621e2a97c1abcc7cf400242d50194a44ab8071961166272e64"},
+]
 
 [package.dependencies]
 pydantic = ">=2.0.0"
-qcio = {git = "https://github.com/coltonbh/qcio.git", rev = "feature-pydanticv2"}
-
-[package.source]
-type = "git"
-url = "https://github.com/coltonbh/qcparse.git"
-reference = "feature-pydanticv2"
-resolved_reference = "681dbd6989c8c8f40fcfa35d4f5f1066f887bfac"
+qcio = ">=0.5.0"
 
 [[package]]
 name = "redis"
@@ -1858,4 +1846,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "eca7d050c6870a902eee70e3880c5cbce1ccbc41f99219e886c96276a8553f09"
+content-hash = "be082a1f69b7fa7ed7ac0570365dba30b77a5636b24d96e002ae2c7636ad6ece"

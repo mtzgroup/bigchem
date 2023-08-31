@@ -82,7 +82,7 @@ def output_to_input(
         return input_model(
             molecule=output.results.final_molecule,
             calctype=calctype,
-            **program_args.dict(),
+            **program_args.model_dump(),
         )
     else:
         # TODO: Add wavefunction passing for TeraChem somewhere? Not here...
@@ -129,7 +129,7 @@ def assemble_hessian(
         val = (forward.return_result - backward.return_result) / (dh * 2)
         hessian[i] = val.flatten()
 
-    output = energy_output.dict()
+    output = energy_output.model_dump()
     output["input_data"]["calctype"] = CalcType.hessian
     output["results"]["hessian"] = hessian
 
@@ -167,7 +167,7 @@ def frequency_analysis(
         energy=sp_output.results.energy,
         **kwargs,
     )
-    output = sp_output.dict()
+    output = sp_output.model_dump()
     output["results"].update(
         {
             "freqs_wavenumber": freqs.tolist(),

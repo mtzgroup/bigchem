@@ -24,7 +24,9 @@ def test_hessian_task(test_data_dir, water):
     # 5.03e-3 was the dh used to create these gradients
     result = assemble_hessian(gradients, 5.0e-3)
 
-    answer = SinglePointOutput.parse_file(test_data_dir / "hessian_answer.json")
+    answer = SinglePointOutput.model_validate_json(
+        (test_data_dir / "hessian_answer.json").read_text()
+    )
 
     np.testing.assert_almost_equal(
         result.return_result, answer.return_result, decimal=7
@@ -33,11 +35,13 @@ def test_hessian_task(test_data_dir, water):
 
 
 def test_frequency_analysis_task(test_data_dir):
-    hessian_ar = SinglePointOutput.parse_file(test_data_dir / "hessian_answer.json")
+    hessian_ar = SinglePointOutput.model_validate_json(
+        (test_data_dir / "hessian_answer.json").read_text()
+    )
     output = frequency_analysis(hessian_ar)
 
-    answer = SinglePointOutput.parse_file(
-        test_data_dir / "frequency_analysis_answer.json"
+    answer = SinglePointOutput.model_validate_json(
+        (test_data_dir / "frequency_analysis_answer.json").read_text()
     )
 
     np.testing.assert_almost_equal(
@@ -58,9 +62,11 @@ def test_frequency_analysis_task(test_data_dir):
 
 
 def test_frequency_analysis_task_kwargs(test_data_dir):
-    hessian_ar = SinglePointOutput.parse_file(test_data_dir / "hessian_answer.json")
-    answer = SinglePointOutput.parse_file(
-        test_data_dir / "frequency_analysis_answer.json"
+    hessian_ar = SinglePointOutput.model_validate_json(
+        (test_data_dir / "hessian_answer.json").read_text()
+    )
+    answer = SinglePointOutput.model_validate_json(
+        (test_data_dir / "frequency_analysis_answer.json").read_text()
     )
 
     output = frequency_analysis(hessian_ar, temperature=310, pressure=1.2)
@@ -144,7 +150,7 @@ def test_result_to_input_optimization_result(water, sp_output):
         }
     )
     new_input = output_to_input(opt_result, CalcType.optimization, program_args)
-    assert new_input.subprogram_args.model.dict() == program_args.subprogram_args.model
+    assert new_input.subprogram_args.model == program_args.subprogram_args.model
 
     assert new_input.keywords == program_args.keywords
     assert new_input.extras == program_args.extras
