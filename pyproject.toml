@@ -10,12 +10,13 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.8.1"
 celery = { extras = ["redis"], version = "^5.2.7" }
-pydantic = { extras = ["dotenv"], version = "^1.9.1" }
+pydantic = ">=2.0.0"
 tcpb = ">=0.13.0"
 geometric = ">=1.0.1"
 pyberny = "0.6.3"
-qcop = ">=0.3.2"
-qcio = ">=0.4.2"
+qcop = {git = "https://github.com/coltonbh/qcop.git", rev = "feature-pydanticv2"}
+qcio = {git = "https://github.com/coltonbh/qcio.git", rev = "feature-pydanticv2"}
+pydantic-settings = "^2.0.3"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
