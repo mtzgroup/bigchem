@@ -18,7 +18,7 @@ for arg in "$@"; do
     --terachem)
         BASE_IMAGE="--build-arg BASE_IMAGE=mtzgroup/terachem:latest"
         IMAGE_TAG="-t mtzgroup/bigchem-worker:$(poetry version -s)-terachem"
-        TAG_LATEST=""
+        TAG_LATEST="-t mtzgroup/bigchem-worker:latest-terachem"
         ;;
     esac
 done
