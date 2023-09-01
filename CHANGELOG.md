@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.4.0] - 2023-08-31
+
 ### Added
 
 - Multiple scripts to `/examples/` directory to show basic utilization of BigChem.
@@ -20,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Modified `docker-compose.yaml` to work for both `compose` and `swarm`.
 - Removed support for Python 3.7 (reached end of life).
 - Updated worker container from `micromamba:1.3-jammy` -> `micromamba:1.4-jammy`.
+- Upgraded pydantic from `v1` -> `v2`.
 
 ### Removed
 
@@ -93,7 +96,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Initial release of core BigQC feature set. Tasks for `compute` (single point energy, gradient, hessian, and properties calculations) and `compute_procedure` (geometry optimization routine). Algorithms for distributed hessian and normal mode analysis with their associated tasks.
 
-[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.4.0...HEAD
+[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.5.0...HEAD
+[0.5.0]: https://github.com/mtzgroup/bigchem/releases/tag/0.5.0
 [0.4.0]: https://github.com/mtzgroup/bigchem/releases/tag/0.4.0
 [0.3.0]: https://github.com/mtzgroup/bigchem/releases/tag/0.3.0
 [0.2.0]: https://github.com/mtzgroup/bigchem/releases/tag/0.2.0
