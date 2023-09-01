@@ -22,7 +22,7 @@ def _gradient_inputs(
             value. The first ProgramInput represents a "forward" step by dh and the next
             ProgramInput represents a "backward" step by dh and so on.
     """
-    as_dict = prog_input.dict()
+    as_dict = prog_input.model_dump()
     as_dict["calctype"] = CalcType.gradient
     grad_input = ProgramInput(**as_dict)
 
@@ -33,7 +33,9 @@ def _gradient_inputs(
 
     for index in indices:
         # Need two new objects
-        forward, backward = grad_input.copy(deep=True), grad_input.copy(deep=True)
+        forward, backward = grad_input.model_copy(deep=True), grad_input.model_copy(
+            deep=True
+        )
 
         forward.molecule.geometry[tuple(index)] += dh
         backward.molecule.geometry[tuple(index)] -= dh

@@ -2,7 +2,7 @@
 from pathlib import Path
 from typing import Optional
 
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):  # type: ignore
@@ -28,11 +28,12 @@ class Settings(BaseSettings):  # type: ignore
     bigchem_worker_concurrency: Optional[int] = 1
     bigchem_default_hessian_dh: float = 5.0e-3
 
-    class Config:
-        _docker_secrets_dir = "/run/secrets"
-        env_file = ".env"
-        if Path(_docker_secrets_dir).is_dir():
-            secrets_dir = _docker_secrets_dir
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        # If not in a docker container with secrets, /var/secrets will not exist
+        secrets_dir="/var/secrets" if Path("/var/secrets").is_dir() else None,
+    )
 
 
 settings = Settings()
