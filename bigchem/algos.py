@@ -60,12 +60,10 @@ def parallel_frequency_analysis(
     """Create frequency_analysis signature leveraging parallel hessian
 
     Params:
-        input_data: ProgramInput with driver=properties
         program: Program to use for gradient calculations to generate hessian
+        prog_input: ProgramInput object.
         dh: Displacement for finite difference computation of hessian
         kwargs: Keywords passed to geomeTRIC's frequency_analysis function
-            energy: float - Electronic energy passed to the harmonic free energy module
-                default: 0.0
             temperature: float - Temperature passed to the harmonic free energy module;
                 default: 300.0
             pressure: float - Pressure passed to the harmonic free energy module;
@@ -73,6 +71,7 @@ def parallel_frequency_analysis(
 
     """
     hessian_inp = prog_input.model_dump()
+    # So parallel_hessian doesn't raise error
     hessian_inp["calctype"] = CalcType.hessian
     hessian_sig = parallel_hessian(program, ProgramInput(**hessian_inp), dh)
     # | is celery chain operator

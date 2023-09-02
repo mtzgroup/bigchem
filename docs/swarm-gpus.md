@@ -14,6 +14,8 @@ Docker compose has [nice support for GPUs](https://docs.docker.com/compose/gpu-s
 
 ## Solutions to Enable Swarm GPU Support
 
+See a comprehensive writeup [here](https://gist.github.com/coltonbh/374c415517dbeb4a6aa92f462b9eb287).
+
 Both solutions need to follow these steps first:
 
 1. Install `nvidia-container-runtime`. Follow the steps [here](https://docs.docker.com/config/containers/resource_constraints/#gpu). Takes <5 minutes.
@@ -41,12 +43,12 @@ If you want to expose only certain GPUs to a given service (e.g., multiple servi
 
 Advertise NVIDA GPUs using [Node Generic Resources](https://docs.docker.com/engine/reference/commandline/dockerd/#miscellaneous-options). This is the most general purpose approach and will enable services to simply declare the required GPU resources and swarm will schedule them accordingly.
 
-The `/etc/docker/daemon.json` file on each node needs to be updated to advertise its GPU resources. You can find the UUID for each GPU by running `nvidia-smi -a | grep UUID`. You only need to include `GPU` plus the first 8 digits of the UUID, it seems, i.e., `GPU-ba74caf3` for the UUID. The following needs to be added to the `daemon.json` file already declaring `nvidia` as the default runtime.
+The `/etc/docker/daemon.json` file on each node needs to be updated to advertise its GPU resources. You can find the UUID for each GPU by running `nvidia-smi -a | grep UUID`. You only need to include `GPU` plus the first 8 digits of the UUID, it seems, i.e., `GPU-be74calf3` for the UUID. The following needs to be added to the `daemon.json` file already declaring `nvidia` as the default runtime.
 
 ```sh
 {
   "node-generic-resources": [
-    "NVIDIA-GPU=GPU-ba74caf3",
+    "NVIDIA-GPU=GPU-be74calf3",
     "NVIDIA-GPU=GPU-dl23cdb4"
   ]
 }

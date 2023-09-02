@@ -33,6 +33,9 @@ class Settings(BaseSettings):  # type: ignore
         env_file_encoding="utf-8",
         # If not in a docker container with secrets, /var/secrets will not exist
         secrets_dir="/var/secrets" if Path("/var/secrets").is_dir() else None,
+        # Required so when operating in the context of another application, like
+        # ChemCloud, and it has other .env variables, we don't fail.
+        extra="allow",
     )
 
 

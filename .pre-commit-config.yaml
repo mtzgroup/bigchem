@@ -34,11 +34,15 @@ repos:
         additional_dependencies:
           [
             tokenize-rt==3.2.0,
-            pydantic>=1.10.11,
+            pydantic>=2.0.0,
             types-toml,
             types-pyyaml,
             types-paramiko,
           ]
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.16.10
+    hooks:
+      - id: typos
   - repo: local
     hooks:
       - id: tests

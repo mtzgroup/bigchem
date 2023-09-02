@@ -145,8 +145,6 @@ def frequency_analysis(
     Params:
         sp_output: SinglePointOutput with .results.hessian value
         kwargs: Keywords passed to geomeTRIC's frequency_analysis function
-            energy: float - Electronic energy passed to the harmonic free energy module
-                default: 0.0
             temperature: float - Temperature passed to the harmonic free energy module;
                 default: 300.0
             pressure: float - Pressure passed to the harmonic free energy module;

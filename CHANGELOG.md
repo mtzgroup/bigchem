@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Added
+
+- Typos spell check to pre-commit and GitHub actions.
+
+### Removed
+
+- The `energy` kwarg for `frequency_analysis` task since the electronic energy is correctly passed to the underlying geomeTRIC function from the hessian calculation.
+- `tcpb`, `pyberny`
+
+### Changed
+
+- `Settings` can now accept extra types. This makes it possible to install BigChem inside other apps--like ChemCloud--and not have the `Settings` object raise an exception if there are values in a `.env` file or other secrets for the second application. BigChem's `Settings` object will pick them up too, but they are never accessed so it doesn't matter.
+- Updated to `qcop` `v0.4.1` so that we can access `exception.program_failure` objects.
+
 ## [0.4.0] - 2023-08-31
 
 ### Added
