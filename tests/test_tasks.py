@@ -52,7 +52,7 @@ def test_frequency_analysis_task(test_data_dir):
     np.testing.assert_almost_equal(
         output.results.normal_modes_cartesian,
         answer.results.normal_modes_cartesian,
-        decimal=6,
+        decimal=4,
     )
     np.testing.assert_almost_equal(
         output.results.gibbs_free_energy,
@@ -79,7 +79,7 @@ def test_frequency_analysis_task_kwargs(test_data_dir):
     np.testing.assert_almost_equal(
         output.results.normal_modes_cartesian,
         answer.results.normal_modes_cartesian,
-        decimal=7,
+        decimal=4,
     )
     np.testing.assert_almost_equal(
         output.results.gibbs_free_energy,

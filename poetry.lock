@@ -847,7 +847,7 @@ files = [
 name = "pint"
 version = "0.21.1"
 description = "Physical quantities module"
-optional = false
+optional = true
 python-versions = ">=3.8"
 files = [
     {file = "Pint-0.21.1-py3-none-any.whl", hash = "sha256:230ebccc312693117ee925c6492b3631c772ae9f7851a4e86080a15e7be692d8"},
@@ -930,7 +930,7 @@ wcwidth = "*"
 name = "psutil"
 version = "5.9.5"
 description = "Cross-platform lib for process and system monitoring in Python."
-optional = false
+optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
     {file = "psutil-5.9.5-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:be8929ce4313f9f8146caad4272f6abb8bf99fc6cf59344a3167ecd74f4f203f"},
@@ -956,7 +956,7 @@ test = ["enum34", "ipaddress", "mock", "pywin32", "wmi"]
 name = "py-cpuinfo"
 version = "9.0.0"
 description = "Get CPU info with pure Python"
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "py-cpuinfo-9.0.0.tar.gz", hash = "sha256:3cdbbf3fac90dc6f118bfd64384f309edeadd902d7c8fb17f02ffa1fc3f49690"},
@@ -1287,7 +1287,7 @@ files = [
 name = "qcelemental"
 version = "0.26.0"
 description = "Core data structures for Quantum Chemistry."
-optional = false
+optional = true
 python-versions = ">=3.7,<4.0"
 files = [
     {file = "qcelemental-0.26.0-py3-none-any.whl", hash = "sha256:0b2e77e93dc8e14c78e54c2aafa6198661ffb49abae73a1352e5f384609dd5ff"},
@@ -1311,7 +1311,7 @@ viz = ["ipykernel (<6.0.0)", "nglview (>=3.0.3,<4.0.0)"]
 name = "qcengine"
 version = "0.28.1"
 description = "A compute wrapper for Quantum Chemistry."
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "qcengine-0.28.1-py3-none-any.whl", hash = "sha256:b7b0f70d776d2e8113f361973a3bea73a2cc06e26b09f18f772746af6c181020"},
@@ -1350,21 +1350,22 @@ typing-extensions = ">=4.7.1,<5.0.0"
 
 [[package]]
 name = "qcop"
-version = "0.4.2"
+version = "0.4.3"
 description = "A package for operating Quantum Chemistry programs using qcio standardized data structures."
 optional = false
 python-versions = ">=3.8.1,<4.0.0"
 files = [
-    {file = "qcop-0.4.2-py3-none-any.whl", hash = "sha256:bd776a435768deb12daac4177046c86a79575ee551d11a38e1cf946a15db7557"},
-    {file = "qcop-0.4.2.tar.gz", hash = "sha256:5ca6e309cb069644798323cfed9402beb851eb626d64d960268a4a2f43f2527a"},
+    {file = "qcop-0.4.3-py3-none-any.whl", hash = "sha256:edb8833af93f13ddcdbf44325ec884cdcaf93b79fd73ecedfa17f67981cad322"},
+    {file = "qcop-0.4.3.tar.gz", hash = "sha256:6e92cfe918f079353deaa010f106103e3a21bcb78f18de86893cbbf6a14fad5c"},
 ]
 
 [package.dependencies]
-geometric = {version = ">=1.0.1", extras = ["geometric"]}
-qcelemental = {version = ">=0.26.0", extras = ["qcengine"]}
-qcengine = {version = ">=0.27.0", extras = ["qcengine"]}
 qcio = ">=0.5.0"
 qcparse = ">=0.5.0"
+
+[package.extras]
+geometric = ["geometric (>=1.0.1)"]
+qcengine = ["qcelemental (>=0.26.0)", "qcengine (>=0.27.0)"]
 
 [[package]]
 name = "qcparse"
@@ -1585,7 +1586,11 @@ files = [
     {file = "wcwidth-0.2.6.tar.gz", hash = "sha256:a5220780a404dbe3353789870978e472cfe477761f06ee55077256e509b156d0"},
 ]
 
+[extras]
+geometric = ["geometric"]
+qcengine = ["qcengine"]
+
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "8d5826c964f79ba2f726c6281f4f9529b77486b9868f29a1cd061f4c8f3678ba"
+content-hash = "283ed872f309a45578c009e80b8452f527fd7b9fe44a71100b21ccb95005d788"

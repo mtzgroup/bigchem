@@ -2,7 +2,6 @@ from itertools import zip_longest
 from typing import List, Union
 
 import numpy as np
-from geometric.normal_modes import frequency_analysis as geometric_frequency_analysis
 from qcio import (
     CalcType,
     DualProgramArgs,
@@ -157,7 +156,10 @@ def frequency_analysis(
             gibbs_free_energy: Gibbs free energy in Hartree
 
     """
-    freqs, n_modes, g_tot = geometric_frequency_analysis(
+    # Import here so client applications don't need to install geomeTRIC
+    from geometric.normal_modes import frequency_analysis as geometric_freqs_analysis
+
+    freqs, n_modes, g_tot = geometric_freqs_analysis(
         sp_output.input_data.molecule.geometry.flatten(),  # numpy array
         sp_output.results.hessian,
         elem=sp_output.input_data.molecule.symbols,  # regular python list

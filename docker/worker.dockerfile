@@ -37,7 +37,7 @@ ARG MAMBA_DOCKERFILE_ACTIVATE=1  # (otherwise python will not be found)
 COPY --chown=$MAMBA_USER:$MAMBA_USER pyproject.toml poetry.lock ./
 RUN python -m pip install --upgrade pip && \ 
     python -m pip install poetry && \
-    poetry install --only main --no-interaction --no-ansi
+    poetry install --only main --all-extras --no-interaction --no-ansi
 
 # Copy in code
 COPY --chown=$MAMBA_USER:$MAMBA_USER bigchem/ bigchem/
