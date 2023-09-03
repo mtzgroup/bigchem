@@ -15,10 +15,9 @@ bigchem = Celery(
 bigchem.conf.update(
     # All configuration documentation here:
     # https://docs.celeryq.dev/en/stable/userguide/configuration.html
-    # task_serializer="qceljson",
-    # accept_content=["qceljson"],
-    # result_serializer="qceljson",
-    # NOTE: Switched to pickle serializer for now so that chords receive python objects
+    # NOTE: Using pickle serializer so that chords receive python objects.
+    # Can use JSON serializer json_dumps from qcio.utils if JSON is preferred.
+    broker_connection_retry_on_startup=True,
     task_serializer="pickle",
     accept_content=["pickle"],
     result_serializer="pickle",

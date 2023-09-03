@@ -3,7 +3,7 @@ version: "3.8"
 services:
   broker:
     image: rabbitmq:3.11-management-alpine
-    container_name: bigchem_broker
+    container_name: bigchem-broker
     # Must specify hostname since data is stored based on hostname and we don't want a
     # random, docker-assigned hostname with each new restart of the service. This would
     # result in any past messages stored by the former container in the volume to be
@@ -24,7 +24,7 @@ services:
 
   backend:
     image: redis:7-alpine
-    container_name: bigchem_backend
+    container_name: bigchem-backend
     ports:
       # Open redis to localhost for dev container access
       - 6379:6379
@@ -41,7 +41,7 @@ services:
       context: .
       dockerfile: docker/worker.dockerfile
     image: mtzgroup/bigchem-worker
-    container_name: bigchem_worker
+    container_name: bigchem-worker
     depends_on:
       - broker
       - backend

@@ -1,6 +1,7 @@
 {
     "python.formatting.provider": "black",
     "cSpell.words": [
+        "acks",
         "amqp",
         "amqps",
         "berny",
@@ -25,6 +26,7 @@
         "reqs",
         "Tera",
         "terachem",
+        "traefik",
         "wavenumber",
         "xstream"
     ]
