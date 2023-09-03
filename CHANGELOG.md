@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.5.3] - 2023-09-03
+
+### Changed
+
+- Moved `qcengine` and `geometric` to be optional dependencies so that client applications can install and use BigChem without these packages.
+
 ## [0.5.2] - 2023-09-02
 
 ### Changed
@@ -119,7 +125,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Initial release of core BigQC feature set. Tasks for `compute` (single point energy, gradient, hessian, and properties calculations) and `compute_procedure` (geometry optimization routine). Algorithms for distributed hessian and normal mode analysis with their associated tasks.
 
-[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.5.2...HEAD
+[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.5.3...HEAD
+[0.5.3]: https://github.com/mtzgroup/bigchem/releases/tag/0.5.3
 [0.5.2]: https://github.com/mtzgroup/bigchem/releases/tag/0.5.2
 [0.5.1]: https://github.com/mtzgroup/bigchem/releases/tag/0.5.1
 [0.5.0]: https://github.com/mtzgroup/bigchem/releases/tag/0.5.0
