@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bigchem"
-version = "0.5.1"
+version = "0.5.2"
 description = "A distributed system for scaling and parallelizing quantum chemistry calculations"
 authors = ["Colton Hicks <github@coltonhicks.com>"]
 readme = "README.md"
@@ -12,7 +12,7 @@ python = "^3.8.1"
 celery = { extras = ["redis"], version = "^5.2.7" }
 pydantic = ">=2.0.0"
 geometric = ">=1.0.1"
-qcop = ">=0.4.1"
+qcop = ">=0.4.2"
 qcio = ">=0.5.0"
 pydantic-settings = "^2.0.3"
 
