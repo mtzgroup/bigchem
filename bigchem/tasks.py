@@ -26,6 +26,20 @@ __all__ = [
 ]
 
 
+class MyExc(Exception):
+    def __init__(self, extra):
+        super().__init__("MyExc occurred", extra)
+        self.extra = extra
+
+
+@bigchem.task
+def fake():
+    myexc = MyExc(extra={"a": 1, "b": 2})
+    myexc.extra2 = 123
+    # myexc.args = ("a", "b", "c")
+    raise myexc
+
+
 @bigchem.task
 def compute(
     program: Union[str, InputBase],
