@@ -2,6 +2,7 @@
 from pathlib import Path
 
 from qcio import CalcType, Molecule, ProgramInput
+from qcop.exceptions import QCOPBaseError
 
 from bigchem import compute
 
@@ -14,18 +15,29 @@ h2o = Molecule.open(current_dir / "h2o.xyz")
 prog_input = ProgramInput(
     molecule=h2o,
     calctype=CalcType.energy,
-    model={"method": "b3lyp", "basis": "6-31g"},
+    model={"method": "b3lyp", "basis": "6-31gg"},
     # keywords={"purify": "no"},
 )
 
 # Submit computation to BigChem
-future_output = compute.delay("psi4", prog_input)
+try:
+    future_output = compute.delay("terachem", prog_input)
+    output = future_output.get()
+except QCOPBaseError as e:
+    exc = e
+    # print(f"Program failure: {e.program_failure}")
+    # print(f"Returncode: {e.returncode}")
+    import pdb
+
+    pdb.set_trace()
+    exit(1)
 
 # Check status (optional)
 print(f"Calculation Status: {future_output.status}")
 
 # Get result from BigChem
 output = future_output.get()
+
 
 # Remove result from backend
 future_output.forget()

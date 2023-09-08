@@ -17,14 +17,14 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_VIRTUALENVS_CREATE=false
 
 # Perform root tasks
-WORKDIR /code/
+WORKDIR /opt/
 USER root
 RUN apt-get update && \
     # for psutil in qcengine
     # https://github.com/giampaolo/psutil/blob/master/INSTALL.rst
     apt-get install -y gcc python3-dev && \
-    # So $MAMBA_USER can read/write to /code/
-    chown -R $MAMBA_USER /code/
+    # So $MAMBA_USER can read/write to /opt/
+    chown -R $MAMBA_USER /opt/
 USER $MAMBA_USER
 
 # Install QC Programs
