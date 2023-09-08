@@ -1332,13 +1332,13 @@ tests = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "qcio"
-version = "0.5.1"
+version = "0.6.0"
 description = "Beautiful and user friendly data structures for quantum chemistry."
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "qcio-0.5.1-py3-none-any.whl", hash = "sha256:258af8e93f17ec9a26053254e0fced7b14edaa043fa8ef9d4e99ac63e205d06c"},
-    {file = "qcio-0.5.1.tar.gz", hash = "sha256:15f6e573fd5e41d44a052de699317b1b1d8a38b5e2c896ffaa9db491d24ae84f"},
+    {file = "qcio-0.6.0-py3-none-any.whl", hash = "sha256:ab57e93ff4566ab4c1faf12d49999e36c061d643d69b9900578acc19bc87c6ed"},
+    {file = "qcio-0.6.0.tar.gz", hash = "sha256:5c236b0d1cd476cda08179f06162800ccdd61a8f1702d10b33bb3c06dfd1609d"},
 ]
 
 [package.dependencies]
@@ -1350,17 +1350,17 @@ typing-extensions = ">=4.7.1,<5.0.0"
 
 [[package]]
 name = "qcop"
-version = "0.4.3"
+version = "0.4.4"
 description = "A package for operating Quantum Chemistry programs using qcio standardized data structures."
 optional = false
 python-versions = ">=3.8.1,<4.0.0"
 files = [
-    {file = "qcop-0.4.3-py3-none-any.whl", hash = "sha256:edb8833af93f13ddcdbf44325ec884cdcaf93b79fd73ecedfa17f67981cad322"},
-    {file = "qcop-0.4.3.tar.gz", hash = "sha256:6e92cfe918f079353deaa010f106103e3a21bcb78f18de86893cbbf6a14fad5c"},
+    {file = "qcop-0.4.4-py3-none-any.whl", hash = "sha256:068c6e45c75c8f49f6e5b3befc9aa991223717cb649576c6efbfc536018709d3"},
+    {file = "qcop-0.4.4.tar.gz", hash = "sha256:4e3e5479fd1cea1a02561a1021c56e991953e7d744018d6e299aa473df61d55e"},
 ]
 
 [package.dependencies]
-qcio = ">=0.5.0"
+qcio = ">=0.6.0"
 qcparse = ">=0.5.0"
 
 [package.extras]
@@ -1593,4 +1593,4 @@ qcengine = ["qcengine"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "283ed872f309a45578c009e80b8452f527fd7b9fe44a71100b21ccb95005d788"
+content-hash = "072cf7c01967edb91c68e477d10e4d87da1563d3a535c7c7c33e42e5bbdc49c3"

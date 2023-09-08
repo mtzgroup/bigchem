@@ -6,9 +6,11 @@ from qcio import (
     CalcType,
     DualProgramArgs,
     OptimizationOutput,
+    ProgramFailure,
     ProgramInput,
     SinglePointOutput,
 )
+from qcop.exceptions import QCOPBaseError
 
 from bigchem.canvas import group  # type:ignore
 from bigchem.tasks import assemble_hessian, compute, frequency_analysis, output_to_input
@@ -154,3 +156,18 @@ def test_result_to_input_optimization_result(water, sp_output):
 
     assert new_input.keywords == program_args.keywords
     assert new_input.extras == program_args.extras
+
+
+def test_program_failure_serialized_when_raised_in_worker(hydrogen):
+    # Basis misspelled to trigger failure
+    prog_input = ProgramInput(
+        molecule=hydrogen, calctype="energy", model={"method": "b3lyp", "basis": "fake"}
+    )
+
+    # Submit Job
+    future_result = compute.delay("psi4", prog_input)
+    try:
+        future_result.get()
+    except QCOPBaseError as e:
+        assert isinstance(e, QCOPBaseError)
+        assert isinstance(e.program_failure, ProgramFailure)

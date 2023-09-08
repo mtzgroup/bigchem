@@ -17,14 +17,14 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_VIRTUALENVS_CREATE=false
 
 # Perform root tasks
-WORKDIR /code/
+WORKDIR /opt/
 USER root
 RUN apt-get update && \
     # for psutil in qcengine
     # https://github.com/giampaolo/psutil/blob/master/INSTALL.rst
     apt-get install -y gcc python3-dev && \
-    # So $MAMBA_USER can read/write to /code/
-    chown -R $MAMBA_USER /code/
+    # So $MAMBA_USER can read/write to /opt/
+    chown -R $MAMBA_USER /opt/
 USER $MAMBA_USER
 
 # Install QC Programs
@@ -33,14 +33,16 @@ RUN micromamba install -y -n base -f env.lock && \
     micromamba clean --all --yes
 ARG MAMBA_DOCKERFILE_ACTIVATE=1  # (otherwise python will not be found)
 
-# Install BigChem dependencies
-COPY --chown=$MAMBA_USER:$MAMBA_USER pyproject.toml poetry.lock ./
+# Copy in code
+COPY --chown=$MAMBA_USER:$MAMBA_USER bigchem/ bigchem/
+
+# Install BigChem and its dependencies
+COPY --chown=$MAMBA_USER:$MAMBA_USER pyproject.toml poetry.lock README.md ./
 RUN python -m pip install --upgrade pip && \ 
     python -m pip install poetry && \
     poetry install --only main --all-extras --no-interaction --no-ansi
 
-# Copy in code
-COPY --chown=$MAMBA_USER:$MAMBA_USER bigchem/ bigchem/
+
 
 # Run without heartbeat, mingle, gossip to reduce network overhead
 # https://stackoverflow.com/questions/66961952/how-can-i-scale-down-celery-worker-network-overhead

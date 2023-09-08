@@ -45,6 +45,9 @@ services:
     depends_on:
       - broker
       - backend
+    # Uncomment to use .env file for environment variables
+    # env_file:
+    #   - .env
     environment:
       - bigchem_broker_url=amqp://broker
       - bigchem_backend_url=redis://backend/0
