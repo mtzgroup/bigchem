@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.6.0] - 2023-09-08
+
+### Changed
+
+- Installing BigChem to `/opt/` in docker container instead of `/code/`.
+- Updated `qcio` from `>=0.5.0` to `>=0.6.0`.
+- Updated `qcop` from `>=0.4.3` to `>=0.5.0`.
+
+### Added
+
+- Device configuration to `/docker/terachem.yaml`.
+- Test to ensure exception objects raised in workers have `.program_failure` object returned to the client.
+
 ## [0.5.3] - 2023-09-03
 
 ### Changed
