@@ -104,7 +104,7 @@ def multistep_opt(
     task_chain = compute.s(programs[0], first_opt, **kwargs)
 
     # Add subsequent optimizations to the chain
-    for program, prog_args in zip(programs[:1], program_args[1:]):
+    for program, prog_args in zip(programs[1:], program_args[1:]):
         task_chain = (
             task_chain
             | output_to_input.s(calctype, prog_args)
