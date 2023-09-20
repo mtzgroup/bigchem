@@ -11,7 +11,7 @@ license = "MIT"
 python = "^3.8.1"
 celery = { extras = ["redis"], version = "^5.2.7" }
 pydantic = ">=2.0.0"
-qcio = ">=0.6.0"
+qcio = ">=0.7.0"
 pydantic-settings = "^2.0.3"
 # A list of all of the optional dependencies, some of which are included in the below
 # `extras`. They can be opted into by apps. Clients should not need to install these.

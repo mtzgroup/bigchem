@@ -1332,13 +1332,13 @@ tests = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "qcio"
-version = "0.6.0"
+version = "0.7.0"
 description = "Beautiful and user friendly data structures for quantum chemistry."
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "qcio-0.6.0-py3-none-any.whl", hash = "sha256:ab57e93ff4566ab4c1faf12d49999e36c061d643d69b9900578acc19bc87c6ed"},
-    {file = "qcio-0.6.0.tar.gz", hash = "sha256:5c236b0d1cd476cda08179f06162800ccdd61a8f1702d10b33bb3c06dfd1609d"},
+    {file = "qcio-0.7.0-py3-none-any.whl", hash = "sha256:c41c93e96a7aa5e8df87a5ca2f695e024938a94c692bb41260a4ee970d74716b"},
+    {file = "qcio-0.7.0.tar.gz", hash = "sha256:b79fe7c9c5905340199099cb582d3fdec6244cd477181add299cd01394657fcc"},
 ]
 
 [package.dependencies]
@@ -1593,4 +1593,4 @@ qcengine = ["qcengine"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "072cf7c01967edb91c68e477d10e4d87da1563d3a535c7c7c33e42e5bbdc49c3"
+content-hash = "d0b31c8e0ac9341c013499447fdb05434bf6c839234b49afc8f172a594415e6b"
