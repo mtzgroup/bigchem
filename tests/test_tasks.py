@@ -4,11 +4,11 @@ import numpy as np
 import pytest
 from qcio import (
     CalcType,
-    DualProgramArgs,
     OptimizationOutput,
     ProgramFailure,
     ProgramInput,
     SinglePointOutput,
+    SubProgramArgs,
 )
 from qcop.exceptions import QCOPBaseError
 
@@ -141,7 +141,7 @@ def test_result_to_input_optimization_result(water, sp_output):
         results={"trajectory": [sp_output]},
     )
 
-    program_args = DualProgramArgs(
+    program_args = SubProgramArgs(
         **{
             "keywords": {"program": "new_prog"},
             "subprogram_args": {

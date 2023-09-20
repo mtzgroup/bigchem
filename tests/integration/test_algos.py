@@ -1,10 +1,10 @@
 import pytest
 from qcio import (
     CalcType,
-    DualProgramArgs,
     OptimizationOutput,
     ProgramInput,
     SinglePointOutput,
+    SubProgramArgs,
 )
 
 from bigchem.algos import multistep_opt, parallel_frequency_analysis, parallel_hessian
@@ -93,11 +93,11 @@ def test_multistep_opt(hydrogen):
     """See note in test_compute re: timeout"""
     # Define multi-package input_specs
     program_args = [
-        DualProgramArgs(
+        SubProgramArgs(
             subprogram="xtb",
             subprogram_args={"model": {"method": "GFN2-xTB"}},
         ),
-        DualProgramArgs(
+        SubProgramArgs(
             subprogram="psi4",
             subprogram_args={"model": {"method": "b3lyp", "basis": "sto-3g"}},
         ),

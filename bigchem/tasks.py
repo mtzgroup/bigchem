@@ -4,7 +4,6 @@ from typing import List, Union
 import numpy as np
 from qcio import (
     CalcType,
-    DualProgramArgs,
     DualProgramInput,
     InputBase,
     OptimizationOutput,
@@ -13,6 +12,7 @@ from qcio import (
     ProgramInput,
     QCProgramArgs,
     SinglePointOutput,
+    SubProgramArgs,
 )
 from qcop import compute as qcop_compute
 
@@ -55,13 +55,13 @@ def compute(
 def output_to_input(
     output: Union[SinglePointOutput, ProgramFailure, OptimizationOutput],
     calctype: CalcType,
-    program_args: Union[QCProgramArgs, DualProgramArgs],
+    program_args: Union[QCProgramArgs, SubProgramArgs],
 ) -> Union[ProgramInput, DualProgramInput]:
     """Propagate output values from a calculation onto a new input object.
 
     Args:
         output: SinglePointOutput, OptimizationOutput, or ProgramFailure object
-        program_args: QCProgramArgs or DualProgramArgs object
+        program_args: QCProgramArgs or SubProgramArgs object
         calctype: Calculation type for the new input
 
     NOTE: This task requires additional work to cover more general cases. This skeleton

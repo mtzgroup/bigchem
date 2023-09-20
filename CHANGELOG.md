@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Updated `qcio` to `>=0.7.0` which renamed `DualProgramArgs` to `SubProgramArgs`.
+- Updated `/docker/fire.yaml` stack configuration to use the latest BigChem image.
+
+### Fixed
+
+- Fixed typo in `multistep_opt` algorithm where the loop was selecting programs `[:1]` instead of `[1:]` for the second and subsequent steps.
+
 ## [0.5.4] - 2023-09-08
 
 ### Changed

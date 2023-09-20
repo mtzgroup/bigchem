@@ -4,7 +4,7 @@ such as a highly optimized geometry while distributing work across all available
 worker instances simultaneously on multiple molecules at once."""
 from pathlib import Path
 
-from qcio import CalcType, DualProgramArgs, Molecule
+from qcio import CalcType, Molecule, SubProgramArgs
 
 from bigchem import group, multistep_opt
 
@@ -20,15 +20,15 @@ programs = ["geometric", "geometric", "geometric"]
 
 # Define the parameters for each program
 program_args = [
-    DualProgramArgs(
+    SubProgramArgs(
         subprogram="xtb",
         subprogram_args={"model": {"method": "GFN2-xTB"}},
     ),
-    DualProgramArgs(
+    SubProgramArgs(
         subprogram="terachem",
         subprogram_args={"model": {"method": "b3lyp", "basis": "6-31g"}},
     ),
-    DualProgramArgs(
+    SubProgramArgs(
         subprogram="psi4",
         subprogram_args={"model": {"method": "CCSD(T)", "basis": "cc-PVQZ"}},
     ),

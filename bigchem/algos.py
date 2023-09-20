@@ -3,11 +3,11 @@ from typing import List, Union
 
 from qcio import (
     CalcType,
-    DualProgramArgs,
     DualProgramInput,
     Molecule,
     ProgramInput,
     QCProgramArgs,
+    SubProgramArgs,
 )
 
 from .canvas import Signature, group
@@ -82,7 +82,7 @@ def multistep_opt(
     molecule: Molecule,
     calctype: CalcType,
     programs: List[str],
-    program_args: List[Union[QCProgramArgs, DualProgramArgs]],
+    program_args: List[Union[QCProgramArgs, SubProgramArgs]],
     **kwargs,
 ) -> Signature:
     """Use multiple steps to sequentially optimize a molecule

@@ -3,61 +3,66 @@
 version: "3.8"
 
 # Default images and setup for worker containers
-x-default-worker: &default-worker
-  image: mtzgroup/bigchem-worker:{$BIGCHEM_VERSION}
+x-prod-worker: &prod-worker
+  image: mtzgroup/bigchem-worker:latest-terachem
+  env_file: worker.prod.env
   environment:
-    - TERACHEM_PBS_HOST={{.Node.Hostname}}-terachem-{{.Task.Slot}}
-    - TERACHEM_FE_HOST={{.Node.Hostname}}-terachem-frontend
+    - NVIDIA_VISIBLE_DEVICES={{.Task.Slot}}
+  secrets:
+    - source: terachem_license
+      target: /opt/terachem/license.key
   volumes:
     # qcengine uses /tmp by default for scratch directory
-    - scratch:/tmp
-  networks:
-    - terachem-servers
+    - bigchem:/tmp
 
-x-default-dev-worker: &default-dev-worker
-  <<: *default-worker
+x-dev-worker: &default-dev-worker
+  <<: *prod-worker
   env_file: worker.dev.env
   volumes:
-    - tcc-dev-scratch:/scratch
-
-x-default-prod-worker: &default-prod-worker
-  <<: *default-worker
-  env_file: worker.prod.env
-  volumes:
-    - tcc-prod-scratch:/scratch
+    - bigchem-dev:/tmp
 
 services:
-  ## DEV WORKER
-  # This Service is a hack to communicate with terachem on GPU 0 since I'm leveraing
-  # 1-indexed {{.Task.Slot}} for worker allocation below
-  fire-dev-11-03:
-    <<: *default-dev-worker
+  # PROD/DEV WORKERS
+  # This service takes advantage of GPU 0 since {{.Task.Slot}} is 1-indexed
+  bigchem-dev:
+    # Uncomment to select prod/dev workers
+    <<: *prod-worker
+    # <<: *dev-worker
     environment:
-      # Must redefine all `environment` values because redefinition of `environment`
-      # here overrides all values set in *default-worker, even if not defined twice
-      - TERACHEM_PBS_HOST={{.Node.Hostname}}-terachem-0
-      - TERACHEM_FE_HOST={{.Node.Hostname}}-terachem-frontend
+      - NVIDIA_VISIBLE_DEVICES=0
     deploy:
       mode: global
 
   # PROD WORKERS
-  fire-11-03:
-    <<: *default-prod-worker
+  fire-13-00:
+    <<: *prod-worker
     deploy:
-      replicas: 7
+      replicas: 9
       placement:
         constraints:
-          - node.hostname==fire-11-03
-    command: celery -A bigchem.tasks worker -Q private --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
+          - node.hostname==fire-13-00
+
+  fire-11-01:
+    <<: *prod-worker
+    deploy:
+      replicas: 4
+      placement:
+        constraints:
+          - node.hostname==fire-11-01
+
+  # fire-09-02:
+  #   <<: *prod-worker
+  #   deploy:
+  #     replicas: 5
+  #     placement:
+  #       constraints:
+  #         - node.hostname==fire-09-02
+  #   command: celery -A bigchem.tasks worker -Q private --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
 
 secrets:
   terachem_license:
     external: true
 
 volumes:
-  tcc-dev-scratch:
-  tcc-prod-scratch:
-
-networks:
-  terachem-servers:
-    external: true
+  bigchem:
+  bigchem-dev:
