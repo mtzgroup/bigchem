@@ -11,7 +11,7 @@ from bigchem.tasks import compute
 @pytest.mark.parametrize(
     "optimizer,keywords,subprogram,model,batch",
     (
-        # NO LONGER SUPPORTEDI
+        # NO LONGER SUPPORTED
         # (
         #     "berny",
         #     {"method": "HF", "basis": "sto-3g"},
