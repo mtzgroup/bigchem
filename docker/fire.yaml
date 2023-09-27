@@ -4,7 +4,7 @@ version: "3.8"
 
 # Default images and setup for worker containers
 x-prod-worker: &prod-worker
-  image: mtzgroup/bigchem-worker:latest-terachem
+  image: mtzgroup/bigchem-worker:0.6.1-terachem
   env_file: worker.prod.env
   environment:
     - NVIDIA_VISIBLE_DEVICES={{.Task.Slot}}
@@ -14,6 +14,7 @@ x-prod-worker: &prod-worker
   volumes:
     # qcengine uses /tmp by default for scratch directory
     - bigchem:/tmp
+  command: celery -A bigchem.tasks worker -Q colton,celery --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
 
 x-dev-worker: &default-dev-worker
   <<: *prod-worker
@@ -24,7 +25,7 @@ x-dev-worker: &default-dev-worker
 services:
   # PROD/DEV WORKERS
   # This service takes advantage of GPU 0 since {{.Task.Slot}} is 1-indexed
-  bigchem-dev:
+  bigchem-gpu-0:
     # Uncomment to select prod/dev workers
     <<: *prod-worker
     # <<: *dev-worker
@@ -50,14 +51,13 @@ services:
         constraints:
           - node.hostname==fire-11-01
 
-  # fire-09-02:
-  #   <<: *prod-worker
-  #   deploy:
-  #     replicas: 5
-  #     placement:
-  #       constraints:
-  #         - node.hostname==fire-09-02
-  #   command: celery -A bigchem.tasks worker -Q private --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
+  fire-09-02:
+    <<: *prod-worker
+    deploy:
+      replicas: 5
+      placement:
+        constraints:
+          - node.hostname==fire-09-02
 
 secrets:
   terachem_license:

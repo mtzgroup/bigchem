@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Added
+
+- Added `dftd3` conda package for `psi4` to enable dispersion corrections. Updated other worker packages to latest versions.
+
 ## [0.6.1] - 2023-09-22
 
 ### Changed
