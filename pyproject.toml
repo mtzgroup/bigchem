@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bigchem"
-version = "0.6.3"
+version = "0.6.4"
 description = "A distributed system for scaling and parallelizing quantum chemistry calculations"
 authors = ["Colton Hicks <github@coltonhicks.com>"]
 readme = "README.md"
@@ -17,7 +17,7 @@ pydantic-settings = "^2.0.3"
 # `extras`. They can be opted into by apps. Clients should not need to install these.
 geometric = { version = ">=1.0.1", optional = true }
 qcengine = { version = ">=0.27.0", optional = true }
-qcop = ">=0.4.7"
+qcop = ">=0.4.8"
 
 [tool.poetry.extras]
 geometric = ["geometric"]
