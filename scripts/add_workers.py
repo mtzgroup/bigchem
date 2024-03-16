@@ -12,6 +12,7 @@ Pass this script three arguments:
 Example:
     python scripts/swarm_aws.py default bigchem ~/.ssh/aws-key.pem 53.168.56.102
 """
+
 from common import ec2_ips_by_name, execute_command, extract_join_command
 
 if __name__ == "__main__":

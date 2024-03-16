@@ -2,6 +2,7 @@
 geometric, xtb, TeraChem, and psi4--to quickly achieve a computational outcome
 such as a highly optimized geometry while distributing work across all available
 worker instances simultaneously on multiple molecules at once."""
+
 from pathlib import Path
 
 from qcio import CalcType, Molecule, SubProgramArgs

@@ -1,4 +1,5 @@
 """Top level functions for parallelized BigChem algorithms"""
+
 from typing import List, Union
 
 from qcio import (

@@ -1,4 +1,5 @@
 """How to submit a group of tasks to BigChem"""
+
 from pathlib import Path
 
 from qcio import CalcType, Molecule, ProgramInput

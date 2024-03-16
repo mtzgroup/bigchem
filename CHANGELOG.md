@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Updated `qcop` from `0.4.8` to `0.5.0` which sets `raise_exc=True` by default on `compute(...)` function.
+- Updated `black` from `23.x.x` -> `24.x.x`.
+
 ## [0.6.4] - 2024-01-12
 
 ### Changed
