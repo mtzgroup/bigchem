@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bigchem"
-version = "0.6.4"
+version = "0.6.5"
 description = "A distributed system for scaling and parallelizing quantum chemistry calculations"
 authors = ["Colton Hicks <github@coltonhicks.com>"]
 readme = "README.md"

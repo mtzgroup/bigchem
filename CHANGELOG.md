@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.6.5] - 2024-03-16
+
 ### Changed
 
 - Updated `qcop` from `0.4.8` to `0.5.0` which sets `raise_exc=True` by default on `compute(...)` function.
@@ -179,7 +181,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Initial release of core BigQC feature set. Tasks for `compute` (single point energy, gradient, hessian, and properties calculations) and `compute_procedure` (geometry optimization routine). Algorithms for distributed hessian and normal mode analysis with their associated tasks.
 
-[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.6.4...HEAD
+[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.6.5...HEAD
+[0.6.5]: https://github.com/mtzgroup/bigchem/releases/tag/0.6.5
 [0.6.4]: https://github.com/mtzgroup/bigchem/releases/tag/0.6.4
 [0.6.3]: https://github.com/mtzgroup/bigchem/releases/tag/0.6.3
 [0.6.2]: https://github.com/mtzgroup/bigchem/releases/tag/0.6.2
