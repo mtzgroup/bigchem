@@ -1,4 +1,5 @@
 """How to perform a basic, single program calculation using BigChem"""
+
 from pathlib import Path
 
 from qcio import CalcType, Molecule, ProgramInput

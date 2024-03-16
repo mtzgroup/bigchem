@@ -1,4 +1,5 @@
 """Helper functions not for end users"""
+
 from typing import List
 
 import numpy as np

@@ -1,4 +1,5 @@
 """Settings and Configuration for workers. Read more: https://pydantic-docs.helpmanual.io/usage/settings/"""
+
 from pathlib import Path
 from typing import Optional
 

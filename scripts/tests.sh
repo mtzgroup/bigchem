@@ -6,7 +6,7 @@ set -xe
 docker compose up -d --build
 
 # Run tests and capture the exit status
-poetry run pytest --cov-report=term-missing --cov-report html:htmlcov --cov-config=pyproject.toml --cov=bigchem --cov=tests . || TEST_EXIT_CODE=$?
+poetry run pytest -vv --cov-report=term-missing --cov-report html:htmlcov --cov-config=pyproject.toml --cov=bigchem --cov=tests . || TEST_EXIT_CODE=$?
 
 # Stop docker containers
 docker compose down

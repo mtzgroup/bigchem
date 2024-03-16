@@ -1,4 +1,5 @@
 """How to perform an optimization using BigChem"""
+
 from pathlib import Path
 
 from qcio import CalcType, DualProgramInput, Molecule

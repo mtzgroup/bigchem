@@ -30,7 +30,6 @@ __all__ = [
 def compute(
     program: Union[str, InputBase],
     inp_obj: Union[InputBase, str],
-    raise_exc: bool = True,
     **kwargs,
 ) -> OutputBase:
     """Wrapper around qcop.compute.
@@ -40,15 +39,11 @@ def compute(
     as the first argument. Chains can only pass the output object as the first argument
     to the next task in the chain. This wrapper allows the user to pass the program
     first or second.
-
-    Raise exception by default so that celery knows when tasks fail. This is important
-    for chaining tasks together. If a task fails, the chain will stop executing and
-    the AsyncResult object will have a .failed() method that returns True.
     """
     if isinstance(inp_obj, str):
         # If the first argument is a string, then the second argument is the input
         program, inp_obj = inp_obj, program
-    return qcop_compute(program, inp_obj, raise_exc=raise_exc, **kwargs)
+    return qcop_compute(program, inp_obj, **kwargs)
 
 
 @bigchem.task
