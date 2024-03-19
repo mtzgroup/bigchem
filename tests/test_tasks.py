@@ -36,6 +36,22 @@ def test_hessian_task(test_data_dir, water):
     assert result.input_data.calctype == "hessian"
 
 
+def compare_eigenvector_arrays(arr1, arr2, decimal=6):
+    for i, (vec1, vec2) in enumerate(
+        zip(arr1.reshape(-1, arr1.shape[-1]), arr2.reshape(-1, arr2.shape[-1]))
+    ):
+        try:
+            np.testing.assert_almost_equal(vec1, vec2, decimal=decimal)
+        except AssertionError:
+            np.testing.assert_almost_equal(
+                vec1,
+                -vec2,
+                decimal=decimal,
+                err_msg=f"Eigenvectors at position {i} are not equal even considering "
+                "a sign difference.",
+            )
+
+
 def test_frequency_analysis_task(test_data_dir):
     hessian_ar = SinglePointOutput.model_validate_json(
         (test_data_dir / "hessian_answer.json").read_text()
@@ -51,7 +67,7 @@ def test_frequency_analysis_task(test_data_dir):
         answer.results.freqs_wavenumber,
         decimal=0,
     )
-    np.testing.assert_almost_equal(
+    compare_eigenvector_arrays(
         output.results.normal_modes_cartesian,
         answer.results.normal_modes_cartesian,
         decimal=4,
@@ -78,11 +94,12 @@ def test_frequency_analysis_task_kwargs(test_data_dir):
         answer.results.freqs_wavenumber,
         decimal=0,
     )
-    np.testing.assert_almost_equal(
+    compare_eigenvector_arrays(
         output.results.normal_modes_cartesian,
         answer.results.normal_modes_cartesian,
         decimal=4,
     )
+
     np.testing.assert_almost_equal(
         output.results.gibbs_free_energy,
         -76.38277740247364,  # Different number from answer computed with no kwargs
