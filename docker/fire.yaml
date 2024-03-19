@@ -4,7 +4,7 @@ version: "3.8"
 
 # Default images and setup for worker containers
 x-prod-worker: &prod-worker
-  image: mtzgroup/bigchem-worker:0.6.1-terachem
+  image: mtzgroup/bigchem-worker:0.6.5-terachem
   env_file: worker.prod.env
   environment:
     - NVIDIA_VISIBLE_DEVICES={{.Task.Slot}}
@@ -33,6 +33,10 @@ services:
       - NVIDIA_VISIBLE_DEVICES=0
     deploy:
       mode: global
+      placement:
+        constraints:
+          # Don't use GPU 0 on fire-09-02 since often in use
+          - node.role==worker
 
   # PROD WORKERS
   fire-13-00:
