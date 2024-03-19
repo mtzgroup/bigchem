@@ -45,6 +45,13 @@ services:
     environment:
       - bigchem_broker_url=amqp://broker
       - bigchem_backend_url=redis://backend/0
+      # Set concurrency to modify number of worker processes on each node
+      # Set to 0 to default to the number of CPUs on your machine. Default value is 1.
+      # - bigchem_worker_concurrency=1
+      # Workers will grab this many tasks at once. Increase prefetch if tasks are small
+      # relative to network overhead time.
+      # https://docs.celeryproject.org/en/stable/userguide/optimizing.html#prefetch-limits
+      # - bigchem_prefetch_multiplier: int = 1
     volumes:
       - worker:/tmp
     # secrets:

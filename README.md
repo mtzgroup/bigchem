@@ -14,7 +14,31 @@ poetry install
 poetry run celery -A bigchem.tasks worker --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
 ```
 
-## 🐰 Quickstart
+## ✨ One Line Commands to Deploy and Use BigChem
+
+Copy the `docker/bigchem.yaml` file to any machine you'd like (you only need that one file, nothing else) and run the following command. This will start the BigChem system.
+
+To run in single node mode:
+
+```sh
+docker compose -f bigchem.yaml up -d
+```
+
+To run in multi-node mode (must have Docker running in [Swarm mode](https://docs.docker.com/engine/swarm/), one liner for this is `docker swarm init`, more details [below](#💻💻💻-run-bigchem-on-multiple-nodes-swarm-mode)):
+
+```sh
+docker stack deploy -c bigchem.yaml --prune bigchem
+```
+
+To install BigChem client code (for the machine from which you'll submit calculations):
+
+```sh
+pip install bighcem
+```
+
+Run the `examples` scripts to see how to perform computations using BigChem.
+
+## 🐰 Quickstart - For Doing Development with BigChem
 
 ✅ Make sure you are on an x86 machine (not an ARM machine like Apple's M chip series)
 
