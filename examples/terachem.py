@@ -53,7 +53,7 @@ else:  # output.success is False
 print(f"Returned files: {output.files.keys()}")
 
 # Write the returned files to your local machine
-output.files.write_files()
+output.save_files()
 print("Check your directory for all of the files produced by TeraChem.")
 
 # This command is not necessary. Sometime a reverse proxy holds open a connection.
