@@ -6,7 +6,6 @@
 
 # Using Service Templates:
 # https://docs.docker.com/engine/reference/commandline/service_create/#create-services-using-templates
-version: "3.8"
 
 # Default images and setup for worker containers
 x-default-worker: &default-worker

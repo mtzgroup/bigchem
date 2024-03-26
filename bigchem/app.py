@@ -1,4 +1,5 @@
 import ssl
+from datetime import timedelta
 
 from celery import Celery
 
@@ -25,6 +26,7 @@ bigchem.conf.update(
     task_acks_late=True,
     worker_prefetch_multiplier=settings.bigchem_prefetch_multiplier,
     worker_concurrency=settings.bigchem_worker_concurrency,
+    result_expires=timedelta(seconds=settings.bigchem_result_expires),
 )
 
 # NOTE: If using SSL secured connection to broker, by default I am disabling

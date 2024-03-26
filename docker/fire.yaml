@@ -1,7 +1,5 @@
 # Quick and dirty workers for Fire. Dev/prod
 
-version: "3.8"
-
 # Default images and setup for worker containers
 x-prod-worker: &prod-worker
   image: mtzgroup/bigchem-worker:0.6.5-terachem

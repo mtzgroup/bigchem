@@ -1,7 +1,6 @@
 # A bash-able template that will fill with variables if correct environment variables are loaded
 # source context.{dev | prod}
 # eval "echo \"$(cat $(pwd)/docker-compose.template.yaml)\"" > output.yaml
-version: \"3.8\"
 
 services:
   broker:

@@ -1,19 +1,24 @@
 """How to perform an optimization using BigChem"""
 
-from pathlib import Path
-
 from qcio import CalcType, DualProgramInput, Molecule
 
 from bigchem.tasks import compute
 
-current_dir = Path(__file__).resolve().parent
-
 # Create the molecule
-h2o = Molecule.open(current_dir / "h2o.xyz")
+# Can also open a molecule from a file
+# molecule = Molecule.open("path/to/h2o.xyz")
+molecule = Molecule(
+    symbols=["O", "H", "H"],
+    geometry=[
+        [0.0, 0.0, 0.0],
+        [0.52421003, 1.68733646, 0.48074633],
+        [1.14668581, -0.45032174, -1.35474466],
+    ],
+)
 
 # Define program input
 prog_input = DualProgramInput(
-    molecule=h2o,
+    molecule=molecule,
     calctype=CalcType.optimization,
     subprogram="psi4",
     subprogram_args={"model": {"method": "b3lyp", "basis": "6-31g"}},

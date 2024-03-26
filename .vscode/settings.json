@@ -24,6 +24,7 @@
         "Quickstart",
         "rdkit",
         "reqs",
+        "SLURM",
         "Tera",
         "terachem",
         "traefik",

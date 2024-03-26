@@ -1,6 +1,5 @@
 # Runs terachem services using docker compose. Not valid for swarm because swam does
 # not support the "devices" field
-version: "3.8"
 
 services:
   worker:
