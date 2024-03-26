@@ -4,7 +4,7 @@ A distributed system for scaling and parallelizing quantum chemistry calculation
 
 ## ⚠️ A Note About x86 and ARM Architectures
 
-Most Quantum Chemistry packages (including those used by default in BigChem's worker--psi4, xtb, and rdkit) are only compiled and released for the x86 architecture, not the ARM architecture. This means **BigChem's worker will not work or build on ARM machines like Apple's M chips**. If you want to run Quantum Chemistry programs on your ARM machine, please reach out to your favorite QC developer and ask for distributions compiled for ARM. When they exist, I'll add them to BigChem's ARM builds.
+Most Quantum Chemistry packages (including those used by default in BigChem's worker--`psi4`, `xtb`, and `rdkit`) are only compiled and released for the x86 architecture, not the ARM architecture. This means **BigChem's docker worker will not work or build on ARM machines like Apple's M chips**. If you want to run Quantum Chemistry programs on your ARM machine, please reach out to your favorite QC developer and ask for distributions compiled for ARM. When they exist, I'll add them to BigChem's ARM builds.
 
 If you'd like to play with BigChem without executing QC programs on your ARM machine, comment out the `worker` in the `docker-compose.yaml` file, then run the following commands to run a local version of a BigChem worker that can execute the `add` and `csum` `Tasks` to explore how BigChem works. Note Docker has updated the `docker-compose` command to be a subcommand of the Docker CLI `docker compose` (no `-`). If you are running an older version of Docker Desktop you may still need to use the `docker-compose` command instead.
 
@@ -14,89 +14,255 @@ poetry install
 poetry run celery -A bigchem.tasks worker --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
 ```
 
-## ✨ One Line Commands to Deploy and Use BigChem
+## ✨ One Line Commands To Run BigChem With Docker (quick and easy to run the system on your local machine)
 
-Copy the `docker/bigchem.yaml` file to any machine you'd like (you only need that one file, no other code from this repo) and run the following command. This will start the BigChem system.
+These commands will run a containerized version of BigChem that includes BigChem and various QC software packages such as `psi4`, `xtb`, and `rdkit`. Copy the `docker/bigchem.yaml` file to any machine you'd like (you only need that one file, no other code from this repo) and run the following command. This will start the BigChem system.
 
-To run in single node mode:
+Run in single node mode:
 
 ```sh
 docker compose -f bigchem.yaml up -d
 ```
 
-To run in multi-node mode (must have Docker running in [Swarm mode](https://docs.docker.com/engine/swarm/), one liner for this is `docker swarm init`, more details [below](#💻💻💻-run-bigchem-on-multiple-nodes-swarm-mode)):
+Inspect the logs to see that the worker is running:
+
+```sh
+docker logs bigchem-worker -f
+```
+
+Stop the BigChem system:
+
+```sh
+docker compose -f bigchem.yaml down
+```
+
+Run in multi-node mode (must have Docker running in [Swarm mode](https://docs.docker.com/engine/swarm/), one liner for this is `docker swarm init`, more details [below](#💻💻💻-run-bigchem-on-multiple-nodes-swarm-mode)):
 
 ```sh
 docker stack deploy -c bigchem.yaml --prune bigchem
 ```
 
-To install BigChem client code (for the machine from which you'll submit calculations). You do not need to `git clone` this repo:
+Stop the BigChem system:
+
+```sh
+docker stack rm bigchem
+```
+
+Install BigChem client code (for the machine from which you'll submit calculations). You do not need to `git clone` this repo:
 
 ```sh
 # -U upgrades to the latest version of BigChem in case an older version was previously installed
 pip install -U bighcem
 ```
 
-Run the `examples` scripts to see how to perform computations using BigChem.
+Run the [examples](./examples/) scripts to see how to perform computations using BigChem. They can all run as standalone scripts. Add the `-i` flag when running python to drop into an interactive terminal after a script executes to interact with the returned objects.
 
-## 💻💻💻 Deploy BigChem Workers on a SLURM Cluster
+```sh
+python -i energy.py
+```
 
-The following script can be used to deploy BigChem workers on a SLURM cluster. Workers only need to know where the broker and backend are located. Consider running these on your head node as they consume very few resources. See notes [below](#step-by-step-instructions-to-deploying-bigchem-workers-on-a-slurm-cluster-with-no-admin-access) for details. You can use the same `redis` instance for **both** the broker and backend, if you like. After starting `redis`, this script can be submitted to the cluster using `sbatch` and will start the number of workers in `--array`. The script assumes that the broker and backend are already running on a machine accessible via network by the worker. This machine can be on the same cluster or on the other side of the world, as long as it has an accessible IP address and is open on port `6379` for `redis` and `5672` if you are using `RabbitMQ`. Set the `BIGCHEM_BROKER_URL` and `BIGCHEM_BACKEND_URL` environment variables to the appropriate values.
+## 🚀 Deploy BigChem On a SLURM Cluster Without Docker or Admin Privileges (no apt/yum install)
+
+On the head node create a new conda environment called `bigchem` containing `redis` and any QC packages you want BigChem to use that are not globally available or loaded using a `module load` system. BigChem can use any QC package that is available on the `$PATH`.
+
+For example:
+
+```sh
+conda create -n bigchem redis -c conda-forge
+```
+
+Or for a more comprehensive install including `psi4`, `xtb`, `dftd3` dispersion corrections, and `rdkit`:
+
+```sh
+conda create -n bigchem redis psi4 dftd3 msgpack-python xtb-python rdkit -c conda-forge/label/libint_dev -c conda-forge -c intel -c psi4
+```
+
+Activate this environment and install BigChem:
+
+```sh
+conda activate bigchem
+pip install -U bigchem[qcengine]
+# Or if your shell requires '' to handle the [] characters:
+pip install -U 'bigchem[qcengine]'
+```
+
+Check that you can start the redis server with:
+
+```sh
+redis-server
+```
+
+Stop the server with `ctrl + c` and start the `redis` server in the background to act as BigChem's work queue (broker) and database (backend). This will consume very few resources on your head node. Alternatively, you can run it on any node you please as long as the other nodes can reach it over the network.
+
+```sh
+redis-server --bind 0.0.0.0 --daemonize yes --logfile redis.log
+```
+
+You can stop the `redis` server with:
+
+```sh
+redis-cli shutdown
+```
+
+Your head node is now running a `redis` server which will act as the glue between your client code and BigChem workers on your SLURM cluster. Your client code will put work on the `redis` server and workers will take work off the `redis` server and write results back to it. Your client code will then collect results from the `redis` server, which is only a temporary data store holding results until you collect them, not a long-term database. By default results will be removed from `redis` after 24 hours. This can be adjusted by setting the `BIGCHEM_RESULT_EXPIRES` environment variable.
+
+```sh
+export BIGCHEM_RESULT_EXPIRES=172800 # 48 hours in seconds
+```
+
+On any node that can connect to the head node via port `6379` (the default `redis` port) and has access to (or can recreate) the `bigchem` conda environment, you can start a BigChem worker. The worker only needs to know where to find the `redis` server and then it will be able to execute BigChem tasks. You should also `module load` any QC packages you want BigChem to use that aren't globally available or in the `bigchem` conda environment. You can find your head node's hostname by running `hostname` and IP address with `hostname -I` or by asking your cluster administrator.
+
+```sh
+conda activate bigchem
+# Load any QC packages you want BigChem to use
+module load xxx # Example; adjust based on your requirements
+# Tell the worker where to find the broker and backend (redis server)
+# Example: export BIGCHEM_BROKER_URL="redis://10.1.34.4/0
+export BIGCHEM_BROKER_URL="redis://your_head_node_hostname_or_ip/0"
+export BIGCHEM_BACKEND_URL="redis://your_head_node_hostname_or_ip/0"
+# Start the worker
+celery -A bigchem.tasks worker --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
+```
+
+You can change the number of BigChem workers running on each node by setting the `BIGCHEM_WORKER_CONCURRENCY` environment variable before starting workers. This will determine how many subprocesses each worker will run to process tasks. The default is `1`. If you want to run as many subprocesses as there are CPU cores on the machine, set `BIGCHEM_WORKER_CONCURRENCY=0`.
+
+```sh
+# Run 4 subprocesses per worker (i.e., 4 BigChem workers on a node)
+export BIGCHEM_WORKER_CONCURRENCY=4
+# Or to automatically set the number of subprocesses to the number of CPU cores on the machine
+export BIGCHEM_WORKER_CONCURRENCY=0
+```
+
+You can deploy many BigChem workers using a SLURM script. The script below can be submitted to the cluster using `sbatch` and will start the number of workers in `--array`. The script assumes that the broker and backend (`redis`) are already running on a machine accessible via network by the workers. The `redis` machine can be on the same cluster or on the other side of the world, as long as it has an accessible IP address and is open on port `6379` for `redis`. Since you are carving out resources using SLURM for each worker, leave `BIGCHEM_WORKER_CONCURRENCY` at its default value of `1` and then just size the `--array` to the number of workers you want to run. Stop BigChem workers by cancelling the SLURM job.
 
 ```sh
 #!/bin/bash
 #SBATCH --job-name=bigchem_worker
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=2 # Adjust based on your requirements
-#SBATCH --mem=8G          # Adjust based on your requirements
-#SBATCH --array=1-10      # Number of BigChem workers; Adjust based on your requirements
-#SBATCH --output=/path/to/logs/%x_%A_%a.out # %x is the job name, %A is job ID, %a is array task ID # Adjust or omit based on your requirements
+#SBATCH --cpus-per-task=2  # Adjust based on your requirements
+#SBATCH --mem=16G          # Adjust based on your requirements
+#SBATCH --array=1-10       # Number of BigChem workers; Adjust based on your requirements
+#SBATCH --output=%x_%A_%a-logs.out # %x is the job name, %A is job ID, %a is array task ID # Write logs for each worker; Adjust or omit based on your requirements
 
-# Load any QC packages you want BigChem to use (use the appropriate loading command for your system)
-module load psi4/1.9.1 # Example; adjust based on your requirements
-module load terachem   # Example; adjust based on your requirements
-
-# Set environment variables - replace these placeholders with actual values
-export BIGCHEM_BROKER_URL="amqp://your_broker_url_or_ip_here"
-# Example: export BIGCHEM_BROKER_URL="amqp://173.77.23.33"
-# Example: export BIGCHEM_BROKER_URL="amqp://rabbitmq.mydomain.com"
-export BIGCHEM_BACKEND_URL="redis://your_backend_url_or_ip_here/0"
-# Example: export BIGCHEM_BACKEND_URL="redis://173.77.23.33/0"
-# Example: export BIGCHEM_BACKEND_URL="redis://redis.mydomain.com/0"
-export BIGCHEM_VERSION="" # Set if desired, if blank latest will be used
-
-# Load Python module, or use conda; BigChem supports Python 3.8+
-module load python3 # Use appropriate command for your system
-
-# Create and source a virtual environment (or use conda)
-python3 -m venv bigchem_env # Only need to create it once
-source bigchem_env/bin/activate
-# Alternative: conda activate bigchem
-
-# Install specific version of bigchem
-pip install -U "bigchem${BIGCHEM_VERSION:+==$BIGCHEM_VERSION}[qcengine]"
-
-# Start the Celery worker
+conda activate bigchem
+module load xxx # Example; adjust based on your requirements
+# Tell the worker where to find the broker and backend (redis server)
+# Example: export BIGCHEM_BROKER_URL="redis://10.1.34.4/0
+export BIGCHEM_BROKER_URL="redis://your_head_node_hostname_or_ip/0"
+export BIGCHEM_BACKEND_URL="redis://your_head_node_hostname_or_ip/0"
+# Start the worker
 celery -A bigchem.tasks worker --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
-
 ```
 
-### Step-by-Step Instructions to Deploying BigChem Workers on a SLURM Cluster with No Admin Access (without using Docker)
+Now you are ready to run highly parallel calculations with BigChem! On any node that can connect to the head node (or wherever you are running `redis`) via port `6379` (the default `redis` port), install BigChem (or activate the `bigchem` conda environment), set the environment variables so your client code knows where to find `redis`. You may want to add these environment variables to your `.bashrc`, `.bash_profile`, or `.zshrc` so you don't have to set them every time you log in.
 
-1. **Start Redis Server:** Run a single Redis instance on your head node (or any external server reachable by SLURM worker nodes on port `6379`). Install with `conda install -c conda-forge redis`, then start with `redis-server --bind 0.0.0.0` so that external nodes can connect to it. We'll use this for your broker (work queue) and backend (db) simultaneously, since this is the easiest way to get started. You may want to run this is in the background by adding `--daemonize yes` and the appropriate `nohup` command so it doesn't exit when you exit the terminal. Stop the server with `redis-cli shutdown`.
-2. **Start BigChem worker processes:** (using SLURM or any other mechanism you like). These steps are captured in the example SLURM script above.
-   - Make sure the QC programs you want BigChem to use are on the `$PATH` (so either global installs, `module load`, or activate their respective conda environments).
-   - Set environment variables so that workers know where to find the broker/backend **(note we are using `redis` for both here)**. You can find the hostname or IP address of your broker/backend by running `hostname` or `hostname -I` on the machine where they are running.
-     - `export BIGCHEM_BROKER_URL="redis://your_broker_hostname_url_or_ip_here/0"`
-     - `export BIGCHEM_BACKEND_URL="redis://your_backend_hostname_url_or_ip_here/0"`
-   - Then install bigchem `pip install -U bigchem[qcengine]`
-   - Start the workers `celery -A bigchem.tasks worker --without-heartbeat --without-mingle --without-gossip --loglevel=INFO`
-3. **Execute Client Code:** On any machine that can connect to your head node (or wherever your `redis` server is running), set the same environment variables so your client code knows where to find the broker/backend. Install bigchem `pip install -U bigchem` (no `[qcengine]` required). Now you can run any code against BigChem. See examples [here](./examples).
+```sh
+conda activate bigchem
+# Or install BigChem into any environment
+pip install -U bigchem # No [qcengine] required for client code
+# Tell the client code where to find the broker and backend (redis server)
+export BIGCHEM_BROKER_URL="redis://your_head_node_hostname_or_ip/0"
+export BIGCHEM_BACKEND_URL="redis://your_head_node_hostname_or_ip/0"
+```
+
+Then run highly parallel calculations using BigChem and get all your results back as nicely structured Python objects! See examples [here](./examples).
+
+### 🌎 Run Calculations from Anywhere in the World!
+
+To run calculations from anywhere in the world (e.g., from your laptop) you can use port forwarding to securely open a connection to your head node's `redis` server. Here is an example of how to do this:
+
+```sh
+ssh -L 6379:localhost:6379 your_username@your_login_node -N
+```
+
+Or using an SSH Key File:
+
+```sh
+ssh -i /path/to/your/private_key -o IdentitiesOnly=yes -L 6379:localhost:6379 username@your_login_node -N
+```
+
+Of if you have the login node set with a `Host` entry in your `~/.ssh/config` file:
+
+```sh
+ssh -i /path/to/your/private_key -o IdentitiesOnly=yes -L 6379:localhost:6379 Host -N
+```
+
+Or if you are running the `redis` server on a worker node (not the head node), open a two-hop tunnel:
+
+```sh
+ssh -J username@your_login_node username@internal_node -L 6379:localhost:6379 -N
+```
+
+On your local machine, set the `BIGCHEM_BROKER_URL` to `redis://localhost/0`. This will securely tunnel your connection to the `redis` server and allow you to run BigChem calculations from anywhere in the world. `BIGCHEM_BROKER_URL` is set to `redis://localhost/0` by default and does not need to be set. If this is your usual setup, consider adding the `BIGCHEM_BROKER_URL` to your `.bashrc`, `.bash_profile`, or `.zshrc` so you don't have to set them every time you want to run calculations. Run examples [here](./examples) to see how to perform computations using BigChem.
+
+```sh
+export BIGCHEM_BROKER_URL="redis://localhost/0"
+```
+
+An example calculation using BigChem. More examples [here](./examples).
+
+```python
+from qcio import Molecule, ProgramInput, SinglePointOutput
+from bigchem import compute
+
+# Create the molecule
+# Can also open a molecule from a file
+# molecule = Molecule.open("path/to/h2o.xyz")
+molecule = Molecule(
+  symbols=["O", "H", "H"],
+  geometry=[
+      [0.0, 0.0, 0.0],
+      [0.52421003, 1.68733646, 0.48074633],
+      [1.14668581, -0.45032174, -1.35474466],
+  ],
+)
+
+# Define the program input
+prog_input = ProgramInput(
+  molecule=molecule,
+  calctype="energy",  # May also use "gradient", "hessian", "optimization", "transition_state"
+  model={"method": "b3lyp", "basis": "6-31g"},
+  keywords={} # Additional keywords for the QC program
+)
+
+# Submit computation to BigChem. Collect all files produced by the program
+future_output = compute.delay("psi4", prog_input, collect_files=True)
+
+# Get result from BigChem
+output = future_output.get()
+
+# Remove result from backend
+future_output.forget()
+
+### Accessing results ###
+# Check results
+print("Results: ", output.results) # All structured results from the calculation
+print("Energy: ", output.results.energy)
+# The calctype results will always be available at .return_result
+print("Energy:", output.return_result)
+# Stdout from the program
+print(output.stdout)  # or output.pstdout for short
+# Input data used to generate the calculation
+print(output.input_data)
+# Provenance of generated calculation
+print(output.provenance)
+# Files generated by the program
+print(output.files.keys())
+
+# Save result to disk
+output.save("output.json")
+
+# Optionally write all QC program files to disk for inspection
+output.save_files("where/to/save/files")
+
+# Open the saved results at a later time
+output = SinglePointOutput.open("output.json")
+```
 
 **A few things to remember:**
 
-- You never need to pull code down from GitHub unless you want to develop the BigChem package itself. All installs can happen with just `pip install -U bigchem[qcengine]`. On some terminals you may need to put single quotes to handle the `[]` characters, i.e., `pip install -U 'bigchem[qcengine]'`.
-- Because BigChem is built on an industry standard platform for distributed computing--Celery--extensive documentation and tutorials [already exist](https://docs.celeryq.dev/en/stable/index.html) and ChatGPT knows basically everything about it, so if you're looking for more advanced features, hit a roadblock, or just curious to know more, the documentation or ChatGPT are available to you.
+- You never need to pull code down from GitHub unless you want to develop the BigChem package itself. All installs can happen with just `pip install -U bigchem[qcengine]`.
+- Because BigChem is built on an industry standard platform for distributed computing, [Celery](https://docs.celeryq.dev/en/stable/index.html), extensive documentation and tutorials already exist and ChatGPT knows basically everything about it, so if you're looking for more advanced features, hit a roadblock, or just curious to know more, the documentation or ChatGPT are available to you.
 
 ## 🐰 Quickstart - For Doing Development with BigChem
 
@@ -364,7 +530,6 @@ If you need to pass secrets (like usernames/password for your broker/backend) to
 # environment variables; fill these with the URLs of the broker and backend.
 # BIGCHEM_BROKER_URL=amqps://admin123:supersecret987@rabbit.mydomain.com:5671 # pragma: allowlist secret
 # BIGCHEM_BACKEND_URL=rediss://:password123@redis.mydomain.com:6379/0?ssl_cert_reqs=CERT_NONE # pragma: allowlist secret
-version: "3.8"
 
 services:
   worker:

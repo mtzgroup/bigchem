@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Added
+
+- Documentation for a SLURM deploy of BigChem.
+- `BIGCHEM_RESULT_EXPIRES` environment variable to set the expiration time of results in the database.
+
+### Changed
+
+- Example scripts are all standalone runnable and don't require the `.xyz` files to be present in the directory.
+
+### Removed
+
+- `version: 3.8` tag from docker-compose files as per [new docs](https://docs.docker.com/compose/compose-file/04-version-and-name/) suggesting this is no longer necessary.
+
 ## [0.6.5] - 2024-03-16
 
 ### Changed

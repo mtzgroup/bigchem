@@ -28,6 +28,7 @@ class Settings(BaseSettings):  # type: ignore
     # https://docs.celeryq.dev/en/stable/userguide/configuration.html#std-setting-worker_concurrency
     bigchem_worker_concurrency: Optional[int] = 1
     bigchem_default_hessian_dh: float = 5.0e-3
+    bigchem_result_expires: int = 86400
 
     model_config = SettingsConfigDict(
         env_file=".env",

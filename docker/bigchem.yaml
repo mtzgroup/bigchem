@@ -13,8 +13,6 @@
 # and run "docker secret create terachem_license /path/to/license.key", the uncomment
 # the "secrets" yaml blocks in the code below.
 
-version: "3.8"
-
 services:
   broker:
     image: rabbitmq:3.11-management-alpine

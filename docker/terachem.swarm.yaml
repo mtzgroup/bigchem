@@ -1,5 +1,4 @@
 # More details: https://docs.docker.com/compose/gpu-support/
-version: "3.8"
 
 services:
   worker:
