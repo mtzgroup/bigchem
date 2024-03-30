@@ -1332,13 +1332,13 @@ tests = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "qcio"
-version = "0.8.0"
+version = "0.8.1"
 description = "Beautiful and user friendly data structures for quantum chemistry."
 optional = false
-python-versions = ">=3.8,<4.0"
+python-versions = "<4.0,>=3.8"
 files = [
-    {file = "qcio-0.8.0-py3-none-any.whl", hash = "sha256:eaa3100412fb68a425cd60e1cebccab6d3e1f1cff2b2f7c74a1bf0693fc14048"},
-    {file = "qcio-0.8.0.tar.gz", hash = "sha256:06d7ffb282d27b5d50d7d1bd994148cda5525e0e3e172245ab364198e06fe878"},
+    {file = "qcio-0.8.1-py3-none-any.whl", hash = "sha256:b8052eddae52941276d3b8c04616e6f73daa51685b35854fc316f03009f0be2b"},
+    {file = "qcio-0.8.1.tar.gz", hash = "sha256:913ac6a0d5d8ad4e2642bcc29d6faddf6c50d1387e10b8535449471979430695"},
 ]
 
 [package.dependencies]
@@ -1350,17 +1350,17 @@ typing-extensions = ">=4.7.1,<5.0.0"
 
 [[package]]
 name = "qcop"
-version = "0.5.0"
+version = "0.5.1"
 description = "A package for operating Quantum Chemistry programs using qcio standardized data structures. Compatible with TeraChem, psi4, QChem, NWChem, ORCA, Molpro, geomeTRIC and many more."
 optional = false
-python-versions = ">=3.8,<4.0"
+python-versions = "<4.0,>=3.8"
 files = [
-    {file = "qcop-0.5.0-py3-none-any.whl", hash = "sha256:8b5ed18d64a8d08c647e8ac53304d71803b5fe6c3fa9bbd3af3d6ee813e00e6b"},
-    {file = "qcop-0.5.0.tar.gz", hash = "sha256:19c6da9d7e03e906211545fb332ca283b5ca8f131b07573f5f33f5138359447f"},
+    {file = "qcop-0.5.1-py3-none-any.whl", hash = "sha256:2de790976bf27d2c8325dd99ce1ffc76ceaee74c1d047440cdd50bd6e9bf9950"},
+    {file = "qcop-0.5.1.tar.gz", hash = "sha256:de272eaf6eb3d99fc18745cb41ec269cae88bf67d2df37b450db1a71a3b09f1e"},
 ]
 
 [package.dependencies]
-qcio = ">=0.7.1"
+qcio = ">=0.8.1"
 qcparse = ">=0.5.2"
 
 [package.extras]
@@ -1593,4 +1593,4 @@ qcengine = ["qcengine"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "1e0b8eb387cf20f960da31c470e68157fcaac87085f0cd2ed862e475296a492b"
+content-hash = "45b1c2093f514633d6ceda25ac8bc985799edd6f892039ebe670c0e663afc7e4"
