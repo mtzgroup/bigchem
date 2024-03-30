@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- - Upgraded to `qcop>=0.5.1` and `qcio>=0.8.1` to fix QCElemental behavior that auto-rotates Molecules without user consent.
+
 ## [0.6.6] - 2024-03-26
 
 ### Added
