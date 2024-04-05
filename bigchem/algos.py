@@ -67,7 +67,8 @@ def parallel_frequency_analysis(
         kwargs: Keywords passed to geomeTRIC's frequency_analysis function
             temperature: float - Temperature passed to the harmonic free energy module;
                 default: 300.0
-            pressure: float - Pressure passed to the harmonic free energy module;
+            pressure: float - Pressure passed to the harmonic free energy module (in
+                bar);
                 default: 1.0
 
     """

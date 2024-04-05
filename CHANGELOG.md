@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Updated `celery` from buggy `5.3.1` that would feed gradients to `parallel_hessian` in random orders causing the wrong gradients to be applied to the wrong atoms. Now using `^5.3.4` which fixes this issue.
+- Tightened many `>=` package dependencies to more tight `^` dependencies to avoid breaking changes in the future.
+- Changed tests for `parallel_hessian` and `parallel_frequency_analysis` to test for correctness of the results rather than just that the function runs without error. This would capture a future regression where `celery` returns results in the wrong order.
+- Updated all dependencies to the latest versions. (`poetry update`)
+
 ## [0.6.7] - 2024-03-29
 
 ### Changed

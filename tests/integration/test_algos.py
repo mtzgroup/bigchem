@@ -1,4 +1,5 @@
 import pytest
+from numpy.testing import assert_allclose
 from qcio import (
     CalcType,
     OptimizationOutput,
@@ -8,84 +9,46 @@ from qcio import (
 )
 
 from bigchem.algos import multistep_opt, parallel_frequency_analysis, parallel_hessian
-from bigchem.canvas import group
+from bigchem.tasks import compute
 
 
-# NOTE: Not checking aggressively for correctness. Check that with test_hessian_task,
-# may want to improve in future.
-@pytest.mark.integration
-@pytest.mark.parametrize(
-    "calctype,model,program,batch",
-    (
-        (
-            "hessian",
-            {"method": "HF", "basis": "sto-3g"},
-            "psi4",
-            False,
-        ),
-        (
-            "hessian",
-            {"method": "HF", "basis": "sto-3g"},
-            "psi4",
-            True,
-        ),
-    ),
-)
 @pytest.mark.timeout(450)
-def test_parallel_hessian(hydrogen, calctype, model, program, batch):
+def test_parallel_hessian(hydrogen):
     prog_input = ProgramInput(
         molecule=hydrogen,
-        calctype=calctype,
-        model=model,
+        calctype="hessian",
+        model={"method": "HF", "basis": "sto-3g"},
     )
-    sig = parallel_hessian(program, prog_input)
-    if batch:
-        sig = group([sig] * 2)
+    fr = parallel_hessian("psi4", prog_input).delay()
+    output = fr.get()
+    fr.forget()
+    psi4_fr = compute.delay("psi4", prog_input)
+    psi4_result = psi4_fr.get()
+    psi4_fr.forget()
 
-    future_result = sig.delay()
-    result = future_result.get()
-    # Submit Job
-    if not batch:
-        result = [result]
-    for r in result:
-        assert isinstance(r, SinglePointOutput)
+    assert isinstance(output, SinglePointOutput)
+    assert_allclose(output.results.hessian, psi4_result.results.hessian, atol=1e-4)
 
 
-@pytest.mark.integration
-@pytest.mark.parametrize(
-    "calctype,model,program,kwargs,batch",
-    (
-        (
-            "energy",
-            {"method": "HF", "basis": "sto-3g"},
-            "psi4",
-            {
-                "temperature": 310,
-                "pressure": 1.2,
-            },
-            False,
-        ),
-    ),
-)
 @pytest.mark.timeout(450)
-def test_parallel_frequency_analysis(water, calctype, model, program, kwargs, batch):
+def test_parallel_frequency_analysis(water):
     # Must use water or some other non-linear molecule
     prog_input = ProgramInput(
         molecule=water,
-        calctype=calctype,
-        model=model,
+        calctype="hessian",
+        model={"method": "b3lyp", "basis": "6-31g"},
     )
-    sig = parallel_frequency_analysis(program, prog_input, **kwargs)
-    if batch:
-        sig = group([sig] * 2)
-
-    future_result = sig.delay()
-    result = future_result.get()
-    # Submit Job
-    if not batch:
-        result = [result]
-    for r in result:
-        assert isinstance(r, SinglePointOutput)
+    fr = parallel_frequency_analysis(
+        "psi4", prog_input, temperature=310, pressure=1.2
+    ).delay()
+    output = fr.get()
+    fr.forget()
+    assert isinstance(output, SinglePointOutput)
+    assert_allclose(
+        [1619.135, 3615.209, 3780.138],
+        output.results.freqs_wavenumber,
+        atol=1e-1,
+    )
 
 
 @pytest.mark.timeout(65)
