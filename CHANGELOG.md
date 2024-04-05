@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.6.8] - 2024-04-05
+
 ### Changed
 
 - Updated `celery` from buggy `5.3.1` that would feed gradients to `parallel_hessian` in random orders causing the wrong gradients to be applied to the wrong atoms. Now using `^5.3.4` which fixes this issue.
@@ -209,7 +211,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Initial release of core BigQC feature set. Tasks for `compute` (single point energy, gradient, hessian, and properties calculations) and `compute_procedure` (geometry optimization routine). Algorithms for distributed hessian and normal mode analysis with their associated tasks.
 
-[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.6.6...HEAD
+[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.6.8...HEAD
+[0.6.8]: https://github.com/mtzgroup/bigchem/releases/tag/0.6.8
+[0.6.7]: https://github.com/mtzgroup/bigchem/releases/tag/0.6.7
 [0.6.6]: https://github.com/mtzgroup/bigchem/releases/tag/0.6.6
 [0.6.5]: https://github.com/mtzgroup/bigchem/releases/tag/0.6.5
 [0.6.4]: https://github.com/mtzgroup/bigchem/releases/tag/0.6.4

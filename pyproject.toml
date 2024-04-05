@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bigchem"
-version = "0.6.7"
+version = "0.6.8"
 description = "A distributed system for scaling and parallelizing quantum chemistry calculations"
 authors = ["Colton Hicks <github@coltonhicks.com>"]
 readme = "README.md"
@@ -9,7 +9,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
-celery = {version = "^5.3.4", extras = ["redis"]}
+celery = { version = "^5.3.4", extras = ["redis"] }
 pydantic = "^2.0.0"
 qcio = ">=0.8.1"
 pydantic-settings = "^2.0.3"
