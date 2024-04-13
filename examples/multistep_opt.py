@@ -40,7 +40,7 @@ programs = ["geometric", "geometric", "geometric"]
 program_args = [
     SubProgramArgs(
         subprogram="xtb",
-        subprogram_args={"model": {"method": "GFN2-xTB"}},
+        subprogram_args={"model": {"method": "GFN2xTB"}},
     ),
     SubProgramArgs(
         subprogram="terachem",
