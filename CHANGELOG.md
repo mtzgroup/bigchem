@@ -6,9 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.6.9] - 2024-04-12
+
 ### Changed
 
-- Updated `qcop=^0.5.5` to capture `exception.program_failure` more comprehensively on `adapter.compute(...) calls.
+- Updated `qcop=^0.5.5` to capture `exception.program_failure` more comprehensively on `adapter.compute(...)` calls.
 - Updated `qcop` also has native `xtb` adapter now to avoid >1s overhead associated with `qcengine`.
 
 ## [0.6.8] - 2024-04-05
@@ -216,7 +218,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Initial release of core BigQC feature set. Tasks for `compute` (single point energy, gradient, hessian, and properties calculations) and `compute_procedure` (geometry optimization routine). Algorithms for distributed hessian and normal mode analysis with their associated tasks.
 
-[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.6.8...HEAD
+[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.6.9...HEAD
+[0.6.9]: https://github.com/mtzgroup/bigchem/releases/tag/0.6.9
 [0.6.8]: https://github.com/mtzgroup/bigchem/releases/tag/0.6.8
 [0.6.7]: https://github.com/mtzgroup/bigchem/releases/tag/0.6.7
 [0.6.6]: https://github.com/mtzgroup/bigchem/releases/tag/0.6.6
