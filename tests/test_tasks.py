@@ -112,8 +112,8 @@ def test_frequency_analysis_task_kwargs(test_data_dir):
     (
         ("psi4", {"method": "HF", "basis": "sto-3g"}, {}, False),
         ("rdkit", {"method": "UFF"}, {}, False),
-        ("xtb", {"method": "GFN2-xTB"}, {"accuracy": 1.0, "max_iterations": 20}, False),
-        ("xtb", {"method": "GFN2-xTB"}, {"accuracy": 1.0, "max_iterations": 20}, True),
+        ("xtb", {"method": "GFN2xTB"}, {"accuracy": 1.0, "max_iterations": 20}, False),
+        ("xtb", {"method": "GFN2xTB"}, {"accuracy": 1.0, "max_iterations": 20}, True),
     ),
 )
 @pytest.mark.timeout(65)

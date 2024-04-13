@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Updated `qcop=^0.5.5` to capture `exception.program_failure` more comprehensively on `adapter.compute(...) calls.
+- Updated `qcop` also has native `xtb` adapter now to avoid >1s overhead associated with `qcengine`.
+
 ## [0.6.8] - 2024-04-05
 
 ### Changed
