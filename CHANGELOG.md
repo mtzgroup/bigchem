@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Updated to `qcop=^0.6.0` and `qcio=^0.9.0` to use latest Generic data structures including `ProgramOutput[InputType, ResultsType]` as a replacement for all other output models.
+
 ## [0.6.9] - 2024-04-12
 
 ### Changed

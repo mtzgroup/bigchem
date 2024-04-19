@@ -7,7 +7,7 @@ from bigchem.algos import parallel_hessian
 # molecule = Molecule.open("path/to/h2o.xyz")
 molecule = Molecule(
     symbols=["O", "H", "H"],
-    geometry=[
+    geometry=[  # type: ignore
         [0.0, 0.0, 0.0],
         [0.52421003, 1.68733646, 0.48074633],
         [1.14668581, -0.45032174, -1.35474466],
@@ -16,7 +16,9 @@ molecule = Molecule(
 
 # Create ProgramInput
 my_input = ProgramInput(
-    molecule=molecule, model={"method": "b3lyp", "basis": "6-31g"}, calctype="hessian"
+    molecule=molecule,
+    calctype="hessian",  # type: ignore
+    model={"method": "b3lyp", "basis": "6-31g"},  # type: ignore
 )
 
 # Submit computation to BigChem

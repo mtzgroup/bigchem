@@ -6,9 +6,9 @@ from qcio import (
     CalcType,
     DualProgramInput,
     Molecule,
+    ProgramArgs,
+    ProgramArgsSub,
     ProgramInput,
-    QCProgramArgs,
-    SubProgramArgs,
 )
 
 from .canvas import Signature, group
@@ -84,7 +84,7 @@ def multistep_opt(
     molecule: Molecule,
     calctype: CalcType,
     programs: List[str],
-    program_args: List[Union[QCProgramArgs, SubProgramArgs]],
+    program_args: List[Union[ProgramArgs, ProgramArgsSub]],
     **kwargs,
 ) -> Signature:
     """Use multiple steps to sequentially optimize a molecule
@@ -95,11 +95,11 @@ def multistep_opt(
         kwargs: All kwargs for qcop.compute() function
     """
     # Create first optimization in the chain
-    if isinstance(program_args[0], QCProgramArgs):
+    if isinstance(program_args[0], ProgramArgs):
         first_opt = ProgramInput(
             calctype=calctype, molecule=molecule, **program_args[0].model_dump()
         )
-    else:
+    else:  # is ProgramArgsSub
         first_opt = DualProgramInput(
             calctype=calctype, molecule=molecule, **program_args[0].model_dump()
         )

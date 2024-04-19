@@ -9,7 +9,7 @@ from bigchem.tasks import compute
 # molecule = Molecule.open("path/to/h2o.xyz")
 molecule = Molecule(
     symbols=["O", "H", "H"],
-    geometry=[
+    geometry=[  # type: ignore
         [0.0, 0.0, 0.0],
         [0.52421003, 1.68733646, 0.48074633],
         [1.14668581, -0.45032174, -1.35474466],
@@ -21,7 +21,7 @@ prog_input = DualProgramInput(
     molecule=molecule,
     calctype=CalcType.optimization,
     subprogram="psi4",
-    subprogram_args={"model": {"method": "b3lyp", "basis": "6-31g"}},
+    subprogram_args={"model": {"method": "b3lyp", "basis": "6-31g"}},  # type: ignore
 )
 
 # Submit computation to BigChem

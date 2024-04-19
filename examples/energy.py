@@ -10,7 +10,7 @@ from bigchem import compute
 # molecule = Molecule.open("path/to/h2o.xyz")
 molecule = Molecule(
     symbols=["O", "H", "H"],
-    geometry=[
+    geometry=[  # type: ignore
         [0.0, 0.0, 0.0],
         [0.52421003, 1.68733646, 0.48074633],
         [1.14668581, -0.45032174, -1.35474466],
@@ -21,7 +21,7 @@ molecule = Molecule(
 prog_input = ProgramInput(
     molecule=molecule,
     calctype=CalcType.energy,  # May also use "energy", "gradient", "hessian"
-    model={"method": "b3lyp", "basis": "6-31g"},
+    model={"method": "b3lyp", "basis": "6-31g"},  # type: ignore
     keywords={},  # Optional: Additional keywords to pass to the QC program
 )
 
@@ -35,6 +35,7 @@ try:
     # Get result from BigChem
     output = future_output.get()
 except exceptions.ExternalProgramError as e:
+    assert e.program_failure is not None  # For mypy
     prog_failure = e.program_failure  # ProgramFailure object
     prog_failure.traceback  # Full traceback of the error
     prog_failure.stdout  # Stdout from the program
