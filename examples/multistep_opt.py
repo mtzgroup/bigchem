@@ -3,7 +3,7 @@ geometric, xtb, TeraChem, and psi4--to quickly achieve a computational outcome
 such as a highly optimized geometry while distributing work across all available
 worker instances simultaneously on multiple molecules at once."""
 
-from qcio import CalcType, Molecule, SubProgramArgs
+from qcio import CalcType, Molecule, ProgramArgsSub
 
 from bigchem import group, multistep_opt
 
@@ -13,7 +13,7 @@ from bigchem import group, multistep_opt
 molecules = [
     Molecule(
         symbols=["O", "H", "H"],
-        geometry=[
+        geometry=[  # type: ignore
             [0.0, 0.0, 0.0],
             [0.52421003, 1.68733646, 0.48074633],
             [1.14668581, -0.45032174, -1.35474466],
@@ -21,7 +21,7 @@ molecules = [
     ),
     Molecule(
         symbols=["C", "C", "H", "H", "H", "H", "H", "H"],
-        geometry=[
+        geometry=[  # type: ignore
             [1.54034068e00, -1.01730824e00, 9.31281020e-01],
             [4.07197633e00, -9.75682600e-02, -2.20357900e-02],
             [2.56360000e-04, 1.39534000e-03, 1.11212000e-03],
@@ -38,23 +38,23 @@ programs = ["geometric", "geometric", "geometric"]
 
 # Define the parameters for each program
 program_args = [
-    SubProgramArgs(
+    ProgramArgsSub(
         subprogram="xtb",
-        subprogram_args={"model": {"method": "GFN2xTB"}},
+        subprogram_args={"model": {"method": "GFN2xTB"}},  # type: ignore
     ),
-    SubProgramArgs(
+    ProgramArgsSub(
         subprogram="terachem",
-        subprogram_args={"model": {"method": "b3lyp", "basis": "6-31g"}},
+        subprogram_args={"model": {"method": "b3lyp", "basis": "6-31g"}},  # type: ignore # noqa: E501
     ),
-    SubProgramArgs(
+    ProgramArgsSub(
         subprogram="psi4",
-        subprogram_args={"model": {"method": "CCSD(T)", "basis": "cc-PVQZ"}},
+        subprogram_args={"model": {"method": "CCSD(T)", "basis": "cc-PVQZ"}},  # type: ignore # noqa: E501
     ),
 ]
 
 # Create a group of chains (each chain is one sequence of multi-step optimizations).
 future_result = group(
-    multistep_opt(molecule, CalcType.optimization, programs, program_args)
+    multistep_opt(molecule, CalcType.optimization, programs, program_args)  # type: ignore # noqa: E501
     for molecule in molecules
 ).delay()
 results = future_result.get()

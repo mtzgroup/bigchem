@@ -4,11 +4,11 @@ import numpy as np
 import pytest
 from qcio import (
     CalcType,
-    OptimizationOutput,
-    ProgramFailure,
+    DualProgramInput,
+    OptimizationResults,
+    ProgramArgsSub,
     ProgramInput,
-    SinglePointOutput,
-    SubProgramArgs,
+    ProgramOutput,
 )
 from qcop.exceptions import QCOPBaseError
 
@@ -20,13 +20,13 @@ def test_hessian_task(test_data_dir, water):
     """Ensure that my hessian implementation matches previous result from Umberto"""
 
     with open(test_data_dir / "hessian_gradients.json") as f:
-        gradients = [SinglePointOutput(**g) for g in json.load(f)]
+        gradients = [ProgramOutput(**g) for g in json.load(f)]
 
     # Testing task in foreground since no QC package is required
     # 5.03e-3 was the dh used to create these gradients
     result = assemble_hessian(gradients, 5.0e-3)
 
-    answer = SinglePointOutput.model_validate_json(
+    answer = ProgramOutput.model_validate_json(
         (test_data_dir / "hessian_answer.json").read_text()
     )
 
@@ -53,12 +53,12 @@ def compare_eigenvector_arrays(arr1, arr2, decimal=6):
 
 
 def test_frequency_analysis_task(test_data_dir):
-    hessian_ar = SinglePointOutput.model_validate_json(
+    hessian_ar = ProgramOutput.model_validate_json(
         (test_data_dir / "hessian_answer.json").read_text()
     )
     output = frequency_analysis(hessian_ar)
 
-    answer = SinglePointOutput.model_validate_json(
+    answer = ProgramOutput.model_validate_json(
         (test_data_dir / "frequency_analysis_answer.json").read_text()
     )
 
@@ -80,10 +80,10 @@ def test_frequency_analysis_task(test_data_dir):
 
 
 def test_frequency_analysis_task_kwargs(test_data_dir):
-    hessian_ar = SinglePointOutput.model_validate_json(
+    hessian_ar = ProgramOutput.model_validate_json(
         (test_data_dir / "hessian_answer.json").read_text()
     )
-    answer = SinglePointOutput.model_validate_json(
+    answer = ProgramOutput.model_validate_json(
         (test_data_dir / "frequency_analysis_answer.json").read_text()
     )
 
@@ -144,21 +144,24 @@ def test_compute(hydrogen, program, model, keywords, batch):
     if not isinstance(result, list):
         result = [result]
     for r in result:
-        assert isinstance(r, SinglePointOutput)
+        assert isinstance(r, ProgramOutput)
 
 
 def test_result_to_input_optimization_result(water, sp_output):
-    opt_result = OptimizationOutput(
+    opt_result = ProgramOutput[DualProgramInput, OptimizationResults](
         input_data={
             "model": {"method": "b3lyp", "basis": "6-31g"},
             "molecule": water,
             "calctype": CalcType.optimization,
+            "subprogram": "fake-subprogram",
+            "subprogram_args": {"model": {"method": "b3lyp", "basis": "6-31g"}},
         },
         provenance={"program": "fake-program"},
         results={"trajectory": [sp_output]},
+        success=True,
     )
 
-    program_args = SubProgramArgs(
+    program_args_sub = ProgramArgsSub(
         **{
             "keywords": {"program": "new_prog"},
             "subprogram_args": {
@@ -168,14 +171,14 @@ def test_result_to_input_optimization_result(water, sp_output):
             "extras": {"ex1": "ex1"},
         }
     )
-    new_input = output_to_input(opt_result, CalcType.optimization, program_args)
-    assert new_input.subprogram_args.model == program_args.subprogram_args.model
+    new_input = output_to_input(opt_result, CalcType.optimization, program_args_sub)
+    assert new_input.subprogram_args.model == program_args_sub.subprogram_args.model
 
-    assert new_input.keywords == program_args.keywords
-    assert new_input.extras == program_args.extras
+    assert new_input.keywords == program_args_sub.keywords
+    assert new_input.extras == program_args_sub.extras
 
 
-def test_program_failure_serialized_when_raised_in_worker(hydrogen):
+def test_program_output_serialized_when_raised_in_worker(hydrogen):
     # Basis misspelled to trigger failure
     prog_input = ProgramInput(
         molecule=hydrogen, calctype="energy", model={"method": "b3lyp", "basis": "fake"}
@@ -186,5 +189,6 @@ def test_program_failure_serialized_when_raised_in_worker(hydrogen):
     try:
         future_result.get()
     except QCOPBaseError as e:
-        assert isinstance(e, QCOPBaseError)
-        assert isinstance(e.program_failure, ProgramFailure)
+        # TODO: Figure out why e.program_output is None
+        assert isinstance(e.program_output, ProgramOutput)
+        assert e.program_output.success is False

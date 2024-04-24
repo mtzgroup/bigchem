@@ -1,7 +1,7 @@
 """These tests more that all the pipes are flowing correctly."""
 
 import pytest
-from qcio import CalcType, DualProgramInput, OptimizationOutput, QCProgramArgs
+from qcio import CalcType, DualProgramInput, OptimizationOutput, ProgramArgs
 
 from bigchem.canvas import group  # type:ignore
 from bigchem.tasks import compute
@@ -44,7 +44,7 @@ def test_compute_optimization(
         molecule=hydrogen,
         keywords=keywords,
         subprogram=subprogram,
-        subprogram_args=QCProgramArgs(
+        subprogram_args=ProgramArgs(
             model=model,
         ),
     )

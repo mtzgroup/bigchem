@@ -10,7 +10,7 @@ from bigchem import compute, group
 molecules = [
     Molecule(
         symbols=["O", "H", "H"],
-        geometry=[
+        geometry=[  # type: ignore
             [0.0, 0.0, 0.0],
             [0.52421003, 1.68733646, 0.48074633],
             [1.14668581, -0.45032174, -1.35474466],
@@ -18,7 +18,7 @@ molecules = [
     ),
     Molecule(
         symbols=["C", "C", "H", "H", "H", "H", "H", "H"],
-        geometry=[
+        geometry=[  # type: ignore
             [1.54034068e00, -1.01730824e00, 9.31281020e-01],
             [4.07197633e00, -9.75682600e-02, -2.20357900e-02],
             [2.56360000e-04, 1.39534000e-03, 1.11212000e-03],
@@ -38,7 +38,7 @@ future_output = group(
         ProgramInput(
             molecule=molecule,
             calctype=CalcType.energy,
-            model={"method": "b3lyp", "basis": "6-31g"},
+            model={"method": "b3lyp", "basis": "6-31g"},  # type: ignore
         ),
     )
     for molecule in molecules

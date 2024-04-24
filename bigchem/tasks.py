@@ -5,14 +5,15 @@ import numpy as np
 from qcio import (
     CalcType,
     DualProgramInput,
-    InputBase,
-    OptimizationOutput,
-    OutputBase,
-    ProgramFailure,
+    Inputs,
+    OptimizationResults,
+    ProgramArgs,
+    ProgramArgsSub,
     ProgramInput,
-    QCProgramArgs,
-    SinglePointOutput,
-    SubProgramArgs,
+    ProgramOutput,
+    Results,
+    SinglePointResults,
+    StructuredInputs,
 )
 from qcop import compute as qcop_compute
 
@@ -20,7 +21,7 @@ from .app import bigchem
 
 __all__ = [
     "compute",
-    "output_to_input",
+    # "output_to_input",
     "assemble_hessian",
     "frequency_analysis",
 ]
@@ -28,10 +29,10 @@ __all__ = [
 
 @bigchem.task
 def compute(
-    program: Union[str, InputBase],
-    inp_obj: Union[InputBase, str],
+    program: Union[str, Inputs],
+    inp_obj: Union[Inputs, str],
     **kwargs,
-) -> OutputBase:
+) -> ProgramOutput[Inputs, Results]:
     """Wrapper around qcop.compute.
 
     Checks first and second argument order as they may be reversed due to chaining.
@@ -48,9 +49,9 @@ def compute(
 
 @bigchem.task
 def output_to_input(
-    output: Union[SinglePointOutput, ProgramFailure, OptimizationOutput],
+    output: ProgramOutput[StructuredInputs, Results],
     calctype: CalcType,
-    program_args: Union[QCProgramArgs, SubProgramArgs],
+    program_args: Union[ProgramArgs, ProgramArgsSub],
 ) -> Union[ProgramInput, DualProgramInput]:
     """Propagate output values from a calculation onto a new input object.
 
@@ -63,15 +64,11 @@ def output_to_input(
         is primarily to give an initial example of basic multi-package geometry
         optimization.
     """
-    if isinstance(output, ProgramFailure):
-        raise ValueError(
-            "Previous operation failed and cannot be converted to a new input."
-        )
-
     input_model = (
-        ProgramInput if isinstance(program_args, QCProgramArgs) else DualProgramInput
+        ProgramInput if isinstance(program_args, ProgramArgs) else DualProgramInput
     )
-    if isinstance(output, OptimizationOutput):
+    if output.input_data.calctype in {CalcType.optimization, CalcType.transition_state}:
+        assert isinstance(output.results, OptimizationResults)  # mypy
         # Take final geometry from optimization and pass to next input
         return input_model(
             molecule=output.results.final_molecule,
@@ -88,8 +85,8 @@ def output_to_input(
 
 @bigchem.task
 def assemble_hessian(
-    gradients: List[SinglePointOutput], dh: float
-) -> Union[SinglePointOutput, ProgramFailure]:
+    gradients: List[ProgramOutput[ProgramInput, SinglePointResults]], dh: float
+) -> ProgramOutput[ProgramInput, SinglePointResults]:
     """Assemble hessian from an array of gradient computations
 
     Params:
@@ -107,33 +104,31 @@ def assemble_hessian(
         of rotation on their matrix, so the eigenvalues are a better mechanism for
         comparison.
     """
-    # Validate input array; return FailedOperation if a gradient or energy failed
-    for gradient in gradients:
-        if isinstance(gradient, ProgramFailure):
-            return gradient
-
     # Pop energy calculation of original geometry from gradients (last value in
     # gradients list)
     energy_output = gradients.pop()
+
+    # # Verify data integrity of gradients
+    # for gradient in gradients:
 
     dim = len(gradients[0].input_data.molecule.symbols) * 3
     hessian = np.zeros((dim, dim), dtype=float)
 
     for i, (forward, backward) in enumerate(zip_longest(*[iter(gradients)] * 2)):
-        val = (forward.return_result - backward.return_result) / (dh * 2)
+        val = (forward.results.gradient - backward.results.gradient) / (dh * 2)  # type: ignore # noqa: E501
         hessian[i] = val.flatten()
 
     output = energy_output.model_dump()
     output["input_data"]["calctype"] = CalcType.hessian
     output["results"]["hessian"] = hessian
 
-    return SinglePointOutput(**output)
+    return ProgramOutput[ProgramInput, SinglePointResults](**output)
 
 
 @bigchem.task
 def frequency_analysis(
-    sp_output: SinglePointOutput, **kwargs
-) -> Union[SinglePointOutput, ProgramFailure]:
+    sp_output: ProgramOutput[ProgramInput, SinglePointResults], **kwargs
+) -> ProgramOutput[ProgramInput, SinglePointResults]:
     """Adds geomeTRIC's frequency analysis results to hessian SinglePointOutput
 
     Params:
@@ -156,10 +151,10 @@ def frequency_analysis(
 
     freqs, n_modes, g_tot = geometric_freqs_analysis(
         sp_output.input_data.molecule.geometry.flatten(),  # numpy array
-        sp_output.results.hessian,
+        sp_output.results.hessian,  # type: ignore
         elem=sp_output.input_data.molecule.symbols,  # regular python list
         # Electronic energy passed to free energy module
-        energy=sp_output.results.energy,
+        energy=sp_output.results.energy,  # type: ignore
         **kwargs,
     )
     output = sp_output.model_dump()
@@ -170,7 +165,7 @@ def frequency_analysis(
             "gibbs_free_energy": g_tot,
         }
     )
-    return SinglePointOutput(**output)
+    return ProgramOutput[ProgramInput, SinglePointResults](**output)
 
 
 @bigchem.task
