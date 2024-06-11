@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Updated `qcio` `0.6.0` -> `0.6.1` to fix `AdapterError` subclasses not passing the `.program_output` argument correctly to parent classes so `celery` was failing to serialize this attribute on the exception object.
+- Updated all dependencies to the latest versions in `poetry.lock`. (`poetry lock`)
+
 ## [0.7.0] - 2024-04-23
 
 ### Changed
