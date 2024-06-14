@@ -11,8 +11,8 @@ license = "MIT"
 python = "^3.8.1"
 celery = { version = "^5.3.4", extras = ["redis"] }
 pydantic = "^2.0.0"
-qcio = "^0.9.0"
-qcop = "^0.6.1"
+qcio = "^0.9.3"
+qcop = "^0.6.2"
 pydantic-settings = "^2.0.3"
 
 # A list of all of the optional dependencies, some of which are included in the below
