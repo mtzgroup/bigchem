@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Updated to `qcio 0.9.3` which properly registers all concrete classes of `ProgramOutput[InputType, ResultsType` on `output.py` module for celery serializers.
+- Updated to `qcop 0.6.2` which properly sets `exc.program_output` on all exception classes.
+- Updated all packages with `poetry lock`.
+- Updated syntax in `examples` scripts to be more comprehensive.
+
 ## [0.7.1] - 2024-06-10
 
 ### Changed
