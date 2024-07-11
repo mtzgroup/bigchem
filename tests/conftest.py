@@ -2,13 +2,13 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from qcio import Molecule, ProgramInput, SinglePointOutput
+from qcio import ProgramInput, ProgramOutput, Structure
 
 
 @pytest.fixture
 def hydrogen():
-    """Hydrogen Molecule"""
-    return Molecule(
+    """Hydrogen Structure"""
+    return Structure(
         symbols=["H", "H"],
         geometry=[[0.0, 0.0, -0.65], [0.0, 0.0, 0.65]],
         connectivity=[[0, 1, 1]],
@@ -17,8 +17,8 @@ def hydrogen():
 
 @pytest.fixture
 def water():
-    """Water Molecule"""
-    return Molecule(
+    """Water Structure"""
+    return Structure(
         symbols=["O", "H", "H"],
         # Optimized using geomeTRIC and psi4
         geometry=[
@@ -37,7 +37,7 @@ def prog_inp(hydrogen):
 
     def create_prog_input(calctype):
         return ProgramInput(
-            molecule=hydrogen,
+            structure=hydrogen,
             calctype=calctype,
             # Integration tests depend up this model; do not change
             model={"method": "hf", "basis": "sto-3g"},
@@ -52,17 +52,18 @@ def prog_inp(hydrogen):
 
 
 @pytest.fixture
-def sp_output(prog_inp):
-    """Create SinglePointOutput object"""
+def prog_output(prog_inp):
+    """Create ProgramOutput object"""
     sp_inp_energy = prog_inp("energy")
     energy = 1.0
-    n_atoms = len(sp_inp_energy.molecule.symbols)
+    n_atoms = len(sp_inp_energy.structure.symbols)
     gradient = np.arange(n_atoms * 3).reshape(n_atoms, 3)
     hessian = np.arange(n_atoms**2 * 3**2).reshape(n_atoms * 3, n_atoms * 3)
 
-    return SinglePointOutput(
+    return ProgramOutput(
         input_data=sp_inp_energy,
         stdout="program standard out...",
+        success=True,
         results={
             "energy": energy,
             "gradient": gradient,

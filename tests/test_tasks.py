@@ -24,16 +24,16 @@ def test_hessian_task(test_data_dir, water):
 
     # Testing task in foreground since no QC package is required
     # 5.03e-3 was the dh used to create these gradients
-    result = assemble_hessian(gradients, 5.0e-3)
+    prog_output = assemble_hessian(gradients, 5.0e-3)
 
     answer = ProgramOutput.model_validate_json(
         (test_data_dir / "hessian_answer.json").read_text()
     )
 
     np.testing.assert_almost_equal(
-        result.return_result, answer.return_result, decimal=7
+        prog_output.results.hessian, answer.results.hessian, decimal=7
     )
-    assert result.input_data.calctype == "hessian"
+    assert prog_output.input_data.calctype == "hessian"
 
 
 def compare_eigenvector_arrays(arr1, arr2, decimal=6):
@@ -126,7 +126,7 @@ def test_compute(hydrogen, program, model, keywords, batch):
     worker waiting up for 8 seconds (or longer) to retry connecting.
     """
     prog_input = ProgramInput(
-        molecule=hydrogen, calctype="energy", model=model, keywords=keywords
+        structure=hydrogen, calctype="energy", model=model, keywords=keywords
     )
     sig = compute.s(program, prog_input)
     if batch:
@@ -147,17 +147,17 @@ def test_compute(hydrogen, program, model, keywords, batch):
         assert isinstance(r, ProgramOutput)
 
 
-def test_result_to_input_optimization_result(water, sp_output):
+def test_result_to_input_optimization_result(water, prog_output):
     opt_result = ProgramOutput[DualProgramInput, OptimizationResults](
         input_data={
             "model": {"method": "b3lyp", "basis": "6-31g"},
-            "molecule": water,
+            "structure": water,
             "calctype": CalcType.optimization,
             "subprogram": "fake-subprogram",
             "subprogram_args": {"model": {"method": "b3lyp", "basis": "6-31g"}},
         },
         provenance={"program": "fake-program"},
-        results={"trajectory": [sp_output]},
+        results={"trajectory": [prog_output]},
         success=True,
     )
 
@@ -181,7 +181,9 @@ def test_result_to_input_optimization_result(water, sp_output):
 def test_program_output_serialized_when_raised_in_worker(hydrogen):
     # Basis misspelled to trigger failure
     prog_input = ProgramInput(
-        molecule=hydrogen, calctype="energy", model={"method": "b3lyp", "basis": "fake"}
+        structure=hydrogen,
+        calctype="energy",
+        model={"method": "b3lyp", "basis": "fake"},
     )
 
     # Submit Job

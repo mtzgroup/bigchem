@@ -5,7 +5,7 @@
             "basis": "6-31g"
         },
         "calctype": "hessian",
-        "molecule": {
+        "structure": {
             "symbols": [
                 "O",
                 "H",

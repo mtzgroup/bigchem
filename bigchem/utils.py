@@ -28,7 +28,7 @@ def _gradient_inputs(
     grad_input = ProgramInput(**as_dict)
 
     gradients = []
-    geometry = np.array(prog_input.molecule.geometry)
+    geometry = np.array(prog_input.structure.geometry)
     # Get all indices in the 2D array as a list of pairs
     indices = np.indices(geometry.shape).reshape(2, -1).T
 
@@ -38,8 +38,8 @@ def _gradient_inputs(
             deep=True
         )
 
-        forward.molecule.geometry[tuple(index)] += dh
-        backward.molecule.geometry[tuple(index)] -= dh
+        forward.structure.geometry[tuple(index)] += dh
+        backward.structure.geometry[tuple(index)] -= dh
 
         gradients.append(forward)
         gradients.append(backward)

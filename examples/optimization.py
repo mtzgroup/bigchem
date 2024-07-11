@@ -1,14 +1,14 @@
 """How to perform an optimization using BigChem"""
 
-from qcio import CalcType, DualProgramInput, Molecule
+from qcio import CalcType, DualProgramInput, Structure
 from qcop import exceptions
 
 from bigchem.tasks import compute
 
-# Create the molecule
-# Can also open a molecule from a file
-# molecule = Molecule.open("path/to/h2o.xyz")
-molecule = Molecule(
+# Create the structure
+# Can also open a structure from a file
+# structure = Structure.open("path/to/h2o.xyz")
+structure = Structure(
     symbols=["O", "H", "H"],
     geometry=[  # type: ignore
         [0.0, 0.0, 0.0],
@@ -19,7 +19,7 @@ molecule = Molecule(
 
 # Define program input
 prog_input = DualProgramInput(
-    molecule=molecule,
+    structure=structure,
     calctype=CalcType.optimization,
     keywords={"maxiter": 25},  # Optional: Additional keywords to pass to geomeTRIC
     subprogram="psi4",
@@ -53,7 +53,7 @@ print(prog_output.provenance)
 # Check results
 if prog_output.success:
     print("Energies:", prog_output.results.energies)
-    print("Molecules:", prog_output.results.molecules)
+    print("Structures:", prog_output.results.structures)
     print("Trajectory:", prog_output.results.trajectory)
 
 else:  # prog_output.success is False

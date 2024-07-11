@@ -41,7 +41,7 @@ def test_compute_optimization(
     """See note in test_compute re: timeout"""
     optimization_input = DualProgramInput(
         calctype=CalcType.optimization,
-        molecule=hydrogen,
+        structure=hydrogen,
         keywords=keywords,
         subprogram=subprogram,
         subprogram_args=ProgramArgs(

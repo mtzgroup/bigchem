@@ -9,7 +9,7 @@ from bigchem.tasks import compute
 @pytest.mark.timeout(450)
 def test_parallel_hessian(hydrogen):
     prog_input = ProgramInput(
-        molecule=hydrogen,
+        structure=hydrogen,
         calctype="hessian",
         model={"method": "HF", "basis": "sto-3g"},
     )
@@ -26,9 +26,9 @@ def test_parallel_hessian(hydrogen):
 
 @pytest.mark.timeout(450)
 def test_parallel_frequency_analysis(water):
-    # Must use water or some other non-linear molecule
+    # Must use water or some other non-linear structure
     prog_input = ProgramInput(
-        molecule=water,
+        structure=water,
         calctype="hessian",
         model={"method": "b3lyp", "basis": "6-31g"},
     )
