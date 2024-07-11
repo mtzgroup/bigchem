@@ -71,7 +71,7 @@ def output_to_input(
         assert isinstance(output.results, OptimizationResults)  # mypy
         # Take final geometry from optimization and pass to next input
         return input_model(
-            molecule=output.results.final_molecule,
+            structure=output.results.final_structure,
             calctype=calctype,
             **program_args.model_dump(),
         )
@@ -111,7 +111,7 @@ def assemble_hessian(
     # # Verify data integrity of gradients
     # for gradient in gradients:
 
-    dim = len(gradients[0].input_data.molecule.symbols) * 3
+    dim = len(gradients[0].input_data.structure.symbols) * 3
     hessian = np.zeros((dim, dim), dtype=float)
 
     for i, (forward, backward) in enumerate(zip_longest(*[iter(gradients)] * 2)):
@@ -150,9 +150,9 @@ def frequency_analysis(
     from geometric.normal_modes import frequency_analysis as geometric_freqs_analysis
 
     freqs, n_modes, g_tot = geometric_freqs_analysis(
-        sp_output.input_data.molecule.geometry.flatten(),  # numpy array
+        sp_output.input_data.structure.geometry.flatten(),  # numpy array
         sp_output.results.hessian,  # type: ignore
-        elem=sp_output.input_data.molecule.symbols,  # regular python list
+        elem=sp_output.input_data.structure.symbols,  # regular python list
         # Electronic energy passed to free energy module
         energy=sp_output.results.energy,  # type: ignore
         **kwargs,

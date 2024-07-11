@@ -1,14 +1,14 @@
 """How to perform an optimization using BigChem"""
 
-from qcio import CalcType, DualProgramInput, Molecule
+from qcio import CalcType, DualProgramInput, Structure
 
 from bigchem import compute, group
 
-# Create the molecules
-# Can also open a molecule from a file
-# molecule = Molecule.open("path/to/h2o.xyz")
-molecules = [
-    Molecule(
+# Create the structures
+# Can also open a structure from a file
+# structure = Structure.open("path/to/h2o.xyz")
+structures = [
+    Structure(
         symbols=["O", "H", "H"],
         geometry=[  # type: ignore
             [0.0, 0.0, 0.0],
@@ -16,7 +16,7 @@ molecules = [
             [1.14668581, -0.45032174, -1.35474466],
         ],
     ),
-    Molecule(
+    Structure(
         symbols=["C", "C", "H", "H", "H", "H", "H", "H"],
         geometry=[  # type: ignore
             [1.54034068e00, -1.01730824e00, 9.31281020e-01],
@@ -34,12 +34,12 @@ molecules = [
 # Define program inputs
 prog_inputs = [
     DualProgramInput(
-        molecule=molecule,
+        structure=structure,
         calctype=CalcType.optimization,
         subprogram="psi4",
         subprogram_args={"model": {"method": "b3lyp", "basis": "6-31g"}},  # type: ignore # noqa: E501
     )
-    for molecule in molecules
+    for structure in structures
 ]
 
 # Create Group of task Signatures, submit to BigChem
@@ -69,7 +69,7 @@ for output in outputs:
     # Check results
     if output.success:
         print("Energies:", output.results.energies)
-        print("Molecules:", output.results.molecules)
+        print("Structures:", output.results.structures)
         print("Trajectory:", output.results.trajectory)
 
     else:  # output.success is False

@@ -202,13 +202,13 @@ export BIGCHEM_BROKER_URL="redis://localhost/0"
 An example calculation using BigChem. More examples [here](./examples).
 
 ```python
-from qcio import Molecule, ProgramInput, SinglePointOutput
+from qcio import Structure, ProgramInput, SinglePointOutput
 from bigchem import compute
 
-# Create the molecule
-# Can also open a molecule from a file
-# molecule = Molecule.open("path/to/h2o.xyz")
-molecule = Molecule(
+# Create the structure
+# Can also open a structure from a file
+# structure = Structure.open("path/to/h2o.xyz")
+structure = Structure(
   symbols=["O", "H", "H"],
   geometry=[
       [0.0, 0.0, 0.0],
@@ -219,7 +219,7 @@ molecule = Molecule(
 
 # Define the program input
 prog_input = ProgramInput(
-  molecule=molecule,
+  structure=structure,
   calctype="energy",  # May also use "gradient", "hessian", "optimization", "transition_state"
   model={"method": "b3lyp", "basis": "6-31g"},
   keywords={} # Additional keywords for the QC program

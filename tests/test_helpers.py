@@ -8,7 +8,7 @@ def test_gradient_inputs(water):
 
     gradients = _gradient_inputs(
         ProgramInput(
-            molecule=water, model={"method": "fake"}, calctype=CalcType.hessian
+            structure=water, model={"method": "fake"}, calctype=CalcType.hessian
         ),
         dh,
     )
@@ -24,4 +24,4 @@ def test_gradient_inputs(water):
 
     for i, geom in enumerate(geoms):
         assert gradients[i].calctype == CalcType.gradient
-        assert (gradients[i].molecule.geometry.flatten() == geom).all()
+        assert (gradients[i].structure.geometry.flatten() == geom).all()

@@ -5,10 +5,10 @@ from typing import List, Union
 from qcio import (
     CalcType,
     DualProgramInput,
-    Molecule,
     ProgramArgs,
     ProgramArgsSub,
     ProgramInput,
+    Structure,
 )
 
 from .canvas import Signature, group
@@ -41,7 +41,7 @@ def parallel_hessian(
     ), f"input_data.driver should be '{CalcType.hessian}', got '{prog_input.calctype}'"
 
     gradients = _gradient_inputs(prog_input, dh)
-    # Perform basic energy computation on original molecule as final item in group
+    # Perform basic energy computation on original structure as final item in group
     energy_calc = prog_input.model_dump()
     energy_calc["calctype"] = "energy"
     gradients.append(ProgramInput(**energy_calc))
@@ -81,13 +81,13 @@ def parallel_frequency_analysis(
 
 
 def multistep_opt(
-    molecule: Molecule,
+    structure: Structure,
     calctype: CalcType,
     programs: List[str],
     program_args: List[Union[ProgramArgs, ProgramArgsSub]],
     **kwargs,
 ) -> Signature:
-    """Use multiple steps to sequentially optimize a molecule
+    """Use multiple steps to sequentially optimize a structure
 
     Params:
         program: The name of the program use for optimization
@@ -97,11 +97,11 @@ def multistep_opt(
     # Create first optimization in the chain
     if isinstance(program_args[0], ProgramArgs):
         first_opt = ProgramInput(
-            calctype=calctype, molecule=molecule, **program_args[0].model_dump()
+            calctype=calctype, structure=structure, **program_args[0].model_dump()
         )
     else:  # is ProgramArgsSub
         first_opt = DualProgramInput(
-            calctype=calctype, molecule=molecule, **program_args[0].model_dump()
+            calctype=calctype, structure=structure, **program_args[0].model_dump()
         )
     task_chain = compute.s(programs[0], first_opt, **kwargs)
 

@@ -1,17 +1,17 @@
 """This scripts shows to easy it is to seamlessly interoperate four QC programs--
 geometric, xtb, TeraChem, and psi4--to quickly achieve a computational outcome
 such as a highly optimized geometry while distributing work across all available
-worker instances simultaneously on multiple molecules at once."""
+worker instances simultaneously on multiple structures at once."""
 
-from qcio import CalcType, Molecule, ProgramArgsSub
+from qcio import CalcType, ProgramArgsSub, Structure
 
 from bigchem import group, multistep_opt
 
-# Create the molecules
-# Can also open a molecule from a file
-# molecule = Molecule.open("path/to/h2o.xyz")
-molecules = [
-    Molecule(
+# Create the structures
+# Can also open a structure from a file
+# structure = Structure.open("path/to/h2o.xyz")
+structures = [
+    Structure(
         symbols=["O", "H", "H"],
         geometry=[  # type: ignore
             [0.0, 0.0, 0.0],
@@ -19,7 +19,7 @@ molecules = [
             [1.14668581, -0.45032174, -1.35474466],
         ],
     ),
-    Molecule(
+    Structure(
         symbols=["C", "C", "H", "H", "H", "H", "H", "H"],
         geometry=[  # type: ignore
             [1.54034068e00, -1.01730824e00, 9.31281020e-01],
@@ -54,8 +54,8 @@ program_args = [
 
 # Create a group of chains (each chain is one sequence of multi-step optimizations).
 future_result = group(
-    multistep_opt(molecule, CalcType.optimization, programs, program_args)  # type: ignore # noqa: E501
-    for molecule in molecules
+    multistep_opt(structure, CalcType.optimization, programs, program_args)  # type: ignore # noqa: E501
+    for structure in structures
 ).delay()
 results = future_result.get()
 future_result.forget()

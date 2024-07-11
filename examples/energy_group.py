@@ -1,14 +1,14 @@
 """How to submit a group of tasks to BigChem"""
 
-from qcio import CalcType, Molecule, ProgramInput
+from qcio import CalcType, ProgramInput, Structure
 
 from bigchem import compute, group
 
-# Create the molecules
-# Can also open a molecule from a file
-# molecule = Molecule.open("path/to/h2o.xyz")
-molecules = [
-    Molecule(
+# Create the structures
+# Can also open a structure from a file
+# structure = Structure.open("path/to/h2o.xyz")
+structures = [
+    Structure(
         symbols=["O", "H", "H"],
         geometry=[  # type: ignore
             [0.0, 0.0, 0.0],
@@ -16,7 +16,7 @@ molecules = [
             [1.14668581, -0.45032174, -1.35474466],
         ],
     ),
-    Molecule(
+    Structure(
         symbols=["C", "C", "H", "H", "H", "H", "H", "H"],
         geometry=[  # type: ignore
             [1.54034068e00, -1.01730824e00, 9.31281020e-01],
@@ -36,12 +36,12 @@ future_output = group(
     compute.s(
         "psi4",
         ProgramInput(
-            molecule=molecule,
+            structure=structure,
             calctype=CalcType.energy,
             model={"method": "b3lyp", "basis": "6-31g"},  # type: ignore
         ),
     )
-    for molecule in molecules
+    for structure in structures
 ).delay()
 
 # Check if group is ready (optional)

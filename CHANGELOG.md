@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- 🚨 Updated `qcio` and `qcop` to use new `Structure` instead of `Molecule`
+
 ## [0.7.2] - 2024-06-13
 
 ### Changed

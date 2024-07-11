@@ -1,14 +1,14 @@
 """How to perform a basic, single program calculation using BigChem"""
 
-from qcio import CalcType, Molecule, ProgramInput
+from qcio import CalcType, ProgramInput, Structure
 from qcop import exceptions
 
 from bigchem import compute
 
-# Create the molecule
-# Can also open a molecule from a file
-# molecule = Molecule.open("path/to/h2o.xyz")
-molecule = Molecule(
+# Create the structure
+# Can also open a structure from a file
+# structure = Structure.open("path/to/h2o.xyz")
+structure = Structure(
     symbols=["O", "H", "H"],
     geometry=[  # type: ignore
         [0.0, 0.0, 0.0],
@@ -19,7 +19,7 @@ molecule = Molecule(
 
 # Define the program input
 prog_input = ProgramInput(
-    molecule=molecule,
+    structure=structure,
     calctype=CalcType.energy,  # May also use "energy", "gradient", "hessian"
     model={"method": "b3lyp", "basis": "6-31g"},  # type: ignore
     keywords={},  # Optional: Additional keywords to pass to the QC program

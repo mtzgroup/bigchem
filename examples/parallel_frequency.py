@@ -1,11 +1,11 @@
-from qcio import Molecule, ProgramInput
+from qcio import ProgramInput, Structure
 
 from bigchem.algos import parallel_frequency_analysis
 
-# Create the molecule
-# Can also open a molecule from a file
-# molecule = Molecule.open("path/to/h2o.xyz")
-molecule = Molecule(
+# Create the structure
+# Can also open a structure from a file
+# structure = Structure.open("path/to/h2o.xyz")
+structure = Structure(
     symbols=["O", "H", "H"],
     geometry=[  # type: ignore
         [0.0, 0.0, 0.0],
@@ -16,7 +16,7 @@ molecule = Molecule(
 
 # Create ProgramInput
 my_input = ProgramInput(
-    molecule=molecule,
+    structure=structure,
     calctype="hessian",  # type: ignore
     model={"method": "b3lyp", "basis": "6-31g"},  # type: ignore
 )
