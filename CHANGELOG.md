@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Added
+
+- `release.py` script.
+
+### Changed
+
+- Updated `qcop` and `qcio`. Reverts back to `Structure.identifiers` over `Structure.ids`. Adds 10x performance gain to `xtb` by solving their overthreading issue.
+
 ## [0.8.0] - 2024-07-10
 
 ### Changed
