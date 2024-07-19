@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.9.0] - 2024-07-19
+
 ### Changed
 
 - Updated to [qcop ^0.8.0](https://github.com/coltonbh/qcop/blob/master/CHANGELOG.md#080---2024-07-19) and [qcio ^0.11.0](https://github.com/coltonbh/qcop/blob/master/CHANGELOG.md#080---2024-07-19).
@@ -260,7 +262,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Initial release of core BigQC feature set. Tasks for `compute` (single point energy, gradient, hessian, and properties calculations) and `compute_procedure` (geometry optimization routine). Algorithms for distributed hessian and normal mode analysis with their associated tasks.
 
-[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.8.1...HEAD
+[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.9.0...HEAD
+[0.9.0]: https://github.com/mtzgroup/bigchem/releases/tag/0.9.0
 [0.8.1]: https://github.com/mtzgroup/bigchem/releases/tag/0.8.1
 [0.8.0]: https://github.com/mtzgroup/bigchem/releases/tag/0.8.0
 [0.7.2]: https://github.com/mtzgroup/bigchem/releases/tag/0.7.2
