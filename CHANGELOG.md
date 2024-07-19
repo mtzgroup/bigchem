@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Updated to [qcop ^0.8.0](https://github.com/coltonbh/qcop/blob/master/CHANGELOG.md#080---2024-07-19) and [qcio ^0.11.0](https://github.com/coltonbh/qcop/blob/master/CHANGELOG.md#080---2024-07-19).
+
 ## [0.8.1] - 2024-07-12
 
 ### Added
