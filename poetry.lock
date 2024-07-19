@@ -1312,13 +1312,13 @@ tests = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "qcio"
-version = "0.10.2"
+version = "0.11.0"
 description = "Beautiful and user friendly data structures for quantum chemistry."
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "qcio-0.10.2-py3-none-any.whl", hash = "sha256:26b170447dce209a3a1ea344c2b3e9f234de3c2a1010479ad470b31a6e5eda7d"},
-    {file = "qcio-0.10.2.tar.gz", hash = "sha256:27649fa3022fe575a5d5460768b2e0bfeedd7adb86d8945d084f757d7c098132"},
+    {file = "qcio-0.11.0-py3-none-any.whl", hash = "sha256:fecc984cb7a6af58956b9025d9043bdb62fb3c86041ae0fc2bd380c4448f39c9"},
+    {file = "qcio-0.11.0.tar.gz", hash = "sha256:084f31b4241346a1d44e34c3b49333c44d2f8f83b0e572b4bade3d6dc0807490"},
 ]
 
 [package.dependencies]
@@ -1330,20 +1330,21 @@ typing-extensions = ">=4.7.1,<5.0.0"
 
 [package.extras]
 rdkit = ["rdkit (>=2022.3.3)"]
+view = ["ipython (>=8.0.0)", "matplotlib (>=3.0.0)", "py3Dmol (>=2.2.1)"]
 
 [[package]]
 name = "qcop"
-version = "0.7.3"
+version = "0.8.0"
 description = "A package for operating Quantum Chemistry programs using qcio standardized data structures. Compatible with TeraChem, psi4, QChem, NWChem, ORCA, Molpro, geomeTRIC and many more."
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "qcop-0.7.3-py3-none-any.whl", hash = "sha256:f022471874097d7b7234af23ebc5eb71ca11de735dac8d3fdf73eaa0b3a2977e"},
-    {file = "qcop-0.7.3.tar.gz", hash = "sha256:bb7c4aa32dc915e4b61b791249a9f573fa892dde5a7a20f881c29a5d51fe0128"},
+    {file = "qcop-0.8.0-py3-none-any.whl", hash = "sha256:0070aefc5a559f2dafbdbb3ae765d8a5aeb648a044fecd30e2e0a00a46a4ff0b"},
+    {file = "qcop-0.8.0.tar.gz", hash = "sha256:0e25f5d6868abf5948f39f5ecfdce0cd4b689e0ddf8c4eb36f75e0e197c83ee3"},
 ]
 
 [package.dependencies]
-qcio = ">=0.10.2,<0.11.0"
+qcio = ">=0.11.0,<0.12.0"
 qcparse = ">=0.6.0,<0.7.0"
 
 [package.extras]
@@ -1614,4 +1615,4 @@ xtb = ["xtb"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "3e27e28dcba79314d3e3dfa14d321b3443a3b9778237000b145a085e835ded77"
+content-hash = "8f047213f3dbfb53c5da45502eeb6314338a22d169921942ce8e40dcb8cc5a69"
