@@ -1,6 +1,5 @@
 """Helper functions not for end users"""
 
-from typing import List
 
 import numpy as np
 from qcio import CalcType, ProgramInput
@@ -10,7 +9,7 @@ from .config import settings
 
 def _gradient_inputs(
     prog_input: ProgramInput, dh: float = settings.bigchem_default_hessian_dh
-) -> List[ProgramInput]:
+) -> list[ProgramInput]:
     """Create ProgramInput gradient calculations for a numerical hessian
 
     Params:

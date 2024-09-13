@@ -8,7 +8,7 @@ import toml
 def get_repo_url():
     """Get the repository URL from pyproject.toml or ask the user for it."""
     try:
-        with open("pyproject.toml", "r") as file:
+        with open("pyproject.toml") as file:
             pyproject = toml.load(file)
         repo_url = pyproject["tool"]["poetry"]["repository"]
         return repo_url
@@ -25,7 +25,7 @@ def update_version_with_poetry(version):
 def update_changelog(version, repo_url):
     """Update the CHANGELOG.md file with the new version and today's date."""
     print("Updating CHANGELOG.md...")
-    with open("CHANGELOG.md", "r") as file:
+    with open("CHANGELOG.md") as file:
         lines = file.readlines()
 
     today = datetime.today().strftime("%Y-%m-%d")

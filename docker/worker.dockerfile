@@ -1,7 +1,7 @@
 # Dockerfile for BigChem Worker. Contains BigChem code and QC programs.
 # Follows https://stackoverflow.com/a/54763270/5728276
 
-ARG BASE_IMAGE=mambaorg/micromamba:1.4-jammy
+ARG BASE_IMAGE=mambaorg/micromamba:1.5-jammy
 FROM $BASE_IMAGE
 
 LABEL maintainer="Colton Hicks <colton@coltonhicks.com>"

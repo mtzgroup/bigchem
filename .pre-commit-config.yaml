@@ -15,18 +15,10 @@ repos:
         exclude: poetry.lock
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     # Ruff version.
-    rev: "v0.0.278"
+    rev: "v0.5.7"
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.12.0
-    hooks:
-      - id: isort
-  - repo: https://github.com/psf/black
-    rev: 23.3.0
-    hooks:
-      - id: black
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.4.1
     hooks:
@@ -40,7 +32,7 @@ repos:
             types-paramiko,
           ]
   - repo: https://github.com/crate-ci/typos
-    rev: v1.16.10
+    rev: v1.24.5
     hooks:
       - id: typos
   - repo: local
