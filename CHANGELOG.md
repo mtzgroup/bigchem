@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- 🚨 Bumped minimum python version from 3.8 -> 3.9.
+- Updated all conda dependencies in `env.lock`.
+- Removed Intel's `openmp` from `env.yaml` since they seem to have removed their channel. Replaced it with `llvm-openmp`.
+- Updated to `qcelemental 0.28.0` as this is required for `psi4 1.9`.
+- Upgraded all python package dependencies.
+- Dropped `black` and `isort` in favor of `ruff`.
+- Updated typing syntax to python 3.9.
+- Updated base image from `mambaorg/micromamba:1.4-jammy` -> `mambaorg/micromamba:1.5-jammy`.
+
+### Added
+
+- Support for CREST conformer searches (interface support via new `qcop`. Binary via conda).
+
 ## [0.9.0] - 2024-07-19
 
 ### Changed

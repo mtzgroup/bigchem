@@ -1,6 +1,6 @@
 """Top level functions for parallelized BigChem algorithms"""
 
-from typing import List, Union
+from typing import Union
 
 from qcio import (
     CalcType,
@@ -83,8 +83,8 @@ def parallel_frequency_analysis(
 def multistep_opt(
     structure: Structure,
     calctype: CalcType,
-    programs: List[str],
-    program_args: List[Union[ProgramArgs, ProgramArgsSub]],
+    programs: list[str],
+    program_args: list[Union[ProgramArgs, ProgramArgsSub]],
     **kwargs,
 ) -> Signature:
     """Use multiple steps to sequentially optimize a structure

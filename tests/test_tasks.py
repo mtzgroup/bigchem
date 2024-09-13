@@ -10,10 +10,10 @@ from qcio import (
     ProgramInput,
     ProgramOutput,
 )
-from qcop.exceptions import QCOPBaseError
 
 from bigchem.canvas import group  # type:ignore
 from bigchem.tasks import assemble_hessian, compute, frequency_analysis, output_to_input
+from qcop.exceptions import QCOPBaseError
 
 
 def test_hessian_task(test_data_dir, water):

@@ -1,5 +1,5 @@
 from itertools import zip_longest
-from typing import List, Union
+from typing import Union
 
 import numpy as np
 from qcio import (
@@ -15,6 +15,7 @@ from qcio import (
     SinglePointResults,
     StructuredInputs,
 )
+
 from qcop import compute as qcop_compute
 
 from .app import bigchem
@@ -85,7 +86,7 @@ def output_to_input(
 
 @bigchem.task
 def assemble_hessian(
-    gradients: List[ProgramOutput[ProgramInput, SinglePointResults]], dh: float
+    gradients: list[ProgramOutput[ProgramInput, SinglePointResults]], dh: float
 ) -> ProgramOutput[ProgramInput, SinglePointResults]:
     """Assemble hessian from an array of gradient computations
 
@@ -178,7 +179,7 @@ def add(x, y):
 
 
 @bigchem.task
-def task_sum(values: List[Union[float, int]], extra: int = 0) -> Union[float, int]:
+def task_sum(values: list[Union[float, int]], extra: int = 0) -> Union[float, int]:
     """Sum all the values in a list
 
     NOTE: Used for design testing as a summation at the end of add (a chord)

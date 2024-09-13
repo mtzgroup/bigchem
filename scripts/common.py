@@ -1,5 +1,4 @@
 import re
-from typing import List
 
 import boto3
 import paramiko
@@ -56,7 +55,7 @@ def extract_join_command(text: str) -> str:
     return match.group(0)
 
 
-def ec2_ips_by_name(aws_profile: str, name: str) -> List[str]:
+def ec2_ips_by_name(aws_profile: str, name: str) -> list[str]:
     """Return list of IP address of EC2 instances filtered by name"""
     print(f"Using AWS profile '{aws_profile}'.")
     print(f"Looking for EC2 instances with tag 'Name={name}'.")
