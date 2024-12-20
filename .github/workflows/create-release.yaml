@@ -1,22 +1,16 @@
 name: Create Release
 
 on:
-  # Trigger on pushes after running this for past releases
-  # push:
-  #   tags:
-  #     - "*"  # Match any tag
-  workflow_dispatch: # Manual trigger for release creation
-    inputs:
-      tag:
-        description: "The tag to create a release for"
-        required: true
+  push:
+    tags:
+      - "*" # Match any tag
+  workflow_dispatch: # Enable manual triggering
 
 jobs:
   create-release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
-    environment: release  # Link to the protected environment
-
+    environment: release # Link to the protected environment
 
     steps:
       - name: Checkout code
@@ -25,15 +19,15 @@ jobs:
       - name: Extract Release Notes
         id: extract_notes
         run: |
-          VERSION=${{ github.event.inputs.tag }}
+          VERSION=${{ github.ref_name }}
           sed -n "/## \\[$VERSION\\]/,/## \\[/p" CHANGELOG.md | sed '$d' | sed "s/## \\[$VERSION\\]/## $VERSION/" > RELEASE_NOTES.md
 
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ github.event.inputs.tag }}
-          release_name: Release ${{ github.event.inputs.tag }}
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
           body_path: ./RELEASE_NOTES.md
           draft: false
           prerelease: false
