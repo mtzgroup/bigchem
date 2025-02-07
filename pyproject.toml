@@ -19,13 +19,11 @@ pydantic-settings = "^2.0.3"
 # `extras`. They can be opted into by apps. Clients should not need to install these.
 geometric = { version = "^1.0.1", optional = true }
 qcengine = { version = "^0.28.0", optional = true }
-xtb = { version = "^22.1", optional = true }
 
 [tool.poetry.extras]
 geometric = ["geometric"]
 qcengine = ["qcengine"]
-xtb = ["xtb"]
-all = ["xtb", "geometric", "qcengine"]
+all = ["geometric", "qcengine"]
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.5.0"
@@ -39,7 +37,6 @@ paramiko = "^3.0.0"
 types-paramiko = "^3.0.0.4"
 geometric = ">=1.0.1"
 qcengine = "^0.28.0"
-xtb = "^22.1"
 types-toml = "^0.10.8.20240310"
 
 

@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Added
+
+- GitHub actions for building tagged Docker images and pushing them to Docker Hub.
+
+### Changed
+
+- Updated all dependencies for `conda/micromamba` `env.lock` file.
+
+### Removed
+
+- Removed `xtb` from `pyproject.toml`. The `xtb-python` library is no longer under active development. `tblite` has been created to power the Fortran implementation of `xtb` and `dftb+`. There is a python wrapper for `tblite` available on `conda-forge` at `tblite-python`.
+
 ## [0.10.1] - 2025-02-05
 
 ### Changed
