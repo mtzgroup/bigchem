@@ -1,0 +1,53 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    tags:
+      - '*'  # Trigger on tag pushes
+
+jobs:
+  build-default:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push default worker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: docker/worker.dockerfile
+          push: true
+          tags: |
+            mtzgroup/bigchem-worker:${{ github.ref_name }}
+            mtzgroup/bigchem-worker:latest
+
+  build-terachem:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push terachem worker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: docker/worker.dockerfile
+          build-args: |
+            BASE_IMAGE=mtzgroup/terachem:latest
+          push: true
+          tags: |
+            mtzgroup/bigchem-worker:${{ github.ref_name }}-terachem
+            mtzgroup/bigchem-worker:latest-terachem
