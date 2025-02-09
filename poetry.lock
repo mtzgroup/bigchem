@@ -1446,14 +1446,14 @@ xtb = ["xtb (>=22.1,<23.0)"]
 
 [[package]]
 name = "qcparse"
-version = "0.7.2"
+version = "0.7.3"
 description = "A package for parsing Quantum Chemistry program file outputs into structured qcio data objects."
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "qcparse-0.7.2-py3-none-any.whl", hash = "sha256:4acc1ff231429f154b04325531f1043f4c42c31c37e0db93dcf5a07a3594f598"},
-    {file = "qcparse-0.7.2.tar.gz", hash = "sha256:604accfb0421e3ecf37e42ca761cc6f0090aae471b829ff810150de0769c1179"},
+    {file = "qcparse-0.7.3-py3-none-any.whl", hash = "sha256:656555b71c589569803706f1e0b335fcc3df4096fa183e5dc6bd977f24e3c93d"},
+    {file = "qcparse-0.7.3.tar.gz", hash = "sha256:a1143e817a7b45ff6c2dab37f9898dbf5197780b262c5e046968c04b9a6548e9"},
 ]
 
 [package.dependencies]
