@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Updated `qcparse` from `0.7.2` to `0.7.3` to address parsing bug of normal mode cartesian coordinates from CREST's output.
+
 ## [0.10.2] - 2025-02-07
 
 ### Added
