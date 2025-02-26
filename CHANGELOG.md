@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Updated `pyproject.toml` dependencies, specifically `qcop` to fix the bug with the `CRESTAdapter` using the outdated `qcio` API for `Structure.add_identifiers()`.
+- Updated `env.lock` conda dependencies and added `redis-server` to simplify deploy process for SLURM clusters.
+- Deploy process overview in `README.md` updated to use the easy installer.
+- Updated `install.sh` to never used a cached version of BigChem so that it always checks `pypi.org` for the latest version.
+
 ## [0.10.3] - 2025-02-08
 
 ### Changed
