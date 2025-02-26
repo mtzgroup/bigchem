@@ -88,7 +88,7 @@ else
 fi
 
 echo "Installing bigchem[geometric] via pip..."
-python -m pip install 'bigchem[geometric]'
+python -m pip install --upgrade --no-cache-dir 'bigchem[geometric]'
 
 echo "Installation complete!"
 
