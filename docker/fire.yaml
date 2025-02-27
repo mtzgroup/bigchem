@@ -1,18 +1,29 @@
-# Quick and dirty workers for Fire. Dev/prod
+# Quick and dirty workers for Fire.
+# Originally used NVIDIA_VISIBLE_DEVICES={{.Task.Slot}} to assign GPUs to workers.
+# This declares to the nvidia-docker runtime which GPU to use and mounts only this GPU to the container.
+# However, since {{.Task.Slot}} is 1-indexed, we need a separate global service to access GPU 0, which was 
+# annoying.
+# This was replaced with TASK_SLOT={{.Task.Slot}} and CUDA_VISIBLE_DEVICES=$gpu_id using shell math and
+# variable expansion so we no longer need the global service. The containers will see all GPUs on a node
+# but TeraChem respects the CUDA_VISIBLE_DEVICES environment variable and only uses the specified GPU.
 
 # Default images and setup for worker containers
 x-prod-worker: &prod-worker
-  image: mtzgroup/bigchem-worker:0.6.5-terachem
+  image: mtzgroup/bigchem-worker:0.10.4-terachem
   env_file: worker.prod.env
   environment:
-    - NVIDIA_VISIBLE_DEVICES={{.Task.Slot}}
+    # NO LONGER USED; HERE FOR REFERENCE
+    # - NVIDIA_VISIBLE_DEVICES={{.Task.Slot}}
+    - TASK_SLOT={{.Task.Slot}}
+    - NODE_HOSTNAME={{.Node.Hostname}}
   secrets:
     - source: terachem_license
       target: /opt/terachem/license.key
   volumes:
     # qcengine uses /tmp by default for scratch directory
     - bigchem:/tmp
-  command: celery -A bigchem.tasks worker -Q colton,celery --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
+  # Use shell to expand variables and set CUDA_VISIBLE_DEVICES and celery hostname
+  command: sh -c "gpu_id=$$((TASK_SLOT - 1)); export CUDA_VISIBLE_DEVICES=$$gpu_id; celery -A bigchem.tasks worker -Q celery,colton,gq,jan,ethan --hostname=\"$$NODE_HOSTNAME-gpu-$$gpu_id\" --without-heartbeat --without-mingle --without-gossip --loglevel=INFO"
 
 x-dev-worker: &default-dev-worker
   <<: *prod-worker
@@ -21,26 +32,12 @@ x-dev-worker: &default-dev-worker
     - bigchem-dev:/tmp
 
 services:
-  # PROD/DEV WORKERS
-  # This service takes advantage of GPU 0 since {{.Task.Slot}} is 1-indexed
-  bigchem-gpu-0:
-    # Uncomment to select prod/dev workers
-    <<: *prod-worker
-    # <<: *dev-worker
-    environment:
-      - NVIDIA_VISIBLE_DEVICES=0
-    deploy:
-      mode: global
-      placement:
-        constraints:
-          # Don't use GPU 0 on fire-09-02 since often in use
-          - node.role==worker
-
   # PROD WORKERS
   fire-13-00:
     <<: *prod-worker
+    hostname: fire-13-00
     deploy:
-      replicas: 9
+      replicas: 10
       placement:
         constraints:
           - node.hostname==fire-13-00
@@ -48,19 +45,64 @@ services:
   fire-11-01:
     <<: *prod-worker
     deploy:
-      replicas: 4
+      replicas: 0
       placement:
         constraints:
           - node.hostname==fire-11-01
 
   fire-09-02:
     <<: *prod-worker
+    hostname: fire-09-02
     deploy:
-      replicas: 5
+      replicas: 8
       placement:
         constraints:
           - node.hostname==fire-09-02
 
+  fire-21-00:
+    <<: *prod-worker
+    hostname: fire-21-00
+    deploy:
+      replicas: 0
+      placement:
+        constraints:
+          - node.hostname==fire-21-00
+
+  fire-21-01:
+    <<: *prod-worker
+    hostname: fire-21-01
+    deploy:
+      replicas: 0
+      placement:
+        constraints:
+          - node.hostname==fire-21-01
+
+  fire-21-02:
+    <<: *prod-worker
+    hostname: fire-21-02
+    deploy:
+      replicas: 0
+      placement:
+        constraints:
+          - node.hostname==fire-21-02
+    command: celery -A bigchem.tasks worker -Q colton --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
+  
+  ### NO LONGER USED; HERE FOR REFERENCE
+  # This service takes advantage of GPU 0 since {{.Task.Slot}} is 1-indexed
+  # bigchem-gpu-0:
+  #   # Uncomment to select prod/dev workers
+  #   <<: *prod-worker
+  #   # <<: *dev-worker
+  #   environment:
+  #     - NVIDIA_VISIBLE_DEVICES=0
+  #   deploy:
+  #     mode: global
+  #     placement:
+  #       constraints:
+  #         # Only use GPU 0 on nodes with the bigchem.gpu0 label
+  #         # docker node update --label-add bigchem.gpu0=true <node-name>
+  #         - node.role==worker # not manager fire-09-02 since gpu 0 often in use
+  #         - node.labels.bigchem.gpu0==true
 secrets:
   terachem_license:
     external: true
