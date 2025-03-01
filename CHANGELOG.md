@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Bumped `qcop` version from `0.9.7 -> 0.9.8`.
+
 ## [0.10.4] - 2025-02-25
 
 ### Changed
