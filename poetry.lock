@@ -1417,14 +1417,14 @@ view = ["ipython (>=8.0.0)", "matplotlib (>=3.0.0)", "py3Dmol (>=2.2.1)", "rdkit
 
 [[package]]
 name = "qcop"
-version = "0.9.8"
+version = "0.10.0"
 description = "A package for operating Quantum Chemistry programs using qcio standardized data structures. Compatible with TeraChem, psi4, QChem, NWChem, ORCA, Molpro, geomeTRIC and many more."
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "qcop-0.9.8-py3-none-any.whl", hash = "sha256:e2791c216496103b97bce589a8e9db392830101e08bcb424a1407c7ed3b8b1ed"},
-    {file = "qcop-0.9.8.tar.gz", hash = "sha256:4b323acc0d3c7f51dbef6e963c886988e1a5274abb5d4ae58b7093adf4775738"},
+    {file = "qcop-0.10.0-py3-none-any.whl", hash = "sha256:565e0cd162cabf252cb543f645829f163fb7edba33ca49a083235a0d0ac42215"},
+    {file = "qcop-0.10.0.tar.gz", hash = "sha256:b1b54742032798660e7790d4d32399a96ff3b2eb6f9cca148e3aba88abdcc9ec"},
 ]
 
 [package.dependencies]
@@ -1440,14 +1440,14 @@ xtb = ["xtb (>=22.1,<23.0)"]
 
 [[package]]
 name = "qcparse"
-version = "0.7.3"
+version = "0.7.4"
 description = "A package for parsing Quantum Chemistry program file outputs into structured qcio data objects."
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "qcparse-0.7.3-py3-none-any.whl", hash = "sha256:656555b71c589569803706f1e0b335fcc3df4096fa183e5dc6bd977f24e3c93d"},
-    {file = "qcparse-0.7.3.tar.gz", hash = "sha256:a1143e817a7b45ff6c2dab37f9898dbf5197780b262c5e046968c04b9a6548e9"},
+    {file = "qcparse-0.7.4-py3-none-any.whl", hash = "sha256:dde9b973b86fabf5fa62a4023ff369b9498e18f4b409351f771ebcf7ac08d181"},
+    {file = "qcparse-0.7.4.tar.gz", hash = "sha256:f81bbaa9106dcc124884e607b7fc6a089108d844c3e38e23487264ae6fdbaa04"},
 ]
 
 [package.dependencies]
@@ -1783,4 +1783,4 @@ qcengine = ["qcengine"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9"
-content-hash = "c7e95d0abbbc3da13214ac272facc55ea1502ca0b2c5794583b133902e89e3d5"
+content-hash = "bfd65279b17b74dd33ae2daa49919c0cfd3bb46f0a6ba17c7554b0b7d64be6b0"

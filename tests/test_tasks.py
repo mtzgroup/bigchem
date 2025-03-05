@@ -179,7 +179,7 @@ def test_result_to_input_optimization_result(water, prog_output):
 
 
 def test_program_output_serialized_when_raised_in_worker(hydrogen):
-    # Basis misspelled to trigger failure
+    # fake basis to trigger failure
     prog_input = ProgramInput(
         structure=hydrogen,
         calctype="energy",
