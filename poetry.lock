@@ -1417,14 +1417,14 @@ view = ["ipython (>=8.0.0)", "matplotlib (>=3.0.0)", "py3Dmol (>=2.2.1)", "rdkit
 
 [[package]]
 name = "qcop"
-version = "0.10.0"
+version = "0.10.1"
 description = "A package for operating Quantum Chemistry programs using qcio standardized data structures. Compatible with TeraChem, psi4, QChem, NWChem, ORCA, Molpro, geomeTRIC and many more."
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "qcop-0.10.0-py3-none-any.whl", hash = "sha256:565e0cd162cabf252cb543f645829f163fb7edba33ca49a083235a0d0ac42215"},
-    {file = "qcop-0.10.0.tar.gz", hash = "sha256:b1b54742032798660e7790d4d32399a96ff3b2eb6f9cca148e3aba88abdcc9ec"},
+    {file = "qcop-0.10.1-py3-none-any.whl", hash = "sha256:ce91d265ecfc6b6382586a806dc9a8b8196700c752745f0ab59c91910715bd63"},
+    {file = "qcop-0.10.1.tar.gz", hash = "sha256:eee038e6512d358dec17b70721a7f95e125c3c96c021d8e204ab7c9f0a1aeb4e"},
 ]
 
 [package.dependencies]
@@ -1783,4 +1783,4 @@ qcengine = ["qcengine"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9"
-content-hash = "bfd65279b17b74dd33ae2daa49919c0cfd3bb46f0a6ba17c7554b0b7d64be6b0"
+content-hash = "d7be481e1b7d2f3b7364c0241b750866ce4ad1f6e41c8f8c67b2edf701dc1e28"
