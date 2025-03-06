@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Updated `qcop` version from `0.10.0 -> 0.10.1` to fix serialization bug with qcop exceptions.
+
 ## [0.10.6] - 2025-03-04
 
 ### Changed
