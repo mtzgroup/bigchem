@@ -1,5 +1,12 @@
 # BigChem
 
+[![image](https://img.shields.io/pypi/v/bigchem.svg)](https://pypi.python.org/pypi/bigchem)
+[![image](https://img.shields.io/pypi/l/bigchem.svg)](https://pypi.python.org/pypi/bigchem)
+[![DOI](https://img.shields.io/badge/DOI-10.1063/5.0190834-blue)](https://doi.org/10.1063/5.0190834)
+[![image](https://img.shields.io/pypi/pyversions/bigchem.svg)](https://pypi.python.org/pypi/bigchem)
+[![Actions status](https://github.com/mtzgroup/bigchem/workflows/Tests/badge.svg)](https://github.com/mtzgroup/bigchem/actions)
+[![Actions status](https://github.com/mtzgroup/bigchem/workflows/Basic%20Code%20Quality/badge.svg)](https://github.com/mtzgroup/bigchem/actions)
+
 A distributed system for scaling and parallelizing quantum chemistry calculations.
 
 ## The QC Suite of Programs
