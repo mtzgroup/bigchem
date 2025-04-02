@@ -1,7 +1,7 @@
 # Dockerfile for BigChem Worker. Contains BigChem code and QC programs.
 # Follows https://stackoverflow.com/a/54763270/5728276
 
-ARG BASE_IMAGE=mambaorg/micromamba:1.5-jammy
+ARG BASE_IMAGE=mambaorg/micromamba:1.5-noble
 FROM $BASE_IMAGE
 
 LABEL maintainer="Colton Hicks <colton@coltonhicks.com>"
@@ -41,8 +41,6 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER pyproject.toml poetry.lock README.md ./
 RUN python -m pip install --upgrade pip && \ 
     python -m pip install poetry && \
     poetry install --only main --all-extras --no-interaction --no-ansi
-
-
 
 # Run without heartbeat, mingle, gossip to reduce network overhead
 # https://stackoverflow.com/questions/66961952/how-can-i-scale-down-celery-worker-network-overhead

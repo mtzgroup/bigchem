@@ -1,7 +1,7 @@
-"""These tests more that all the pipes are flowing correctly."""
+"""These tests ensure that all the pipes are flowing correctly."""
 
 import pytest
-from qcio import CalcType, DualProgramInput, OptimizationOutput, ProgramArgs
+from qcio import CalcType, DualProgramInput, ProgramArgs, ProgramOutput
 
 from bigchem.canvas import group  # type:ignore
 from bigchem.tasks import compute
@@ -63,4 +63,4 @@ def test_compute_optimization(
     if not isinstance(result, list):
         result = [result]
     for r in result:
-        assert isinstance(r, OptimizationOutput)
+        assert isinstance(r, ProgramOutput)
