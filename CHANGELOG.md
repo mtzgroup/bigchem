@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Updated qcop dependency from `0.10.1` -> `0.10.2` which uses latest `qcio` and `qccodec` parsing including `tddft` excited state parsing for TeraChem.
+- Updated GitHub workflows to run on `pull_request` into `master` and for `push` only on `master`.
+- Updated from `mambaorg/micromamba:1.5-jammy` to `mambaorg/micromamba:1.5-noble` for base image.
+- Updated `pytest-cov`, `pytest`, `ruff`, and `mypy`.
+- Updated `env.lock` conda dependencies.
+
 ## [0.10.7] - 2025-03-05
 
 ### Changed
