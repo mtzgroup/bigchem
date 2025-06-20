@@ -1,9 +1,9 @@
 """How to perform an optimization using BigChem"""
 
 from qcio import CalcType, DualProgramInput, Structure
+from qcop import exceptions
 
 from bigchem.tasks import compute
-from qcop import exceptions
 
 # Create the structure
 # Can also open a structure from a file

@@ -1,6 +1,8 @@
+import re
 import subprocess
 import sys
 from datetime import datetime
+from pathlib import Path
 
 import toml
 
@@ -10,16 +12,33 @@ def get_repo_url():
     try:
         with open("pyproject.toml") as file:
             pyproject = toml.load(file)
-        repo_url = pyproject["tool"]["poetry"]["repository"]
+        repo_url = pyproject["project"]["urls"]["Source"]
         return repo_url
     except KeyError:
         return input("Enter the repository URL (e.g., https://github.com/user/repo): ")
 
 
-def update_version_with_poetry(version):
-    """Update the version in pyproject.toml using Poetry."""
-    print("Updating version in pyproject.toml...")
-    subprocess.run(["poetry", "version", version], check=True)
+def update_version_in_pyproject(version: str) -> None:
+    """
+    Update the version in pyproject.toml by replacing the line that sets the version
+    in the [project] section with the new version string.
+
+    This function uses a regex to find a line that starts with "version =", captures the surrounding quotes,
+    and substitutes the new version.
+
+    Args:
+        version: The new version string (e.g. "0.7.6").
+    """
+    pyproject_path = Path("pyproject.toml")
+    content = pyproject_path.read_text(encoding="utf-8")
+    # This regex matches a line starting with 'version = "', then any characters until the next '"'
+    new_content = re.sub(
+        r'^(version\s=\s")[^"]*(")',
+        r"\g<1>" + version + r"\g<2>",
+        content,
+        flags=re.MULTILINE,
+    )
+    pyproject_path.write_text(new_content, encoding="utf-8")
 
 
 def update_changelog(version, repo_url):
@@ -93,7 +112,7 @@ def main():
     original_changelog = Path("CHANGELOG.md").read_text()
 
     repo_url = get_repo_url()
-    update_version_with_poetry(version)
+    update_version_in_pyproject(version)
     update_changelog(version, repo_url)
     if confirm_version(version):
         print("Proceeding with the release...")

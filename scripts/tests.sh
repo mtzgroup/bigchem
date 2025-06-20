@@ -2,11 +2,13 @@
 
 set -xe
 
-# Start docker redis, rabbitmq, and psi4 celery worker containers
-docker compose up -d --build
+# Start docker redis, rabbitmq, and BigChem worker containers
+docker compose up -d --build --wait --wait-timeout 60
 
+echo "Waiting for services to start..."
+sleep 5
 # Run tests and capture the exit status
-poetry run pytest -vv --cov-report=term-missing --cov-report html:htmlcov --cov-config=pyproject.toml --cov=bigchem --cov=tests . || TEST_EXIT_CODE=$?
+uv run pytest -vv --cov-report=term-missing --cov-report html:htmlcov --cov-config=pyproject.toml --cov=src/bigchem --cov=tests . || TEST_EXIT_CODE=$?
 
 # Stop docker containers
 docker compose down

@@ -9,7 +9,7 @@
 set -xe
 
 BASE_IMAGE=""
-IMAGE_TAG="-t mtzgroup/bigchem-worker:$(poetry version -s)"
+IMAGE_TAG="-t mtzgroup/bigchem-worker:$(uv run hatch version)"
 TAG_LATEST="-t mtzgroup/bigchem-worker:latest"
 
 # Parse command line options
@@ -17,7 +17,7 @@ for arg in "$@"; do
     case $arg in
     --terachem)
         BASE_IMAGE="--build-arg BASE_IMAGE=mtzgroup/terachem:latest"
-        IMAGE_TAG="-t mtzgroup/bigchem-worker:$(poetry version -s)-terachem"
+        IMAGE_TAG="-t mtzgroup/bigchem-worker:$(uv run hatch version)-terachem"
         TAG_LATEST="-t mtzgroup/bigchem-worker:latest-terachem"
         ;;
     esac
