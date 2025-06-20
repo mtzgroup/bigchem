@@ -1,9 +1,9 @@
 """How to perform a basic, single program calculation using BigChem"""
 
 from qcio import CalcType, ProgramInput, Structure
+from qcop import exceptions
 
 from bigchem import compute
-from qcop import exceptions
 
 # Create the structure
 # Can also open a structure from a file

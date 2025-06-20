@@ -1,7 +1,10 @@
-# https://github.com/python-poetry/poetry/pull/2366#issuecomment-652418094
-from importlib import metadata
+from importlib import metadata as _metadata
 
-__version__ = metadata.version(__name__)
+try:
+    __version__ = _metadata.version(__name__)
+except _metadata.PackageNotFoundError:
+    # Source tree / build hook / CI checkout
+    __version__ = "0.0.0+local"
 
 # Patch for numpy v1 API used by qcengine
 import numpy as np

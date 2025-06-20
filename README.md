@@ -12,22 +12,23 @@ A distributed system for scaling and parallelizing quantum chemistry calculation
 ## The QC Suite of Programs
 
 - [qcconst](https://github.com/coltonbh/qcconst) - Physical constants, conversion factors, and a periodic table with clear source information for every value.
-- [qcio](https://github.com/coltonbh/qcio) - Elegant and intuitive data structures for quantum chemistry, featuring seamless Jupyter Notebook visualizations.
-- [qcparse](https://github.com/coltonbh/qcparse) - A library for efficient parsing of quantum chemistry data into structured `qcio` objects.
-- [qcop](https://github.com/coltonbh/qcop) - A package for operating quantum chemistry programs using `qcio` standardized data structures. Compatible with `TeraChem`, `psi4`, `CREST`, `xTB`, `QChem`, `NWChem`, `ORCA`, `Molpro`, `geomeTRIC`, and many more, featuring seamless Jupyter Notebook visualizations.
-- [BigChem](https://github.com/mtzgroup/bigchem) - A distributed application for running quantum chemistry calculations at scale across clusters of computers or the cloud. Bring multi-node scaling to your favorite quantum chemistry program, featuring seamless Jupyter Notebook visualizations.
-- `ChemCloud` - A [web application](https://github.com/mtzgroup/chemcloud-server) and associated [Python client](https://github.com/mtzgroup/chemcloud-client) for exposing a BigChem cluster securely over the internet, featuring seamless Jupyter Notebook visualizations.
+- [qcio](https://github.com/coltonbh/qcio) - Elegant and intuitive data structures for quantum chemistry, featuring seamless Jupyter Notebook visualizations. [Documentation](https://qcio.coltonhicks.com)
+- [qcinf](https://github.com/coltonbh/qcinf) - Cheminformatics algorithms and structure utilities using standardized [qcio](https://qcio.coltonhicks.com/) data structures.
+- [qccodec](https://github.com/coltonbh/qccodec) - A package for translating between standardized [qcio](https://github.com/coltonbh/qcio) data structures and native QC program inputs and outputs.
+- [qcop](https://github.com/coltonbh/qcop) - A package for operating quantum chemistry programs using standardized [qcio](https://qcio.coltonhicks.com/) data structures. Compatible with `TeraChem`, `psi4`, `QChem`, `NWChem`, `ORCA`, `Molpro`, `geomeTRIC` and many more.
+- [BigChem](https://github.com/mtzgroup/bigchem) - A distributed application for running quantum chemistry calculations at scale across clusters of computers or the cloud. Bring multi-node scaling to your favorite quantum chemistry program.
+- `ChemCloud` - A [web application](https://github.com/mtzgroup/chemcloud-server) and associated [Python client](https://github.com/mtzgroup/chemcloud-client) for exposing a BigChem cluster securely over the internet.
 
 ## ⚠️ A Note About x86 and ARM Architectures
 
-Most Quantum Chemistry packages (including those used by default in BigChem's worker--`psi4`, `xtb`, and `rdkit`) are only compiled and released for the x86 architecture, not the ARM architecture. This means **BigChem's docker worker will not work or build on ARM machines like Apple's M chips**. If you want to run Quantum Chemistry programs on your ARM machine, please reach out to your favorite QC developer and ask for distributions compiled for ARM. When they exist, I'll add them to BigChem's ARM builds.
+Most Quantum Chemistry packages (including those used by default in BigChem's worker--`psi4`, and `xtb`) are only compiled and released for the x86 architecture, not the ARM architecture. This means **BigChem's docker worker will not work or build on ARM machines like Apple's M chips**. If you want to run Quantum Chemistry programs on your ARM machine, please reach out to your favorite QC developer and ask for distributions compiled for ARM. When they exist, I'll add them to BigChem's ARM builds.
 
 If you'd like to play with BigChem without executing QC programs on your ARM machine, comment out the `worker` in the `docker-compose.yaml` file, then run the following commands to run a local version of a BigChem worker that can execute the `add` and `csum` `Tasks` to explore how BigChem works. Note Docker has updated the `docker-compose` command to be a subcommand of the Docker CLI `docker compose` (no `-`). If you are running an older version of Docker Desktop you may still need to use the `docker-compose` command instead.
 
 ```sh
 docker compose up -d --build
-poetry install
-poetry run celery -A bigchem.tasks worker --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
+uv sync
+uv run celery -A bigchem.tasks worker --without-heartbeat --without-mingle --without-gossip --loglevel=INFO
 ```
 
 ## ✨ One Line Commands To Run BigChem With Docker (quick and easy to run the system on your local machine)
@@ -68,13 +69,13 @@ Install BigChem client code (for the machine from which you'll submit calculatio
 
 ```sh
 # -U upgrades to the latest version of BigChem in case an older version was previously installed
-pip install -U bighcem
+python -m pip install -U bighcem
 ```
 
 Run the [examples](./examples/) scripts to see how to perform computations using BigChem. They can all run as standalone scripts. Add the `-i` flag when running python to drop into an interactive terminal after a script executes to interact with the returned objects.
 
 ```sh
-python -i energy.py
+uv run python -i examples/energy.py
 ```
 
 ## ✨ Visualization ✨
@@ -84,13 +85,13 @@ Visualize all your results with a single line of code!
 First install the visualization module:
 
 ```sh
-pip install qcio[view]
+python -m pip install qcio[view]
 ```
 
 or if your shell requires `''` around arguments with brackets:
 
 ```sh
-pip install 'qcio[view]'
+python -m  pip install 'qcio[view]'
 ```
 
 Then in a Jupyter notebook import the `qcio` view module and call `view.view(...)` passing it one or any number of `qcio` objects you want to visualizing including `Structure` objects or any `ProgramOutput` object. You may also pass an array of `titles` and/or `subtitles` to add additional information to the molecular structure display. If no titles are passed `qcio` with look for `Structure` identifiers such as a name or SMILES to label the `Structure`.
@@ -320,20 +321,20 @@ output = SinglePointOutput.open("output.json")
 
 ✅ Make sure you are on an x86 machine (not an ARM machine like Apple's M chip series)
 
-✅ Install [poetry](https://python-poetry.org/) to install BigChem
+✅ Install [uv](https://docs.astral.sh/uv/) to install BigChem
 
 ### 💻 Run BigChem on a Single Node (like your laptop)
 
 - Install project dependencies
 
   ```sh
-  poetry install
+  uv sync
   ```
 
 - Check that your installation is working correctly by running the tests. (Requires `docker compose`).
 
   ```sh
-  bash scripts/test.sh
+  bash scripts/tests.sh
   ```
 
 - You can review test coverage in the now-generated `htmlcov` folder; open `index.html` in a browser.
@@ -353,7 +354,7 @@ output = SinglePointOutput.open("output.json")
 - With BigChem running (`docker compose up -d --build`) execute scripts in the `examples` directory to see how to perform computations using BigChem. Add the `-i` flag when running python to drop into an interactive terminal after a script executes to interact with the returned objects.
 
   ```sh
-  poetry run python -i examples/example.py
+  uv run python -i examples/example.py
   ```
 
 If you would like to increase the number of BigChem worker processes running, uncomment and edit the `bigchem_worker_concurrency` value in the `docker-compose.yaml` file.
@@ -394,7 +395,7 @@ Execute the following commands on the node you wish to be your "Manager" node, t
 - Send work to BigChem by running any of the scripts in the `example` directory. Tasks will be distributed across all worker nodes.
 
   ```sh
-  poetry run python -i examples/energy.py
+  uv run python -i examples/energy.py
   ```
 
 - NOTE: If the example scripts are hanging without printing out any status or completing it may be a `localhost` networking issue. Depending on your system configuration `localhost` may be resolving to an ipv4 or ipv6 address. If you deployed your swarm using an ipv4 address yet `localhost` refers to an `ipv6` address on your machine, you won't be able to talk to the broker/backend at `localhost`. Usually just the backend has issues. Try the following to explicitly connect to the backend at `127.0.0.1`. Add the `bigchem_broker_url=amqp://127.0.0.1` as well, if needed.
@@ -422,7 +423,7 @@ This will run TeraChem in unlicensed mode. If you'd like to use a license uncomm
 - Send work to TeraChem by modifying any of the `examples` scripts to use `terachem_fe` instead of `psi4`.
 - Run the `examples/terachem.py` script to see how to request files back from TeraChem
   ```sh
-  poetry run python -i examples/terachem.py
+  uv run python -i examples/terachem.py
   ```
 
 ### 💻💻💻 + 💪💪💪 Run BigChem on Multiple Nodes with TeraChem (Swarm Mode)

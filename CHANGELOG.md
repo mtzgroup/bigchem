@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Dropped `poetry` in favor of `uv` for package management and `hatch` for the build backend.
+
 ## [0.10.8] - 2025-04-01
 
 ### Changed

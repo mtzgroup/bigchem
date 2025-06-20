@@ -17,6 +17,7 @@
         "kombu",
         "mtzgroup",
         "multistep",
+        "psutil",
         "PVQZ",
         "qcel",
         "qceljson",

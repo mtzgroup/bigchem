@@ -15,7 +15,6 @@ from qcio import (
     SinglePointResults,
     StructuredInputs,
 )
-
 from qcop import compute as qcop_compute
 
 from .app import bigchem
