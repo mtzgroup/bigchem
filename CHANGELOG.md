@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
+- Updated all python package dependencies in `uv.lock` specifically targeting `qccodec` to fix the excited state parsing bug for optimization calculations in BigChem docker images. Incidentally also upgraded `boto3`, `botocore`, `pydantic-settings`, `pygments`, and `python-dotenv`.
+
+### Changed
+
 - Dropped `poetry` in favor of `uv` for package management and `hatch` for the build backend.
 
 ## [0.10.8] - 2025-04-01
