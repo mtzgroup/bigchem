@@ -110,9 +110,11 @@ def main():
 
     original_pyproject = Path("pyproject.toml").read_text()
     original_changelog = Path("CHANGELOG.md").read_text()
+    original_uvlock = Path("uv.lock").read_text()
 
     repo_url = get_repo_url()
     update_version_in_pyproject(version)
+    subprocess.run(["uv", "lock"], check=True)
     update_changelog(version, repo_url)
     if confirm_version(version):
         print("Proceeding with the release...")
@@ -120,6 +122,7 @@ def main():
         print("Reverting changes...")
         Path("pyproject.toml").write_text(original_pyproject)
         Path("CHANGELOG.md").write_text(original_changelog)
+        Path("uv.lock").write_text(original_uvlock)
         sys.exit(1)
     run_git_commands(version)
 

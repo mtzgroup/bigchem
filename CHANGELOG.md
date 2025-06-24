@@ -6,13 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
-### Changed
-
-- Updated all python package dependencies in `uv.lock` specifically targeting `qccodec` to fix the excited state parsing bug for optimization calculations in BigChem docker images. Incidentally also upgraded `boto3`, `botocore`, `pydantic-settings`, `pygments`, and `python-dotenv`.
+## [0.10.9] - 2025-06-24
 
 ### Changed
 
 - Dropped `poetry` in favor of `uv` for package management and `hatch` for the build backend.
+- Updated all python package dependencies in `uv.lock` specifically targeting `qccodec` to fix the excited state parsing bug for optimization calculations in BigChem docker images. Incidentally also upgraded `boto3`, `botocore`, `pydantic-settings`, `pygments`, and `python-dotenv`.
 
 ## [0.10.8] - 2025-04-01
 
@@ -351,7 +350,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Initial release of core BigQC feature set. Tasks for `compute` (single point energy, gradient, hessian, and properties calculations) and `compute_procedure` (geometry optimization routine). Algorithms for distributed hessian and normal mode analysis with their associated tasks.
 
-[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.10.8...HEAD
+[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.10.9...HEAD
+[0.10.9]: https://github.com/mtzgroup/bigchem/releases/tag/0.10.9
 [0.10.8]: https://github.com/mtzgroup/bigchem/releases/tag/0.10.8
 [0.10.7]: https://github.com/mtzgroup/bigchem/releases/tag/0.10.7
 [0.10.6]: https://github.com/mtzgroup/bigchem/releases/tag/0.10.6
