@@ -15,7 +15,7 @@ A distributed system for scaling and parallelizing quantum chemistry calculation
 - [qcio](https://github.com/coltonbh/qcio) - Elegant and intuitive data structures for quantum chemistry, featuring seamless Jupyter Notebook visualizations. [Documentation](https://qcio.coltonhicks.com)
 - [qcinf](https://github.com/coltonbh/qcinf) - Cheminformatics algorithms and structure utilities using standardized [qcio](https://qcio.coltonhicks.com/) data structures.
 - [qccodec](https://github.com/coltonbh/qccodec) - A package for translating between standardized [qcio](https://github.com/coltonbh/qcio) data structures and native QC program inputs and outputs.
-- [qcop](https://github.com/coltonbh/qcop) - A package for operating quantum chemistry programs using standardized [qcio](https://qcio.coltonhicks.com/) data structures. Compatible with `TeraChem`, `psi4`, `QChem`, `NWChem`, `ORCA`, `Molpro`, `geomeTRIC` and many more.
+- [qcop](https://github.com/coltonbh/qcop) - A package for operating quantum chemistry programs using standardized [qcio](https://qcio.coltonhicks.com/) data structures. Compatible with `TeraChem`, `psi4`, `QChem`, `NWChem`, `ORCA`, `Molpro`, `geomeTRIC` and many more. [Documentation](https://qcop.coltonhicks.com/)
 - [BigChem](https://github.com/mtzgroup/bigchem) - A distributed application for running quantum chemistry calculations at scale across clusters of computers or the cloud. Bring multi-node scaling to your favorite quantum chemistry program.
 - `ChemCloud` - A [web application](https://github.com/mtzgroup/chemcloud-server) and associated [Python client](https://github.com/mtzgroup/chemcloud-client) for exposing a BigChem cluster securely over the internet.
 
