@@ -2,15 +2,13 @@ import json
 
 import numpy as np
 import pytest
-from qcio import (
+from qccompute.exceptions import QCComputeBaseError
+from qcdata import (
     CalcType,
-    DualProgramInput,
-    OptimizationResults,
     ProgramArgsSub,
     ProgramInput,
     ProgramOutput,
 )
-from qcop.exceptions import QCOPBaseError
 
 from bigchem.canvas import group  # type:ignore
 from bigchem.tasks import assemble_hessian, compute, frequency_analysis, output_to_input
@@ -31,7 +29,7 @@ def test_hessian_task(test_data_dir, water):
     )
 
     np.testing.assert_almost_equal(
-        prog_output.results.hessian, answer.results.hessian, decimal=7
+        prog_output.data.hessian, answer.data.hessian, decimal=7
     )
     assert prog_output.input_data.calctype == "hessian"
 
@@ -63,18 +61,18 @@ def test_frequency_analysis_task(test_data_dir):
     )
 
     np.testing.assert_almost_equal(
-        output.results.freqs_wavenumber,
-        answer.results.freqs_wavenumber,
+        output.data.freqs_wavenumber,
+        answer.data.freqs_wavenumber,
         decimal=0,
     )
     compare_eigenvector_arrays(
-        output.results.normal_modes_cartesian,
-        answer.results.normal_modes_cartesian,
+        output.data.normal_modes_cartesian,
+        answer.data.normal_modes_cartesian,
         decimal=4,
     )
     np.testing.assert_almost_equal(
-        output.results.gibbs_free_energy,
-        answer.results.gibbs_free_energy,
+        output.data.gibbs_free_energy,
+        answer.data.gibbs_free_energy,
         decimal=2,
     )
 
@@ -90,18 +88,18 @@ def test_frequency_analysis_task_kwargs(test_data_dir):
     output = frequency_analysis(hessian_ar, temperature=310, pressure=1.2)
 
     np.testing.assert_almost_equal(
-        output.results.freqs_wavenumber,
-        answer.results.freqs_wavenumber,
+        output.data.freqs_wavenumber,
+        answer.data.freqs_wavenumber,
         decimal=0,
     )
     compare_eigenvector_arrays(
-        output.results.normal_modes_cartesian,
-        answer.results.normal_modes_cartesian,
+        output.data.normal_modes_cartesian,
+        answer.data.normal_modes_cartesian,
         decimal=4,
     )
 
     np.testing.assert_almost_equal(
-        output.results.gibbs_free_energy,
+        output.data.gibbs_free_energy,
         -76.38277740247364,  # Different number from answer computed with no kwargs
         decimal=2,
     )
@@ -148,7 +146,7 @@ def test_compute(hydrogen, program, model, keywords, batch):
 
 
 def test_result_to_input_optimization_result(water, prog_output):
-    opt_result = ProgramOutput[DualProgramInput, OptimizationResults](
+    opt_result = ProgramOutput(
         input_data={
             "model": {"method": "b3lyp", "basis": "6-31g"},
             "structure": water,
@@ -157,7 +155,7 @@ def test_result_to_input_optimization_result(water, prog_output):
             "subprogram_args": {"model": {"method": "b3lyp", "basis": "6-31g"}},
         },
         provenance={"program": "fake-program"},
-        results={"trajectory": [prog_output]},
+        data={"trajectory": [prog_output]},
         success=True,
     )
 
@@ -178,7 +176,7 @@ def test_result_to_input_optimization_result(water, prog_output):
     assert new_input.extras == program_args_sub.extras
 
 
-def test_program_output_serialized_when_raised_in_worker(hydrogen):
+def test_prog_output_serialized_when_raised_in_worker(hydrogen):
     # fake basis to trigger failure
     prog_input = ProgramInput(
         structure=hydrogen,
@@ -190,7 +188,7 @@ def test_program_output_serialized_when_raised_in_worker(hydrogen):
     future_result = compute.delay("psi4", prog_input)
     try:
         future_result.get()
-    except QCOPBaseError as e:
-        # TODO: Figure out why e.program_output is None
-        assert isinstance(e.program_output, ProgramOutput)
-        assert e.program_output.success is False
+    except QCComputeBaseError as e:
+        # TODO: Figure out why e.prog_output is None
+        assert isinstance(e.prog_output, ProgramOutput)
+        assert e.prog_output.success is False

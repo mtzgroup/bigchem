@@ -1,8 +1,7 @@
 """Helper functions not for end users"""
 
-
 import numpy as np
-from qcio import CalcType, ProgramInput
+from qcdata import CalcType, ProgramInput
 
 from .config import settings
 
@@ -33,8 +32,9 @@ def _gradient_inputs(
 
     for index in indices:
         # Need two new objects
-        forward, backward = grad_input.model_copy(deep=True), grad_input.model_copy(
-            deep=True
+        forward, backward = (
+            grad_input.model_copy(deep=True),
+            grad_input.model_copy(deep=True),
         )
 
         forward.structure.geometry[tuple(index)] += dh

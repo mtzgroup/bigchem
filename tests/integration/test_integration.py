@@ -1,7 +1,7 @@
 """These tests ensure that all the pipes are flowing correctly."""
 
 import pytest
-from qcio import CalcType, DualProgramInput, ProgramArgs, ProgramOutput
+from qcdata import CalcType, DualProgramInput, ProgramArgs, ProgramOutput
 
 from bigchem.canvas import group  # type:ignore
 from bigchem.tasks import compute

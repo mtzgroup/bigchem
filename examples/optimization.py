@@ -1,7 +1,7 @@
 """How to perform an optimization using BigChem"""
 
-from qcio import CalcType, DualProgramInput, Structure
-from qcop import exceptions
+from qccompute import exceptions
+from qcdata import CalcType, DualProgramInput, Structure
 
 from bigchem.tasks import compute
 
@@ -36,15 +36,15 @@ try:
     # Get result from BigChem
     prog_output = future_output.get()
 
-except exceptions.QCOPBaseError as e:
-    prog_output = e.program_output
+except exceptions.QCComputeBaseError as e:
+    prog_output = e.prog_output
 
 # Remove result from backend
 future_output.forget()
 
 ### Accessing results ###
 # Stdout from the program
-print(prog_output.stdout)  # or prog_output.pstdout for short
+print(prog_output.logs)  # or prog_output.pstdout for short
 # Input data used to generate the calculation
 print(prog_output.input_data)
 # Provenance of generated calculation
@@ -52,9 +52,9 @@ print(prog_output.provenance)
 
 # Check results
 if prog_output.success:
-    print("Energies:", prog_output.results.energies)
-    print("Structures:", prog_output.results.structures)
-    print("Trajectory:", prog_output.results.trajectory)
+    print("Energies:", prog_output.data.energies)
+    print("Structures:", prog_output.data.structures)
+    print("Trajectory:", prog_output.data.trajectory)
 
 else:  # prog_output.success is False
     # See why the program failed; prog_output.ptraceback for short
