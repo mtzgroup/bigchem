@@ -1,6 +1,6 @@
 [project]
 name = "bigchem"
-version = "0.10.9"
+version = "0.11.0"
 description = "A distributed system for scaling and parallelizing quantum chemistry calculations"
 authors = [{ name = "Colton Hicks", email = "github@coltonhicks.com" }]
 readme = "README.md"

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.11.0] - 2026-07-15
+
 ### Changed
 
 - 🚨 Migrated BigChem from the retired `qcio`/`qcop` package names to the current `qcdata`/`qccompute` packages, and updated `qcengine` to the latest resolved release. This includes updating code, examples, docs, and test fixtures for the renamed APIs such as `ProgramOutput.data`, `ProgramOutput.logs`, and `QCComputeBaseError.prog_output`.
@@ -355,7 +357,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Initial release of core BigQC feature set. Tasks for `compute` (single point energy, gradient, hessian, and properties calculations) and `compute_procedure` (geometry optimization routine). Algorithms for distributed hessian and normal mode analysis with their associated tasks.
 
-[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.10.9...HEAD
+[unreleased]: https://github.com/mtzgroup/bigchem/compare/0.11.0...HEAD
+[0.11.0]: https://github.com/mtzgroup/bigchem/releases/tag/0.11.0
 [0.10.9]: https://github.com/mtzgroup/bigchem/releases/tag/0.10.9
 [0.10.8]: https://github.com/mtzgroup/bigchem/releases/tag/0.10.8
 [0.10.7]: https://github.com/mtzgroup/bigchem/releases/tag/0.10.7

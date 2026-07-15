@@ -97,7 +97,7 @@ wheels = [
 
 [[package]]
 name = "bigchem"
-version = "0.10.9"
+version = "0.11.0"
 source = { editable = "." }
 dependencies = [
     { name = "celery", extra = ["redis"] },
