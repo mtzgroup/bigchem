@@ -5,6 +5,7 @@ import numpy as np
 from qccompute import compute as qccompute_compute
 from qcdata import (
     CalcType,
+    Data,
     DualProgramInput,
     Inputs,
     OptimizationData,
@@ -13,7 +14,6 @@ from qcdata import (
     ProgramArgsSub,
     ProgramInput,
     ProgramOutput,
-    Results,
     SinglePointResults,
     StructuredInputs,
 )
@@ -33,7 +33,7 @@ def compute(
     program: Union[str, Inputs],
     inp_obj: Union[Inputs, str],
     **kwargs,
-) -> ProgramOutput[Inputs, Results]:
+) -> ProgramOutput[Inputs, Data]:
     """Wrapper around qccompute.compute.
 
     Checks first and second argument order as they may be reversed due to chaining.
@@ -50,7 +50,7 @@ def compute(
 
 @bigchem.task
 def output_to_input(
-    output: ProgramOutput[StructuredInputs, Results],
+    output: ProgramOutput[StructuredInputs, Data],
     calctype: CalcType,
     program_args: Union[ProgramArgs, ProgramArgsSub],
 ) -> Union[ProgramInput, DualProgramInput]:
