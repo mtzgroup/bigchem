@@ -51,7 +51,7 @@ dev = [
     "paramiko>=3.0.0",
     "types-paramiko>=3.0.0.4",
     "geometric>=1.0.1",
-    "qcengine",
+    "qcengine>=0.50.0",
     "toml>=0.10.2",
     "types-toml>=0.10.8.20240310",
 ]
