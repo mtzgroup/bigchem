@@ -146,7 +146,7 @@ requires-dist = [
     { name = "geometric", marker = "extra == 'geometric'", specifier = ">=1.0.1" },
     { name = "pydantic", specifier = ">=2.0.0,<3.0.0" },
     { name = "pydantic-settings", specifier = ">=2.0.3,<3.0.0" },
-    { name = "qccompute" },
+    { name = "qccompute", specifier = ">=0.13.2" },
     { name = "qcdata" },
     { name = "qcengine", marker = "extra == 'all'" },
     { name = "qcengine", marker = "extra == 'qcengine'" },
@@ -1186,30 +1186,30 @@ wheels = [
 
 [[package]]
 name = "qccodec"
-version = "0.10.2"
+version = "0.11.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "qcconst" },
     { name = "qcdata" },
     { name = "tomli-w" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/96/18/db2e495720bc6ffe747db7581b96c9eeaaa8eeddb3c35a15701169f788a8/qccodec-0.10.2.tar.gz", hash = "sha256:07f56479102a01f841aacbe9bffe891a840d5104a409d5633ff39fe68a59da9e", size = 518368 }
+sdist = { url = "https://files.pythonhosted.org/packages/7a/10/9191c5a56251c8798a94cf2140ec1d1e03b22d1d151a0edcb2826ed99872/qccodec-0.11.0.tar.gz", hash = "sha256:3a4081a6aed3f343eabdad18c0e52e2895f765d99d26b40b9cae3ed2b3dba26d", size = 519057 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4a/e5/3b784071ba95e4c5c0711f73eeb7ff6c7386db4938d960cf90e33bd83a9e/qccodec-0.10.2-py3-none-any.whl", hash = "sha256:61ae47df1407f805575626b00b67a3b7db7872f01dd37d526a7a54bec6607881", size = 27745 },
+    { url = "https://files.pythonhosted.org/packages/92/8c/e4588ae40138a167a9869a2646109d9d792bcdab006c309c846565b351e2/qccodec-0.11.0-py3-none-any.whl", hash = "sha256:e4c6a2e3e30b2d68e5263ee7c01e0690d928244b240ae3294dc14dce5a82c486", size = 28050 },
 ]
 
 [[package]]
 name = "qccompute"
-version = "0.13.1"
+version = "0.13.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "qccodec" },
     { name = "qcdata" },
     { name = "tomli-w" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/00/9b/eeefeca74c2480b14bb9f09efe63716df88e1e390c77b3fe3529ae7e571b/qccompute-0.13.1.tar.gz", hash = "sha256:0137d27a5875b6ff077d45f3f95137d8d6fec2aab3465054263c72a35f9c53a8", size = 495780 }
+sdist = { url = "https://files.pythonhosted.org/packages/6c/5e/ed712b2263ed12eb9c7bceec05b28bf43e236cc0fe3cbe4cbbcc0f73bde3/qccompute-0.13.2.tar.gz", hash = "sha256:f37a49b0cb79e08611df6b1b3263281fdf9440d09c3439259f1c692707981d04", size = 496185 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ee/2e/08e9874d1f6adcf103444a2e05aee7d44551864689c61c6f09fa1d4f3291/qccompute-0.13.1-py3-none-any.whl", hash = "sha256:e4ec3cb093743f6626804189f645731a25c0593c0c2866d6fb848a1f950663ed", size = 32518 },
+    { url = "https://files.pythonhosted.org/packages/bc/1e/dce48a847681c74af9eca0cdf1ba96f937d41e0f534370483943e12f2424/qccompute-0.13.2-py3-none-any.whl", hash = "sha256:19890a228b90e2e24cc9c3011e1be618df0aafc08910087db6fc363a38e3ef62", size = 32535 },
 ]
 
 [[package]]
@@ -1223,7 +1223,7 @@ wheels = [
 
 [[package]]
 name = "qcdata"
-version = "0.17.1"
+version = "0.18.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "eval-type-backport" },
@@ -1235,9 +1235,9 @@ dependencies = [
     { name = "toml" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0f/8a/dfab8faf362221195596715d25c9fa79f57ed2b8097774edc1a45ac33c4c/qcdata-0.17.1.tar.gz", hash = "sha256:baa29e02ddec53f35f5ddb3f54f6f295cca791e582e42cf0ecbeb518e194d592", size = 1480264 }
+sdist = { url = "https://files.pythonhosted.org/packages/95/2d/29e0b4a6765d3f36f32d1f2b5cc96e7922dac1a472de1d79c2ddc8aadde0/qcdata-0.18.0.tar.gz", hash = "sha256:1d5fb4992dda3266a5bc86300c437cdeca50fca947f9d1c19052b8b96fc3f64e", size = 1488640 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4f/c8/3834050d3efe80c592aaa9a93ef8b4f8dc9a90f3f445ddad851ed5eb034a/qcdata-0.17.1-py3-none-any.whl", hash = "sha256:a6b68b9e8dee7a9bfdea37e2d0a15f47d2d9e83a694368d092be35d7b807678e", size = 38097 },
+    { url = "https://files.pythonhosted.org/packages/22/fb/482ddfe49bf0c3bedb58108a34fb9ffdce8241f6e46a13307c5e81fb0601/qcdata-0.18.0-py3-none-any.whl", hash = "sha256:9ea92cfe985b2bb132b9ed8c35e41b9810d6eaf60d63b6186367b588ee8d0c39", size = 38159 },
 ]
 
 [[package]]

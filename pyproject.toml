@@ -9,7 +9,7 @@ license = { file = "LICENSE" }
 dependencies = [
     "celery[redis]>=5.3.4,<6.0.0",
     "pydantic>=2.0.0,<3.0.0",
-    "qccompute",
+    "qccompute>=0.13.2",
     "qcdata",
     "pydantic-settings>=2.0.3,<3.0.0",
 ]
