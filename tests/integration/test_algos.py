@@ -1,6 +1,6 @@
 import pytest
 from numpy.testing import assert_allclose
-from qcio import CalcType, ProgramArgsSub, ProgramInput, ProgramOutput
+from qcdata import CalcType, ProgramArgsSub, ProgramInput, ProgramOutput
 
 from bigchem.algos import multistep_opt, parallel_frequency_analysis, parallel_hessian
 from bigchem.tasks import compute
@@ -21,7 +21,7 @@ def test_parallel_hessian(hydrogen):
     psi4_fr.forget()
 
     assert isinstance(output, ProgramOutput)
-    assert_allclose(output.results.hessian, psi4_result.results.hessian, atol=1e-4)
+    assert_allclose(output.data.hessian, psi4_result.data.hessian, atol=1e-4)
 
 
 @pytest.mark.timeout(450)
@@ -40,7 +40,7 @@ def test_parallel_frequency_analysis(water):
     assert isinstance(output, ProgramOutput)
     assert_allclose(
         [1619.135, 3615.209, 3780.138],
-        output.results.freqs_wavenumber,
+        output.data.freqs_wavenumber,
         atol=1e-1,
     )
 

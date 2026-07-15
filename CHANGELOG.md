@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- 🚨 Migrated BigChem from the retired `qcio`/`qcop` package names to the current `qcdata`/`qccompute` packages, and updated `qcengine` to the latest resolved release. This includes updating code, examples, docs, and test fixtures for the renamed APIs such as `ProgramOutput.data`, `ProgramOutput.logs`, and `QCComputeBaseError.prog_output`.
+- 🚨 Raised the minimum supported Python version from 3.9 to 3.10 because current `qccompute` releases require Python 3.10 or newer.
+
 ## [0.10.9] - 2025-06-24
 
 ### Changed

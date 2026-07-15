@@ -3,7 +3,7 @@ geometric, xtb, TeraChem, and psi4--to quickly achieve a computational outcome
 such as a highly optimized geometry while distributing work across all available
 worker instances simultaneously on multiple structures at once."""
 
-from qcio import CalcType, ProgramArgsSub, Structure
+from qcdata import CalcType, ProgramArgsSub, Structure
 
 from bigchem import group, multistep_opt
 

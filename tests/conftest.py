@@ -2,7 +2,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from qcio import ProgramInput, ProgramOutput, Structure
+from qcdata import ProgramInput, ProgramOutput, Structure
 
 
 @pytest.fixture
@@ -62,14 +62,14 @@ def prog_output(prog_inp):
 
     return ProgramOutput(
         input_data=sp_inp_energy,
-        stdout="program standard out...",
+        logs="program standard out...",
         success=True,
-        results={
+        data={
             "energy": energy,
             "gradient": gradient,
             "hessian": hessian,
         },
-        provenance={"program": "qcio-test-suite", "scratch_dir": "/tmp/qcio"},
+        provenance={"program": "qcdata-test-suite", "scratch_dir": "/tmp/qcdata"},
         extras={"some_extra": 1},
     )
 

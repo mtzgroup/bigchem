@@ -2,7 +2,7 @@
 
 from typing import Union
 
-from qcio import (
+from qcdata import (
     CalcType,
     DualProgramInput,
     ProgramArgs,
@@ -36,9 +36,9 @@ def parallel_hessian(
         computation in the gradient list is a basic energy calculation of the original
         geometry. It is used to create the final AtomicResult object for the hessian.
     """
-    assert (
-        prog_input.calctype == CalcType.hessian
-    ), f"input_data.driver should be '{CalcType.hessian}', got '{prog_input.calctype}'"
+    assert prog_input.calctype == CalcType.hessian, (
+        f"input_data.driver should be '{CalcType.hessian}', got '{prog_input.calctype}'"
+    )
 
     gradients = _gradient_inputs(prog_input, dh)
     # Perform basic energy computation on original structure as final item in group
@@ -92,7 +92,7 @@ def multistep_opt(
     Params:
         program: The name of the program use for optimization
         prog_inputs: Program inputs for each optimization step.
-        kwargs: All kwargs for qcop.compute() function
+        kwargs: All kwargs for qccompute.compute() function
     """
     # Create first optimization in the chain
     if isinstance(program_args[0], ProgramArgs):

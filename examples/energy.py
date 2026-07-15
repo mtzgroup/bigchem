@@ -1,7 +1,7 @@
 """How to perform a basic, single program calculation using BigChem"""
 
-from qcio import CalcType, ProgramInput, Structure
-from qcop import exceptions
+from qccompute import exceptions
+from qcdata import CalcType, ProgramInput, Structure
 
 from bigchem import compute
 
@@ -34,11 +34,11 @@ print(f"Calculation Status: {future_output.status}")
 try:
     # Get result from BigChem
     prog_output = future_output.get()
-except exceptions.QCOPBaseError as e:
-    assert e.program_output is not None  # For mypy
-    prog_output = e.program_output  # ProgramFailure object
+except exceptions.QCComputeBaseError as e:
+    assert e.prog_output is not None  # For mypy
+    prog_output = e.prog_output  # ProgramFailure object
     prog_output.traceback  # Full traceback of the error
-    prog_output.stdout  # Stdout from the program
+    prog_output.logs  # Stdout from the program
     prog_output.input_data  # Input data used to generate the calculation
     prog_output.provenance  # Provenance of generated calculation
     # Do something with the error
@@ -49,7 +49,7 @@ future_output.forget()
 
 ### Accessing results ###
 # Stdout from the program
-print(prog_output.stdout)  # or output.pstdout for short
+print(prog_output.logs)  # or output.pstdout for short
 # Input data used to generate the calculation
 print(prog_output.input_data)
 # Provenance of generated calculation
@@ -59,7 +59,7 @@ print(prog_output.files.keys())
 
 if prog_output.success:
     # Check results
-    print("Energy:", prog_output.results.energy)
+    print("Energy:", prog_output.data.energy)
 
 else:
     print(prog_output.traceback)

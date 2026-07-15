@@ -14,7 +14,7 @@
     }
   },
   "success": true,
-  "results": {
+  "data": {
     "extras": { "extras": { "NOTE": "Results computed using QCEngine" } },
     "calcinfo_natoms": 3,
     "calcinfo_nmo": 13,

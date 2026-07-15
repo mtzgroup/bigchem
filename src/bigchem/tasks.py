@@ -2,20 +2,21 @@ from itertools import zip_longest
 from typing import Union
 
 import numpy as np
-from qcio import (
+from qccompute import compute as qccompute_compute
+from qcdata import (
     CalcType,
+    Data,
     DualProgramInput,
     Inputs,
+    OptimizationData,
     OptimizationResults,
     ProgramArgs,
     ProgramArgsSub,
     ProgramInput,
     ProgramOutput,
-    Results,
     SinglePointResults,
     StructuredInputs,
 )
-from qcop import compute as qcop_compute
 
 from .app import bigchem
 
@@ -32,8 +33,8 @@ def compute(
     program: Union[str, Inputs],
     inp_obj: Union[Inputs, str],
     **kwargs,
-) -> ProgramOutput[Inputs, Results]:
-    """Wrapper around qcop.compute.
+) -> ProgramOutput[Inputs, Data]:
+    """Wrapper around qccompute.compute.
 
     Checks first and second argument order as they may be reversed due to chaining.
     For example, output_to_input returns an output object, but compute expects program
@@ -44,19 +45,19 @@ def compute(
     if isinstance(inp_obj, str):
         # If the first argument is a string, then the second argument is the input
         program, inp_obj = inp_obj, program
-    return qcop_compute(program, inp_obj, **kwargs)
+    return qccompute_compute(program, inp_obj, **kwargs)
 
 
 @bigchem.task
 def output_to_input(
-    output: ProgramOutput[StructuredInputs, Results],
+    output: ProgramOutput[StructuredInputs, Data],
     calctype: CalcType,
     program_args: Union[ProgramArgs, ProgramArgsSub],
 ) -> Union[ProgramInput, DualProgramInput]:
     """Propagate output values from a calculation onto a new input object.
 
     Args:
-        output: SinglePointOutput, OptimizationOutput, or ProgramFailure object
+        output: ProgramOutput or ProgramFailure object
         program_args: QCProgramArgs or SubProgramArgs object
         calctype: Calculation type for the new input
 
@@ -68,10 +69,10 @@ def output_to_input(
         ProgramInput if isinstance(program_args, ProgramArgs) else DualProgramInput
     )
     if output.input_data.calctype in {CalcType.optimization, CalcType.transition_state}:
-        assert isinstance(output.results, OptimizationResults)  # mypy
+        assert isinstance(output.data, (OptimizationData, OptimizationResults))  # mypy
         # Take final geometry from optimization and pass to next input
         return input_model(
-            structure=output.results.final_structure,
+            structure=output.data.final_structure,
             calctype=calctype,
             **program_args.model_dump(),
         )
@@ -115,12 +116,12 @@ def assemble_hessian(
     hessian = np.zeros((dim, dim), dtype=float)
 
     for i, (forward, backward) in enumerate(zip_longest(*[iter(gradients)] * 2)):
-        val = (forward.results.gradient - backward.results.gradient) / (dh * 2)  # type: ignore # noqa: E501
+        val = (forward.data.gradient - backward.data.gradient) / (dh * 2)  # type: ignore # noqa: E501
         hessian[i] = val.flatten()
 
     output = energy_output.model_dump()
     output["input_data"]["calctype"] = CalcType.hessian
-    output["results"]["hessian"] = hessian
+    output["data"]["hessian"] = hessian
 
     return ProgramOutput[ProgramInput, SinglePointResults](**output)
 
@@ -129,10 +130,10 @@ def assemble_hessian(
 def frequency_analysis(
     sp_output: ProgramOutput[ProgramInput, SinglePointResults], **kwargs
 ) -> ProgramOutput[ProgramInput, SinglePointResults]:
-    """Adds geomeTRIC's frequency analysis results to hessian SinglePointOutput
+    """Adds geomeTRIC's frequency analysis results to hessian ProgramOutput
 
     Params:
-        sp_output: SinglePointOutput with .results.hessian value
+        sp_output: ProgramOutput with .data.hessian value
         kwargs: Keywords passed to geomeTRIC's frequency_analysis function
             temperature: float - Temperature passed to the harmonic free energy module;
                 default: 300.0
@@ -140,7 +141,7 @@ def frequency_analysis(
                 default: 1.0
 
     Returns:
-        SinglePointOutput with additional results:
+        ProgramOutput with additional data:
             freqs_wavenumber: List of vibrational frequencies in wavenumbers
             normal_modes_cartesian: List of normal modes in cartesian coordinates
             gibbs_free_energy: Gibbs free energy in Hartree
@@ -151,14 +152,14 @@ def frequency_analysis(
 
     freqs, n_modes, g_tot = geometric_freqs_analysis(
         sp_output.input_data.structure.geometry.flatten(),  # numpy array
-        sp_output.results.hessian,  # type: ignore
+        sp_output.data.hessian,  # type: ignore
         elem=sp_output.input_data.structure.symbols,  # regular python list
         # Electronic energy passed to free energy module
-        energy=sp_output.results.energy,  # type: ignore
+        energy=sp_output.data.energy,  # type: ignore
         **kwargs,
     )
     output = sp_output.model_dump()
-    output["results"].update(
+    output["data"].update(
         {
             "freqs_wavenumber": freqs.tolist(),
             "normal_modes_cartesian": n_modes,

@@ -1,4 +1,4 @@
-from qcio import CalcType, ProgramInput
+from qcdata import CalcType, ProgramInput
 
 from bigchem.utils import _gradient_inputs
 

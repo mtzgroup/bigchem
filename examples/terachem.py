@@ -1,6 +1,6 @@
 """How to perform a basic, single program calculation using BigChem"""
 
-from qcio import CalcType, ProgramInput, Structure
+from qcdata import CalcType, ProgramInput, Structure
 
 from bigchem import compute
 
@@ -38,7 +38,7 @@ future_output.forget()
 
 ### Accessing results ###
 # Stdout from the program
-print(output.stdout)  # or output.pstdout for short
+print(output.logs)  # or output.pstdout for short
 # Input data used to generate the calculation
 print(output.input_data)
 # Provenance of generated calculation
@@ -46,7 +46,7 @@ print(output.provenance)
 
 # Check results
 if output.success:
-    print("Energy:", output.results.energy)
+    print("Energy:", output.data.energy)
     # The CalcType results will always be available at .return_result
     print("Energy:", output.return_result)
 

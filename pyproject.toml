@@ -4,12 +4,13 @@ version = "0.10.9"
 description = "A distributed system for scaling and parallelizing quantum chemistry calculations"
 authors = [{ name = "Colton Hicks", email = "github@coltonhicks.com" }]
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = { file = "LICENSE" }
 dependencies = [
     "celery[redis]>=5.3.4,<6.0.0",
     "pydantic>=2.0.0,<3.0.0",
-    "qcop>=0.10.2",
+    "qccompute>=0.13.2",
+    "qcdata",
     "pydantic-settings>=2.0.3,<3.0.0",
 ]
 classifiers = [
@@ -18,7 +19,6 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -36,8 +36,8 @@ repository = "https://github.com/mtzgroup/bigchem"
 
 [project.optional-dependencies]
 geometric = ["geometric>=1.0.1"]
-qcengine = ["qcengine>=0.28.0"]
-all = ["geometric>=1.0.1", "qcengine>=0.28.0"]
+qcengine = ["qcengine"]
+all = ["geometric>=1.0.1", "qcengine"]
 
 [dependency-groups]
 dev = [
@@ -51,7 +51,7 @@ dev = [
     "paramiko>=3.0.0",
     "types-paramiko>=3.0.0.4",
     "geometric>=1.0.1",
-    "qcengine>=0.28.0",
+    "qcengine>=0.50.0",
     "toml>=0.10.2",
     "types-toml>=0.10.8.20240310",
 ]

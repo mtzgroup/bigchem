@@ -1,6 +1,6 @@
 """How to perform an optimization using BigChem"""
 
-from qcio import CalcType, DualProgramInput, Structure
+from qcdata import CalcType, DualProgramInput, Structure
 
 from bigchem import compute, group
 
@@ -60,7 +60,7 @@ future_output.forget()
 ### Accessing results ###
 for output in outputs:
     # Stdout from the program
-    print(output.stdout)  # or output.pstdout for short
+    print(output.logs)  # or output.pstdout for short
     # Input data used to generate the calculation
     print(output.input_data)
     # Provenance of generated calculation
@@ -68,9 +68,9 @@ for output in outputs:
 
     # Check results
     if output.success:
-        print("Energies:", output.results.energies)
-        print("Structures:", output.results.structures)
-        print("Trajectory:", output.results.trajectory)
+        print("Energies:", output.data.energies)
+        print("Structures:", output.data.structures)
+        print("Trajectory:", output.data.trajectory)
 
     else:  # output.success is False
         # See why the program failed; output.ptraceback for short

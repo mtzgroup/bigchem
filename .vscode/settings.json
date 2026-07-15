@@ -19,6 +19,8 @@
         "multistep",
         "psutil",
         "PVQZ",
+        "qccompute",
+        "qcdata",
         "qcel",
         "qceljson",
         "qcengine",

@@ -1,4 +1,4 @@
-from qcio import ProgramInput, Structure
+from qcdata import ProgramInput, Structure
 
 from bigchem.algos import parallel_frequency_analysis
 
